@@ -1,14 +1,18 @@
 import tkinter as tk
 from tkinter import ttk, Frame
+
+from factories.commandfactory import CommandFactory
 from models.enums import Event
 from events.eventaggregator import EventAggregator
 from models.styles import StyleDefinition
+from views.viewbase import ViewBase
 
 
-class Messagebox(Frame):
-    def __init__(self, parent: Frame, event_aggregator: EventAggregator) -> None:
+class Messagebox(ViewBase):
+    def __init__(self, parent: Frame, event_aggregator: EventAggregator, command_factory: CommandFactory) -> None:
         self.__event_aggregator = event_aggregator
-        super().__init__(parent, bg="darkgray", padx=15, pady=15)
+        self.__command_factory = command_factory
+        super().__init__(parent, command_factory, bg="darkgray", padx=15, pady=15)
 
     def show(self, messages: list) -> None:
         for message in messages:

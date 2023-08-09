@@ -23,13 +23,13 @@ class MainView(ViewBase):
         self.__menu_button = ttk.Button(
             self.__toolbar_frame,
             text="Menu",
-            command=lambda cmd=Command.MENU_BUTTON_CLICKED: self.handle_command(cmd),
+            command=lambda cmd=Command.MENU_BUTTON_CLICKED: self._handle_command(cmd),
             style=StyleDefinition.MENU_BUTTON,
         )
         self.__random_ships_button = ttk.Button(
             self.__toolbar_frame,
             text="Random ships",
-            command=lambda cmd=Command.RANDOM_SHIPS_BUTTON_CLICKED: self.handle_command(cmd),
+            command=lambda cmd=Command.RANDOM_SHIPS_BUTTON_CLICKED: self._handle_command(cmd),
             style=StyleDefinition.MENU_BUTTON,
         )
         self.__menu_button.grid(row=0, column=0)
@@ -101,7 +101,7 @@ class MainView(ViewBase):
                 cell.grid(sticky="wens")
                 cell.config(
                     command=lambda cmd=Command.CELL_CLICKED, s=side, r=row - 1, c=column - 1:
-                    self.handle_command(cmd, s, r, c),
+                    self._handle_command(cmd, s, r, c),
                 )
                 inner_list.append(cell)
             cells.append(inner_list)
@@ -155,7 +155,7 @@ class MainView(ViewBase):
             frame = self.__field_frame_right
         else:
             frame = self.__game_frame
-        self.__messagebox = Messagebox(frame, self.__event_aggregator)
+        self.__messagebox = Messagebox(frame, self.__event_aggregator, self.__command_factory)
         self.__messagebox.show(messages)
 
     def close_messagebox(self) -> None:

@@ -21,7 +21,7 @@ class Menu(ViewBase):
             self,
             text="Singleplayer",
             style=StyleDefinition.MENU_ITEM_BUTTON,
-            command=lambda cmd=Command.START_SINGLEPLAYER: self.handle_command(cmd)
+            command=lambda cmd=Command.START_SINGLEPLAYER: self._handle_command(cmd)
         )
 
         # button_multiplayer = ttk.Button(
@@ -35,7 +35,7 @@ class Menu(ViewBase):
             self,
             text="Quit",
             style=StyleDefinition.MENU_ITEM_BUTTON,
-            command=lambda cmd=Command.QUIT_GAME: self.handle_command(cmd),
+            command=lambda cmd=Command.QUIT_GAME: self._handle_command(cmd),
         )
         button_singleplayer.pack(pady=(15, 0))
         # button_multiplayer.pack(pady=(5, 0))

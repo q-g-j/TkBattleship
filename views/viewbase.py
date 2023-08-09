@@ -9,6 +9,6 @@ class ViewBase(Frame):
         super().__init__(parent, **kwargs)
         self.__command_factory = command_factory
 
-    def handle_command(self, command: Command, *args) -> None:
+    def _handle_command(self, command: Command, *args) -> None:
         command = self.__command_factory.get_command(self.__class__.__name__, command)
         command.execute(*args)
