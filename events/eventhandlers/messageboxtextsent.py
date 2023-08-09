@@ -8,5 +8,4 @@ class MessageBoxTextSentEventHandler(EventHandlerBase):
         self.__main_view = main_view
 
     def execute(self, side: Side, messages: list) -> None:
-        self.__main_view.is_messagebox_open = True
         self.__main_view.show_messagebox(side, messages)

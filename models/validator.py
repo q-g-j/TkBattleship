@@ -274,15 +274,14 @@ class Validator:
             ships = self.__game.ships_opponent
 
         ship: Ship
+
+        pos = (row, column)
+
         for ship in ships:
-            pos = (row, column)
             if pos in ship.positions:
                 if pos not in ship.hit_positions:
                     ship.hit_positions.append(pos)
                 if len(ship.hit_positions) == ship.length:
-                    destroyed_positions = []
-                    for hit_pos in ship.positions:
-                        destroyed_positions.append(hit_pos)
                     ship.is_destroyed = True
                     return ship
         return None

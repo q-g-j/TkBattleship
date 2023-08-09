@@ -1,5 +1,6 @@
+from events.eventaggregator import EventAggregator
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
-from models.enums import Side, GameState
+from models.enums import Side, GameState, Event
 from models.game import Game
 from models.images import Images
 from models.singleplayer import SinglePlayer
@@ -8,11 +9,13 @@ from views.mainview import MainView
 
 
 class CellClickedEventHandler(EventHandlerBase):
-    def __init__(self, main_view: MainView, game: Game, validator: Validator, singleplayer: SinglePlayer) -> None:
+    def __init__(self, main_view: MainView, game: Game, validator: Validator, singleplayer: SinglePlayer,
+                 event_aggregator: EventAggregator) -> None:
         self.__main_view = main_view
         self.__game = game
         self.__validator = validator
         self.__singleplayer = singleplayer
+        self.__event_aggregator = event_aggregator
 
     def execute(self, side: Side, row: int, column: int):
         # close the menu if open and RETURN:
@@ -22,7 +25,7 @@ class CellClickedEventHandler(EventHandlerBase):
                 return
 
         # close the messagebox if open and RETURN:
-        if self.__main_view.is_messagebox_open:
+        if self.__main_view.is_messagebox_open and not self.__game.game_state == GameState.GAME_OVER:
             self.__main_view.close_messagebox()
             return
 
@@ -53,7 +56,7 @@ class CellClickedEventHandler(EventHandlerBase):
         # if cell is filled, mark it as hit and check if ship is destroyed:
         if not self.__validator.is_cell_empty(side, row, column):
             self.__main_view.set_cell_image(side, row, column, Images.HIT)
-            self.__validator.get_destroyed_ship(Side.RIGHT, row, column)
+            self.__event_aggregator.publish(Event.CHECK_SHIP_DESTROYED_REQUESTED, side, row, column)
 
         # singleplayer mode: let the AI make it's move:
         if self.__game.whose_turn == Side.LEFT and self.__game.game_state == GameState.SINGLE_PLAYER:

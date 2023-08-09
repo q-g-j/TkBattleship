@@ -1,1 +1,2 @@
 Pillow>=10.0.0
+threadsafe-tkinter>=1.0.4

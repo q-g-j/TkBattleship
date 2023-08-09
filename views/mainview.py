@@ -6,6 +6,7 @@ from factories.commandfactory import CommandFactory
 from models.images import Images
 from events.eventaggregator import EventAggregator
 from models.enums import *
+from models.ship import Ship
 from utils.sleep import threaded_sleep
 from views.menuview import Menu
 from views.messageboxview import Messagebox
@@ -138,14 +139,13 @@ class MainView(ViewBase):
             cells = self.__cells_opponent
         cells[row][column].config(image=image)
 
-    def mark_cells_destroyed(
-            self, player_type: Side, destroyed_positions: list
-    ) -> None:
-        if player_type == Side.LEFT:
+    def mark_ship_destroyed(
+            self, side: Side, ship: Ship) -> None:
+        if side == Side.LEFT:
             cells = self.__cells_player
         else:
             cells = self.__cells_opponent
-        for hit_pos in destroyed_positions:
+        for hit_pos in ship.hit_positions:
             cells[hit_pos[0]][hit_pos[1]].config(image=Images.DESTROYED)
 
     def show_messagebox(self, side: Side, messages: list) -> None:
@@ -155,8 +155,12 @@ class MainView(ViewBase):
             frame = self.__field_frame_right
         else:
             frame = self.__game_frame
+        if self.__messagebox is not None:
+            self.is_messagebox_open = False
+            self.__messagebox.close()
         self.__messagebox = Messagebox(frame, self.__event_aggregator, self.__command_factory)
         self.__messagebox.show(messages)
+        self.is_messagebox_open = True
 
     def close_messagebox(self) -> None:
         self.__messagebox.close()

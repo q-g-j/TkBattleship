@@ -28,7 +28,8 @@ class GameController:
         self.__main_view = MainView(root, self.__event_aggregator, self.__command_factory)
         self.__singleplayer = SinglePlayer(self.__event_aggregator, self.__game, self.__validator)
         self.__eventhandler_factory = EventHandlerFactory(self.__root, self.__main_view, self.__game,
-                                                          self.__validator, self.__singleplayer)
+                                                          self.__validator, self.__singleplayer,
+                                                          self.__event_aggregator)
 
         self.__subscribe_events()
 

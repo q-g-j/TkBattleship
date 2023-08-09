@@ -1,13 +1,10 @@
 import random
 
-from models.enums import CellContent, Event, Side, GameState, Direction
+from models.enums import Event, Side, GameState
 from models.game import Game
 from models.images import Images
-from models.ship import Ship
 from models.validator import Validator
-# from utils.debug import Debug
 from events.eventaggregator import EventAggregator
-from utils.messagehelper import MessageHelper
 
 
 class SinglePlayer:

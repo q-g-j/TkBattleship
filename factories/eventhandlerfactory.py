@@ -1,5 +1,6 @@
 from tkinter import Tk
 
+from events.eventaggregator import EventAggregator
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from events.eventhandlers.quitbuttonclicked import QuitButtonClickedEventHandler
 from models.enums import Event
@@ -23,12 +24,13 @@ from events.eventhandlers.multiplayerbuttonclicked import MultiplayerButtonClick
 
 class EventHandlerFactory:
     def __init__(self, root: Tk, main_view: MainView, game: Game, validator: Validator,
-                 singleplayer: SinglePlayer) -> None:
+                 singleplayer: SinglePlayer, event_aggregator: EventAggregator) -> None:
         self.__root = root
         self.__main_view = main_view
         self.__game = game
         self.__validator = validator
         self.__singleplayer = singleplayer
+        self.__event_aggregator = event_aggregator
 
     def get_event_handler(self, event: Event) -> EventHandlerBase:
         if event == Event.MENU_BUTTON_CLICKED:
@@ -40,7 +42,8 @@ class EventHandlerFactory:
                 self.__main_view)
         if event == Event.CELL_CLICKED:
             return CellClickedEventHandler(self.__main_view, self.__game, self.__validator,
-                                           self.__singleplayer)
+                                           self.__singleplayer,
+                                           self.__event_aggregator)
         if event == Event.MESSAGEBOX_TEXT_SENT:
             return MessageBoxTextSentEventHandler(self.__main_view)
         if event == Event.MESSAGEBOX_CLOSED:

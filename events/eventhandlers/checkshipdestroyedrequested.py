@@ -16,10 +16,14 @@ class CheckShipDestroyedRequestedEventHandler(EventHandlerBase):
     def execute(self, side: Side, row: int, column: int):
         ship: Ship = self.__validator.get_destroyed_ship(side, row, column)
         if ship is not None:
-            self.__main_view.mark_cells_destroyed(side, ship.positions)
+            self.__main_view.mark_ship_destroyed(side, ship)
             messages = ["{0} sunk!".format(ship.name)]
             if self.__validator.are_all_ships_destroyed(side):
                 self.__game.game_state = GameState.GAME_OVER
-                messages.append("Game over!")
+                messages.append("")
+                if side == Side.LEFT:
+                    messages.append("Your opponent has won")
+                else:
+                    messages.append("You have won")
 
             MessageHelper.show(side, messages, 0.3)
