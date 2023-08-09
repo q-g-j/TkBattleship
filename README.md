@@ -23,7 +23,7 @@ There is a button to let the computer place all ships randomly.
 The players now take turns in trying to hit and destroy the opponent's ships.</br>
 The AI is currently weak since it makes its guess in a random way each time. Will be enhanced soon...
 
-### Requirements:
+### Requirements
 Python 3 (tested with 3.10)
 
 #### Libraries (install via pip):
@@ -31,7 +31,7 @@ Python 3 (tested with 3.10)
 
 ### Technical details
 
-This is a practice project to implement the MVC pattern in a TKinter application while following some OOP related princples. It uses the event aggregator pattern for state change notifications between models, views, and the controller.
+This is a practice project to implement the MVC pattern in a TKinter application while following some OOP related principles. It uses the event aggregator pattern for state change notifications between the models, the views and the controller.
 
 The views make use of the command pattern for their button commands similar to the ICommand interface from WPF.
 
