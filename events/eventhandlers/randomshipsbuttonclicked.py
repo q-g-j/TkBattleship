@@ -19,7 +19,7 @@ class RandomShipsButtonClickedEventHandler(EventHandlerBase):
         self.__main_view.clear_cells(Side.LEFT)
         self.__game.reset_ships(Side.LEFT)
         self.__game.reset_playing_field(Side.LEFT)
-        self.__singleplayer.num_placed_player_ships = 0
+        self.__game.num_placed_player_ships = 0
 
         self.__game.place_random_ships(self.__validator, Side.LEFT)
 

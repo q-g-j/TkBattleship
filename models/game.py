@@ -1,9 +1,11 @@
 from random import shuffle, choice
 
 from models.enums import *
+from models.images import Images
 from models.ship import Ship
 from models.validator import Validator
 from events.eventaggregator import EventAggregator
+from utils.messagehelper import MessageHelper
 
 
 class Game:
@@ -17,6 +19,9 @@ class Game:
 
         self.game_state = GameState.FIRST_RUN
         self.whose_turn = Side.LEFT
+
+        self.__fits_in_direction = Direction.NONE
+        self.num_placed_player_ships = 0
 
     def create_ships(self, side: Side) -> None:
         for ship_type in ShipTypes:
@@ -55,6 +60,53 @@ class Game:
                     self.playing_field_player[row][column] = CellContent.EMPTY
                 if side & Side.RIGHT == Side.RIGHT:
                     self.playing_field_opponent[row][column] = CellContent.EMPTY
+
+    def player_place_ship(self, validator: Validator, row: int, column: int) -> None:
+        current_ship: Ship = self.ships_player[self.num_placed_player_ships]
+        positions = current_ship.positions
+        playing_field = self.playing_field_player
+        ships = self.ships_player
+
+        if playing_field[row][column] != CellContent.EMPTY:
+            return
+
+        if len(current_ship.positions) == 0:
+            if validator.has_adjacent_cells_occupied(Side.LEFT, row, column):
+                return
+            fits_in_direction = validator.does_ship_fit_at_position(Side.LEFT, row, column,
+                                                                    current_ship.length)
+            if fits_in_direction == Direction.NONE:
+                self.__fits_in_direction = Direction.NONE
+                return
+            else:
+                self.__fits_in_direction = fits_in_direction
+        if len(positions) >= 1:
+            if self.__fits_in_direction == Direction.HORIZONTAL and row != positions[0][0]:
+                return
+            if self.__fits_in_direction == Direction.VERTICAL and column != positions[0][1]:
+                return
+
+            possible_positions = validator.get_possible_ship_positions(current_ship)
+            if (row, column) not in possible_positions:
+                return
+
+        playing_field[row][column] = CellContent.FILLED
+        self.__event_aggregator.publish(Event.CELL_IMAGE_SET, Side.LEFT, row, column, Images.UNDAMAGED_GREEN)
+
+        positions.append((row, column))
+        if len(positions) == current_ship.length:
+            for pos in positions:
+                self.__event_aggregator.publish(Event.CELL_IMAGE_SET, Side.LEFT, pos[0], pos[1], Images.UNDAMAGED)
+            self.num_placed_player_ships += 1
+
+            if self.num_placed_player_ships == len(ships):
+                self.__event_aggregator.publish(Event.RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED, False)
+                MessageHelper.show(Side.LEFT, ["Game started!", "Make your first move..."])
+                self.game_state = GameState.SINGLE_PLAYER
+            else:
+                self.show_message_place_ship(
+                    ships[self.num_placed_player_ships], 0.2
+                )
 
     def place_random_ships(self, validator: Validator, side: Side) -> None:
         ships = []
@@ -120,3 +172,8 @@ class Game:
             num_tries += 1
 
         # print("placed ships: {0}, tries: {1}".format(num_placed_ships, num_tries))
+
+    @staticmethod
+    def show_message_place_ship(ship: Ship, delay: float) -> None:
+        message = "Place a {0} (length: {1})".format(ship.name, ship.length)
+        MessageHelper.show(Side.LEFT, [message], delay)

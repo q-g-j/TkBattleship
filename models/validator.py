@@ -286,3 +286,21 @@ class Validator:
                     ship.is_destroyed = True
                     return ship
         return None
+
+    def get_possible_ship_positions(self, current_ship: Ship) -> list:
+        positions = current_ship.positions
+
+        if len(positions) == 1:
+            return self.get_adjacent_cells_free_nwse(Side.LEFT, positions[0][0], positions[0][1],
+                                                     [positions[0]])
+
+        if len(positions) == 2:
+            if positions[0][0] == positions[1][0]:
+                current_ship.orientation = Direction.HORIZONTAL
+            else:
+                current_ship.orientation = Direction.VERTICAL
+
+        if current_ship.orientation == Direction.HORIZONTAL:
+            return self.get_adjacent_cells_free_we(Side.LEFT, current_ship, current_ship.positions)
+        if current_ship.orientation == Direction.VERTICAL:
+            return self.get_adjacent_cells_free_ns(Side.LEFT, current_ship, current_ship.positions)

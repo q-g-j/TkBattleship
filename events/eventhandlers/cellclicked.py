@@ -46,7 +46,7 @@ class CellClickedEventHandler(EventHandlerBase):
 
             # go to function Singleplayer.player_place_ship(), then RETURN:
             if side == Side.LEFT:
-                self.__singleplayer.player_place_ship(row, column)
+                self.__game.player_place_ship(self.__validator, row, column)
                 return
 
         # finally:

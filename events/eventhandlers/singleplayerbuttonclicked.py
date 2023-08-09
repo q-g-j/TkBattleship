@@ -16,4 +16,4 @@ class SinglePlayerButtonClickedEventHandler(EventHandlerBase):
 
         Debug.print_playing_field(self.__game.playing_field_opponent)
 
-        self.__singleplayer.show_message_place_ship(self.__game.ships_player[0], 0)
+        self.__game.show_message_place_ship(self.__game.ships_player[0], 0)
