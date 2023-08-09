@@ -23,6 +23,12 @@ There is a button to let the computer place all ships randomly.
 The players now take turns in trying to hit and destroy the opponent's ships.</br>
 The AI is currently weak since it makes it's guess in a random way each time. Will be enhanced soon...
 
+### Requirements:
+Python 3 (tested with 3.10)
+
+#### Libraries (install via pip):
+- Pillow >= 10.0.0
+
 ### Technical details
 
 This is a practice project to implement the MVC pattern in a TKinter application while following some OOP related princples. It uses the event aggregator pattern for state change notifications between models, views, and the controller.
