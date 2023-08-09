@@ -1,6 +1,19 @@
 from enum import Enum, IntFlag
 
 
+class Command(Enum):
+    # MainView:
+    MENU_BUTTON_CLICKED = 1
+    CELL_CLICKED = 2
+    RANDOM_SHIPS_BUTTON_CLICKED = 3
+
+    # Menu:
+    START_SINGLEPLAYER = 4
+    START_MULTIPLAYER = 5
+    QUIT_GAME = 6
+
+
+
 class Event(Enum):
     MENU_BUTTON_CLICKED = 1
     QUIT_BUTTON_CLICKED = 2
@@ -11,7 +24,9 @@ class Event(Enum):
     MESSAGEBOX_TEXT_SENT = 7
     MESSAGEBOX_CLOSED = 8
     CELL_IMAGE_SET = 9
-    CHECK_IF_SHIP_DESTROYED = 10
+    CHECK_SHIP_DESTROYED_REQUESTED = 10
+    RANDOM_SHIPS_BUTTON_CLICKED = 11
+    RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED = 12
 
 
 class CellContent:

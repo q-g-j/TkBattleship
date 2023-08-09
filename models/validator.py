@@ -1,13 +1,16 @@
+from __future__ import annotations
+
 from models.enums import Side, CellContent, Direction
 from models.ship import Ship
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from models.game import Game
 
 
 class Validator:
-    def __init__(self, playing_field_player: list, playing_field_opponent: list, ships_player: list, ships_opponent):
-        self.playing_field_player = playing_field_player
-        self.playing_field_opponent = playing_field_opponent
-        self.ships_player = ships_player
-        self.ships_opponent = ships_opponent
+    def __init__(self, game: Game):
+        self.__game = game
 
     def has_adjacent_cells_occupied(
             self,
@@ -20,9 +23,9 @@ class Validator:
         if not except_positions:
             except_positions = []
         if side == Side.LEFT:
-            playing_field = self.playing_field_player
+            playing_field = self.__game.playing_field_player
         else:
-            playing_field = self.playing_field_opponent
+            playing_field = self.__game.playing_field_opponent
         for r in range(row - 1, row + 2):
             for c in range(column - 1, column + 2):
                 if 0 <= r <= 9 and 0 <= c <= 9:
@@ -31,17 +34,18 @@ class Validator:
                             return True
         return False
 
-    def get_adjacent_cells_free_ns(self,
-                                   side: Side,
-                                   ship: Ship,
-                                   _except_positions: list = None
-                                   ) -> list:
+    def get_adjacent_cells_free_ns(
+            self,
+            side: Side,
+            ship: Ship,
+            except_positions: list = None
+    ) -> list:
         adjacent_positions = []
 
         if side == Side.LEFT:
-            playing_field = self.playing_field_player
+            playing_field = self.__game.playing_field_player
         else:
-            playing_field = self.playing_field_opponent
+            playing_field = self.__game.playing_field_opponent
 
         min_position = ship.positions[0]
         max_position = ship.positions[0]
@@ -55,22 +59,23 @@ class Validator:
         for pos in [(min_position[0] - 1, min_position[1]), (max_position[0] + 1, max_position[1])]:
             if 0 <= pos[0] <= 9:
                 if playing_field[pos[0]][pos[1]] == CellContent.EMPTY:
-                    if not self.has_adjacent_cells_occupied(side, pos[0], pos[1], _except_positions):
+                    if not self.has_adjacent_cells_occupied(side, pos[0], pos[1], except_positions):
                         adjacent_positions.append(pos)
 
         return adjacent_positions
 
-    def get_adjacent_cells_free_we(self,
-                                   side: Side,
-                                   ship: Ship,
-                                   except_positions: list = None
-                                   ) -> list:
+    def get_adjacent_cells_free_we(
+            self,
+            side: Side,
+            ship: Ship,
+            except_positions: list = None
+    ) -> list:
         adjacent_positions = []
 
         if side == Side.LEFT:
-            playing_field = self.playing_field_player
+            playing_field = self.__game.playing_field_player
         else:
-            playing_field = self.playing_field_opponent
+            playing_field = self.__game.playing_field_opponent
 
         min_position = ship.positions[0]
         max_position = ship.positions[0]
@@ -89,18 +94,19 @@ class Validator:
 
         return adjacent_positions
 
-    def get_adjacent_cells_free_nwse(self,
-                                     side: Side,
-                                     row: int,
-                                     column: int,
-                                     except_positions: list = None
-                                     ) -> list:
+    def get_adjacent_cells_free_nwse(
+            self,
+            side: Side,
+            row: int,
+            column: int,
+            except_positions: list = None
+    ) -> list:
         adjacent_positions = []
 
         if side == Side.LEFT:
-            playing_field = self.playing_field_player
+            playing_field = self.__game.playing_field_player
         else:
-            playing_field = self.playing_field_opponent
+            playing_field = self.__game.playing_field_opponent
 
         for pos in [(row - 1, column), (row, column - 1), (row + 1, column), (row, column + 1)]:
             if 0 <= pos[0] <= 9 and 0 <= pos[1] <= 9:
@@ -121,9 +127,9 @@ class Validator:
         :return: Enum Direction (none, horizontal, vertical, both)
         """
         if side == Side.LEFT:
-            playing_field = self.playing_field_player
+            playing_field = self.__game.playing_field_player
         else:
-            playing_field = self.playing_field_opponent
+            playing_field = self.__game.playing_field_opponent
 
         # if there are ships in sight, adjust the boundaries of the current row or column accordingly:
         top, left = 0, 0
@@ -241,9 +247,9 @@ class Validator:
 
     def are_all_ships_destroyed(self, side: Side) -> bool:
         if side == Side.LEFT:
-            ships = self.ships_player
+            ships = self.__game.ships_player
         else:
-            ships = self.ships_opponent
+            ships = self.__game.ships_opponent
         num_destroyed = 0
 
         ship: Ship
@@ -254,20 +260,18 @@ class Validator:
 
     def is_cell_empty(self, side: Side, row: int, column: int) -> bool:
         if side == Side.LEFT:
-            playing_field = self.playing_field_player
+            playing_field = self.__game.playing_field_player
         else:
-            playing_field = self.playing_field_opponent
+            playing_field = self.__game.playing_field_opponent
         if playing_field[row][column] == CellContent.EMPTY:
             return True
         return False
 
-    def get_destroyed_ship(
-            self, side: Side, row: int, column: int
-    ) -> Ship | None:
+    def get_destroyed_ship(self, side: Side, row: int, column: int) -> Ship | None:
         if side == Side.LEFT:
-            ships = self.ships_player
+            ships = self.__game.ships_player
         else:
-            ships = self.ships_opponent
+            ships = self.__game.ships_opponent
 
         ship: Ship
         for ship in ships:

@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, Frame
 from models.enums import Event
-from utils.eventaggregator import EventAggregator
+from events.eventaggregator import EventAggregator
 from models.styles import StyleDefinition
 
 

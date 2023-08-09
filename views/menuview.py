@@ -1,13 +1,17 @@
 import tkinter as tk
 from tkinter import ttk, Frame
-from models.enums import Event
+
+from events.eventaggregator import EventAggregator
+from factories.commandfactory import CommandFactory
+from models.enums import Event, Command
 from models.styles import StyleDefinition
+from views.viewbase import ViewBase
 
 
-class Menu(Frame):
-    def __init__(self, field_frame, event_aggregator) -> None:
+class Menu(ViewBase):
+    def __init__(self, field_frame: Frame, event_aggregator: EventAggregator, command_factory: CommandFactory) -> None:
         self.__event_aggregator = event_aggregator
-        super().__init__(field_frame, bg="darkgray", padx=15, pady=15)
+        super().__init__(field_frame, command_factory, bg="darkgray", padx=15, pady=15)
 
     def show(self) -> None:
         label = ttk.Label(self, text="Battle Ship", style=StyleDefinition.MENU_ITEM_HEADER_LABEL)
@@ -17,21 +21,21 @@ class Menu(Frame):
             self,
             text="Singleplayer",
             style=StyleDefinition.MENU_ITEM_BUTTON,
-            command=self.__command_start_singleplayer,
+            command=lambda cmd=Command.START_SINGLEPLAYER: self.handle_command(cmd)
         )
 
-        button_multiplayer = ttk.Button(
-            self,
-            text="Multiplayer",
-            style=StyleDefinition.MENU_ITEM_BUTTON,
-            command=self.__command_start_multiplayer,
-        )
+        # button_multiplayer = ttk.Button(
+        #     self,
+        #     text="Multiplayer",
+        #     style=StyleDefinition.MENU_ITEM_BUTTON,
+        #     command=lambda cmd=Command.START_MULTIPLAYER: self.handle_command(cmd)
+        # )
 
         button_quit = ttk.Button(
             self,
             text="Quit",
             style=StyleDefinition.MENU_ITEM_BUTTON,
-            command=self.__command_quit,
+            command=lambda cmd=Command.QUIT_GAME: self.handle_command(cmd),
         )
         button_singleplayer.pack(pady=(15, 0))
         # button_multiplayer.pack(pady=(5, 0))
@@ -42,17 +46,6 @@ class Menu(Frame):
     def close(self) -> None:
         self.__event_aggregator.publish(Event.MENU_CLOSED)
         self.destroy()
-
-    def __command_start_singleplayer(self) -> None:
-        self.__event_aggregator.publish(Event.SINGLEPLAYER_CLICKED)
-        self.close()
-
-    def __command_start_multiplayer(self) -> None:
-        self.__event_aggregator.publish(Event.MULTIPLAYER_CLICKED)
-        self.close()
-
-    def __command_quit(self) -> None:
-        self.__event_aggregator.publish(Event.QUIT_BUTTON_CLICKED)
 
 
 class Lobby(Frame):

@@ -1,5 +1,5 @@
 from models.enums import Side
-from utils.eventaggregator import EventAggregator
+from events.eventaggregator import EventAggregator
 from utils.sleep import threaded_sleep
 
 

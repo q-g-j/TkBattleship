@@ -1,27 +1,39 @@
 import tkinter as tk
 from tkinter import Tk, ttk, Frame
 from PIL import ImageTk
+
+from factories.commandfactory import CommandFactory
 from models.images import Images
-from utils.eventaggregator import EventAggregator
+from events.eventaggregator import EventAggregator
 from models.enums import *
 from utils.sleep import threaded_sleep
 from views.menuview import Menu
 from views.messageboxview import Messagebox
 from models.styles import StyleDefinition
+from views.viewbase import ViewBase
 
 
-class MainView(Frame):
-    def __init__(self, root: Tk, event_aggregator: EventAggregator) -> None:
-        super().__init__(root)
+class MainView(ViewBase):
+    def __init__(self, root: Tk, event_aggregator: EventAggregator, command_factory: CommandFactory) -> None:
+        super().__init__(root, command_factory)
         self.__event_aggregator = event_aggregator
+        self.__command_factory = command_factory
         self.__game_frame = Frame(self)
+        self.__toolbar_frame = Frame(self)
         self.__menu_button = ttk.Button(
-            self,
+            self.__toolbar_frame,
             text="Menu",
-            command=self.__command_menu_click,
+            command=lambda cmd=Command.MENU_BUTTON_CLICKED: self.handle_command(cmd),
             style=StyleDefinition.MENU_BUTTON,
         )
-        self.__menu_button.pack(anchor=tk.W)
+        self.__random_ships_button = ttk.Button(
+            self.__toolbar_frame,
+            text="Random ships",
+            command=lambda cmd=Command.RANDOM_SHIPS_BUTTON_CLICKED: self.handle_command(cmd),
+            style=StyleDefinition.MENU_BUTTON,
+        )
+        self.__menu_button.grid(row=0, column=0)
+        self.__toolbar_frame.pack(anchor=tk.W)
         self.__game_frame.pack(pady=(10, 0))
         self.__menu = None
         self.__messagebox = None
@@ -34,6 +46,9 @@ class MainView(Frame):
         self.__create_cells(Side.LEFT)
         self.__create_cells(Side.RIGHT)
         self.pack(padx=20, pady=20)
+
+        self.is_menu_open = False
+        self.is_messagebox_open = False
 
     def __create_playing_fields(self) -> None:
         self.__field_frame_left = Frame(self.__game_frame)
@@ -66,8 +81,8 @@ class MainView(Frame):
             create_notation(tk.HORIZONTAL, 11, i + 11)
             create_notation(tk.VERTICAL, i, 22)
 
-    def __create_cells(self, player_type) -> None:
-        if player_type == Side.LEFT:
+    def __create_cells(self, side: Side) -> None:
+        if side == Side.LEFT:
             field_frame = self.__field_frame_left
             cells = self.__cells_player
         else:
@@ -85,27 +100,25 @@ class MainView(Frame):
                 cell = ttk.Button(frame)
                 cell.grid(sticky="wens")
                 cell.config(
-                    command=lambda r=row - 1, c=column - 1: self.__command_cell_click(
-                        player_type, r, c
-                    )
+                    command=lambda cmd=Command.CELL_CLICKED, s=side, r=row - 1, c=column - 1:
+                    self.handle_command(cmd, s, r, c),
                 )
                 inner_list.append(cell)
             cells.append(inner_list)
 
-    def __command_menu_click(self) -> None:
-        self.__event_aggregator.publish(Event.MENU_BUTTON_CLICKED)
-
-    def __command_cell_click(
-        self, player_type: Side, row: int, column: int
-    ) -> None:
-        self.__event_aggregator.publish(Event.CELL_CLICKED, player_type, row, column)
+    def change_random_ships_button_visibility(self, toggle: bool):
+        if toggle:
+            self.__random_ships_button.grid(row=0, column=1, padx=(10, 0))
+        else:
+            self.__random_ships_button.grid_forget()
 
     def show_menu(self, delay: float = 0) -> None:
-        self.__menu = Menu(self.__game_frame, self.__event_aggregator)
+        self.__menu = Menu(self.__game_frame, self.__event_aggregator, self.__command_factory)
         if delay > 0:
             threaded_sleep(lambda: self.__menu.show(), delay)
         else:
             self.__menu.show()
+        self.is_menu_open = True
 
     def close_menu(self) -> None:
         self.__menu.close()
@@ -118,7 +131,7 @@ class MainView(Frame):
                 if side & Side.RIGHT == Side.RIGHT:
                     self.__cells_opponent[row][column].config(image=Images.EMPTY)
 
-    def place_mark(self, player_type: Side, row: int, column: int, image: ImageTk.PhotoImage) -> None:
+    def set_cell_image(self, player_type: Side, row: int, column: int, image: ImageTk.PhotoImage) -> None:
         if player_type == Side.LEFT:
             cells = self.__cells_player
         else:
@@ -126,7 +139,7 @@ class MainView(Frame):
         cells[row][column].config(image=image)
 
     def mark_cells_destroyed(
-        self, player_type: Side, destroyed_positions: list
+            self, player_type: Side, destroyed_positions: list
     ) -> None:
         if player_type == Side.LEFT:
             cells = self.__cells_player

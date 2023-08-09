@@ -17,4 +17,4 @@ class EventAggregator:
     def publish(self, event_type: Event, *args, **kwargs) -> None:
         if event_type in self.__subscribers:
             for callback in self.__subscribers[event_type]:
-                callback(*args, **kwargs)
+                callback(event_type, *args, **kwargs)

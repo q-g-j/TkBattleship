@@ -1,5 +1,5 @@
 class Debug:
-    PLAYER_PLACE_RANDOM_SHIPS = False
+    PLAYER_PLACE_RANDOM_SHIPS = True
 
     @staticmethod
     def print_playing_field(playing_field: list) -> None:
