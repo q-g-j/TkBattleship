@@ -25,7 +25,7 @@ class RandomShipsButtonClickedEventHandler(EventHandlerBase):
 
         for ship in self.__game.ships_player:
             for pos in ship.positions:
-                self.__main_view.set_cell_image(Side.LEFT, pos[0], pos[1], Images.UNDAMAGED)
+                self.__main_view.set_cell_image(Side.LEFT, pos, Images.UNDAMAGED)
         self.__game.game_state = GameState.SINGLE_PLAYER
 
         self.__main_view.change_random_ships_button_visibility(False)

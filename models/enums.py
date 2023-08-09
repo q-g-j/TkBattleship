@@ -13,7 +13,6 @@ class Command(Enum):
     QUIT_GAME = 6
 
 
-
 class Event(Enum):
     MENU_BUTTON_CLICKED = 1
     QUIT_BUTTON_CLICKED = 2
@@ -41,6 +40,11 @@ class GameState(Enum):
     MULTIPLAYER = 2
     GAME_OVER = 3
     PLAYER_PLACING_SHIPS = 4
+
+
+class Difficulty(Enum):
+    EASY = 1
+    NORMAL = 2
 
 
 NotationColumns = {

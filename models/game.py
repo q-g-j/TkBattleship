@@ -2,6 +2,7 @@ from random import shuffle, choice
 
 from models.enums import *
 from models.images import Images
+from models.position import Position
 from models.ship import Ship
 from models.validator import Validator
 from events.eventaggregator import EventAggregator
@@ -12,10 +13,10 @@ class Game:
     def __init__(self, event_aggregator: EventAggregator) -> None:
         self.__event_aggregator = event_aggregator
 
-        self.ships_player = []
-        self.ships_opponent = []
-        self.playing_field_player = []
-        self.playing_field_opponent = []
+        self.ships_player: list[Ship] = []
+        self.ships_opponent: list[Ship] = []
+        self.playing_field_player: list[list[str]] = []
+        self.playing_field_opponent: list[list[str]] = []
 
         self.game_state = GameState.FIRST_RUN
         self.whose_turn = Side.LEFT
@@ -61,19 +62,19 @@ class Game:
                 if side & Side.RIGHT == Side.RIGHT:
                     self.playing_field_opponent[row][column] = CellContent.EMPTY
 
-    def player_place_ship(self, validator: Validator, row: int, column: int) -> None:
+    def player_place_ship(self, validator: Validator, pos: Position) -> None:
         current_ship: Ship = self.ships_player[self.num_placed_player_ships]
         positions = current_ship.positions
         playing_field = self.playing_field_player
         ships = self.ships_player
 
-        if playing_field[row][column] != CellContent.EMPTY:
+        if playing_field[pos.row][pos.col] != CellContent.EMPTY:
             return
 
         if len(current_ship.positions) == 0:
-            if validator.has_adjacent_cells_occupied(Side.LEFT, row, column):
+            if validator.has_adjacent_cells_occupied(Side.LEFT, pos):
                 return
-            fits_in_direction = validator.does_ship_fit_at_position(Side.LEFT, row, column,
+            fits_in_direction = validator.does_ship_fit_at_position(Side.LEFT, pos,
                                                                     current_ship.length)
             if fits_in_direction == Direction.NONE:
                 self.__fits_in_direction = Direction.NONE
@@ -81,22 +82,22 @@ class Game:
             else:
                 self.__fits_in_direction = fits_in_direction
         if len(positions) >= 1:
-            if self.__fits_in_direction == Direction.HORIZONTAL and row != positions[0][0]:
+            if self.__fits_in_direction == Direction.HORIZONTAL and pos.row != positions[0].row:
                 return
-            if self.__fits_in_direction == Direction.VERTICAL and column != positions[0][1]:
+            if self.__fits_in_direction == Direction.VERTICAL and pos.col != positions[0].col:
                 return
 
             possible_positions = validator.get_possible_ship_positions(current_ship)
-            if (row, column) not in possible_positions:
+            if pos not in possible_positions:
                 return
 
-        playing_field[row][column] = CellContent.FILLED
-        self.__event_aggregator.publish(Event.CELL_IMAGE_SET, Side.LEFT, row, column, Images.UNDAMAGED_GREEN)
+        playing_field[pos.row][pos.col] = CellContent.FILLED
+        self.__event_aggregator.publish(Event.CELL_IMAGE_SET, Side.LEFT, pos, Images.UNDAMAGED_GREEN)
 
-        positions.append((row, column))
+        positions.append(pos)
         if len(positions) == current_ship.length:
             for pos in positions:
-                self.__event_aggregator.publish(Event.CELL_IMAGE_SET, Side.LEFT, pos[0], pos[1], Images.UNDAMAGED)
+                self.__event_aggregator.publish(Event.CELL_IMAGE_SET, Side.LEFT, pos, Images.UNDAMAGED)
             self.num_placed_player_ships += 1
 
             if self.num_placed_player_ships == len(ships):
@@ -150,22 +151,20 @@ class Game:
                         if is_ship_placed:
                             break
                         do_place = True
-                        positions = []
+                        positions: list[Position] = []
                         for i in range(ship.length):
                             if ship.orientation == Direction.HORIZONTAL:
-                                positions.append((row, column + i))
+                                positions.append(Position(row, column + i))
                             else:
-                                positions.append((row + i, column))
+                                positions.append(Position(row + i, column))
                         for pos in positions:
-                            if playing_field[pos[0]][pos[1]] != CellContent.EMPTY \
-                                    or validator.has_adjacent_cells_occupied(side, pos[0], pos[1]):
+                            if playing_field[pos.row][pos.col] != CellContent.EMPTY \
+                                    or validator.has_adjacent_cells_occupied(side, pos):
                                 do_place = False
                                 break
                         if do_place:
                             for pos in positions:
-                                playing_field[pos[0]][
-                                    pos[1]
-                                ] = CellContent.FILLED
+                                playing_field[pos.row][pos.col] = CellContent.FILLED
                                 ship.positions.append(pos)
                             is_ship_placed = True
                             num_placed_ships += 1

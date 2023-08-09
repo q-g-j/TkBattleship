@@ -1,3 +1,4 @@
+from __future__ import annotations
 from tkinter import Tk
 
 from events.eventaggregator import EventAggregator

@@ -1,4 +1,5 @@
 from models.enums import Direction
+from models.position import Position
 
 
 class Ship:
@@ -6,6 +7,6 @@ class Ship:
         self.name = name
         self.length = length
         self.orientation = Direction.NONE
-        self.positions = []
-        self.hit_positions = []
+        self.positions: list[Position] = []
+        self.hit_positions: list[Position] = []
         self.is_destroyed = False

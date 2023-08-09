@@ -6,6 +6,7 @@ from factories.commandfactory import CommandFactory
 from models.images import Images
 from events.eventaggregator import EventAggregator
 from models.enums import *
+from models.position import Position
 from models.ship import Ship
 from utils.sleep import threaded_sleep
 from views.menuview import Menu
@@ -100,9 +101,10 @@ class MainView(ViewBase):
                 frame.rowconfigure(0, weight=1)
                 cell = ttk.Button(frame)
                 cell.grid(sticky="wens")
+                pos = Position(row - 1, column - 1)
                 cell.config(
-                    command=lambda cmd=Command.CELL_CLICKED, s=side, r=row - 1, c=column - 1:
-                    self._handle_command(cmd, s, r, c),
+                    command=lambda cmd=Command.CELL_CLICKED, s=side, p=pos:
+                    self._handle_command(cmd, s, p),
                 )
                 inner_list.append(cell)
             cells.append(inner_list)
@@ -132,12 +134,12 @@ class MainView(ViewBase):
                 if side & Side.RIGHT == Side.RIGHT:
                     self.__cells_opponent[row][column].config(image=Images.EMPTY)
 
-    def set_cell_image(self, player_type: Side, row: int, column: int, image: ImageTk.PhotoImage) -> None:
+    def set_cell_image(self, player_type: Side, pos: Position, image: ImageTk.PhotoImage) -> None:
         if player_type == Side.LEFT:
             cells = self.__cells_player
         else:
             cells = self.__cells_opponent
-        cells[row][column].config(image=image)
+        cells[pos.row][pos.col].config(image=image)
 
     def mark_ship_destroyed(
             self, side: Side, ship: Ship) -> None:
@@ -146,7 +148,7 @@ class MainView(ViewBase):
         else:
             cells = self.__cells_opponent
         for hit_pos in ship.hit_positions:
-            cells[hit_pos[0]][hit_pos[1]].config(image=Images.DESTROYED)
+            cells[hit_pos.row][hit_pos.col].config(image=Images.DESTROYED)
 
     def show_messagebox(self, side: Side, messages: list) -> None:
         if side == Side.LEFT:
