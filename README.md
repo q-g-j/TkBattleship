@@ -20,8 +20,8 @@ After starting a new game (currently only singleplayer) the player has to place 
 The ships have to be placed with at least 1 cell between them.</br>
 There is a button to let the computer place all ships randomly.
 
-The players now take turns in trying to hit and destroy the opponent's ships.</br>
-The AI is currently weak since it makes its guess in a random way each time. Will be enhanced soon...
+Players now take turns in trying to hit and destroy the opponent's ships.</br>
+The computer opponent has been improved and should be stronger now.
 
 ### Requirements
 Python 3 (tested with 3.10)
