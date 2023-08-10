@@ -91,9 +91,9 @@ class MainView(ViewBase):
             field_frame = self.__field_frame_right
             cells = self.__cells_opponent
 
-        for row in range(1, 11):
+        for row in range(0, 10):
             inner_list = []
-            for column in range(1, 11):
+            for column in range(0, 10):
                 frame = Frame(field_frame, width=40, height=40)
                 frame.grid(column=column, row=row, padx=0, pady=0)
                 frame.grid_propagate(False)
@@ -101,7 +101,7 @@ class MainView(ViewBase):
                 frame.rowconfigure(0, weight=1)
                 cell = ttk.Button(frame)
                 cell.grid(sticky="wens")
-                pos = Position(row - 1, column - 1)
+                pos = Position(row, column)
                 cell.config(
                     command=lambda cmd=Command.CELL_CLICKED, s=side, p=pos:
                     self._handle_command(cmd, s, p),
