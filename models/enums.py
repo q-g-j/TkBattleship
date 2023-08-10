@@ -26,6 +26,7 @@ class Event(Enum):
     SHIP_HIT = 10
     RANDOM_SHIPS_BUTTON_CLICKED = 11
     RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED = 12
+    STATUS_LABEL_TEXT_SENT = 13
 
 
 class CellContent:
@@ -36,7 +37,7 @@ class CellContent:
 
 class GameState(Enum):
     FIRST_RUN = 0
-    SINGLE_PLAYER = 1
+    SINGLEPLAYER = 1
     MULTIPLAYER = 2
     GAME_OVER = 3
     PLAYER_PLACING_SHIPS = 4
@@ -45,6 +46,19 @@ class GameState(Enum):
 class Difficulty(Enum):
     EASY = 1
     NORMAL = 2
+
+
+class Texts:
+    STATUS_LABEL_SINGLEPLAYER_STARTED = "Singleplayer game started!"
+    STATUS_LABEL_PLAYER_TURN = "It's your turn."
+    STATUS_LABEL_AI_TURN = "It's the computer's turn."
+    STATUS_LABEL_OPPONENT_TURN = "It's your opponents's turn."
+
+    GAME_STARTED = "Game started!"
+
+    PLAYER_WON = "You have won!"
+    OPPONENT_WON = "Your opponent has won!"
+    AI_WON = "The computer has won!"
 
 
 NotationColumns = {

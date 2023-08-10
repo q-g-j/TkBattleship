@@ -1,5 +1,5 @@
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
-from models.enums import Side, GameState
+from models.enums import Side, GameState, Texts
 from models.game import Game
 from models.images import Images
 from models.position import Position
@@ -15,7 +15,7 @@ class ShipHitEventHandler(EventHandlerBase):
         self.__game = game
         self.__validator = validator
 
-    def execute(self, side: Side, pos: Position):
+    def execute(self, side: Side, pos: Position, game_state: GameState):
         hit_ship = self.__validator.get_ship_from_pos(side, pos)
         if pos in hit_ship.hit_positions:
             return
@@ -27,10 +27,14 @@ class ShipHitEventHandler(EventHandlerBase):
             if self.__validator.are_all_ships_destroyed(side):
                 self.__game.game_state = GameState.GAME_OVER
                 messages.append("")
-                if side == Side.LEFT:
-                    messages.append("Your opponent has won")
+                if side == Side.RIGHT:
+                    messages.append(Texts.PLAYER_WON)
                 else:
-                    messages.append("You have won")
+                    if game_state == GameState.SINGLEPLAYER:
+                        messages.append(Texts.AI_WON)
+                    elif game_state == GameState.MULTIPLAYER:
+                        messages.append(Texts.OPPONENT_WON)
+                self.__main_view.set_status_label_text("")
             MessageHelper.show(side, messages, 0.1)
         else:
             self.__main_view.set_cell_image(side, pos, Images.HIT)

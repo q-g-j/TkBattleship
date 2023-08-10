@@ -1,6 +1,6 @@
 import random
 
-from models.enums import Event, Side, GameState, Orientation, NotationColumns
+from models.enums import Event, Side, GameState, Orientation, Texts
 from models.game import Game
 from models.position import Position
 from models.validator import Validator
@@ -24,7 +24,7 @@ class SinglePlayer:
     def ai_place_mark(self, pos: Position):
         self.__ai_last_hit_positions.append(pos)
 
-        self.__event_aggregator.publish(Event.SHIP_HIT, Side.LEFT, pos)
+        self.__event_aggregator.publish(Event.SHIP_HIT, Side.LEFT, pos, self.__game.game_state)
 
         if self.__validator.is_ship_destroyed_at_position(Side.LEFT, pos):
             self.__reset_for_destroyed_ship()
@@ -147,6 +147,9 @@ class SinglePlayer:
             # try an adjacent position next:
             self.ai_try_adjacent_position()
 
+        if not self.__game.game_state == GameState.GAME_OVER:
+            self.__event_aggregator.publish(Event.STATUS_LABEL_TEXT_SENT, Texts.STATUS_LABEL_PLAYER_TURN)
+
     def __ai_reset_for_new_game(self):
         self.__ai_all_positions_to_try.clear()
         for row in range(10):
@@ -178,3 +181,5 @@ class SinglePlayer:
         )
 
         self.__game.place_random_ships(self.__validator, Side.RIGHT)
+
+        self.__event_aggregator.publish(Event.STATUS_LABEL_TEXT_SENT, Texts.STATUS_LABEL_SINGLEPLAYER_STARTED)

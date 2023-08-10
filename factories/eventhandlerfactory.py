@@ -4,6 +4,7 @@ from tkinter import Tk
 from events.eventaggregator import EventAggregator
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from events.eventhandlers.quitbuttonclicked import QuitButtonClickedEventHandler
+from events.eventhandlers.statuslabeltextsent import StatusLabelEventHandler
 from models.enums import Event
 from models.game import Game
 from models.singleplayer import SinglePlayer
@@ -67,3 +68,5 @@ class EventHandlerFactory:
                                                          self.__singleplayer)
         if event == Event.QUIT_BUTTON_CLICKED:
             return QuitButtonClickedEventHandler(self.__root)
+        if event == Event.STATUS_LABEL_TEXT_SENT:
+            return StatusLabelEventHandler(self.__main_view)

@@ -43,15 +43,20 @@ class Main(ViewBase):
             command=lambda cmd=Command.RANDOM_SHIPS_BUTTON_CLICKED: self._handle_command(
                 cmd
             ),
-            style=StyleDefinition.MENU_BUTTON,
+            style=StyleDefinition.RANDOM_SHIPS_BUTTON,
+        )
+        self.__status_label = ttk.Label(
+            self.__toolbar_frame,
+            style=StyleDefinition.STATUS_LABEL
         )
         self.__menu_button.grid(row=0, column=0)
+        self.__status_label.grid(row=0, column=2)
         self.__toolbar_frame.pack(anchor=tk.W)
         self.__game_frame.pack(pady=(10, 0))
-        self.__menu: Menu = None
-        self.__messagebox: Messagebox = None
-        self.__field_frame_left: ttk.Frame = None
-        self.__field_frame_right: ttk.Frame = None
+        self.__menu: Menu | None = None
+        self.__messagebox: Messagebox | None = None
+        self.__field_frame_left: ttk.Frame | None = None
+        self.__field_frame_right: ttk.Frame | None = None
         self.__cells_opponent: list[list[Cell]] = []
         self.__cells_player: list[list[Cell]] = []
         self.__create_playing_fields()
@@ -174,7 +179,11 @@ class Main(ViewBase):
         for hit_pos in ship.hit_positions:
             cells[hit_pos.row][hit_pos.col].button.config(image=Images.DESTROYED)
 
+    def set_status_label_text(self, text: str):
+        self.__status_label.config(text=text)
+
     def show_messagebox(self, side: Side, messages: list) -> None:
+        frame: ttk.Frame | None = None
         if side == Side.LEFT:
             frame = self.__field_frame_left
         elif side == Side.RIGHT:

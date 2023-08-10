@@ -1,12 +1,11 @@
 from events.eventaggregator import EventAggregator
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
-from models.enums import Side, GameState, Event
+from models.enums import Side, GameState, Event, Texts
 from models.game import Game
-from models.images import Images
 from models.position import Position
 from models.singleplayer import SinglePlayer
 from models.validator import Validator
-from utils.messagehelper import MessageHelper
+from utils.sleep import threaded_sleep
 from views.main import Main
 
 
@@ -49,8 +48,16 @@ class CellClickedEventHandler(EventHandlerBase):
 
         # when game has started don't allow to click on the left side:
         if (
-                self.__game.game_state in (GameState.SINGLE_PLAYER, GameState.MULTIPLAYER)
+                self.__game.game_state in (GameState.SINGLEPLAYER, GameState.MULTIPLAYER)
                 and side == Side.LEFT
+        ):
+            return
+
+        # don't allow clicks on the right side, when it's the right player's turn:
+        if (
+                self.__game.game_state in (GameState.SINGLEPLAYER, GameState.MULTIPLAYER)
+                and side == Side.RIGHT
+                and self.__game.whose_turn == Side.RIGHT
         ):
             return
 
@@ -68,11 +75,13 @@ class CellClickedEventHandler(EventHandlerBase):
         # finally:
         # if cell is filled, mark it as hit and check if ship is destroyed:
         if not self.__validator.is_cell_empty(side, pos):
-            self.__event_aggregator.publish(Event.SHIP_HIT, side, pos)
+            self.__event_aggregator.publish(Event.SHIP_HIT, side, pos, self.__game.game_state)
 
         # singleplayer mode: let the AI make it's move:
         if (
                 self.__game.whose_turn == Side.LEFT
-                and self.__game.game_state == GameState.SINGLE_PLAYER
+                and self.__game.game_state == GameState.SINGLEPLAYER
         ):
-            self.__singleplayer.ai_make_move()
+            self.__game.whose_turn = Side.RIGHT
+            self.__main_view.set_status_label_text(Texts.STATUS_LABEL_AI_TURN)
+            threaded_sleep(lambda: self.__singleplayer.ai_make_move(), 0.5)

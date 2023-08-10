@@ -102,8 +102,10 @@ class Game:
 
             if self.num_placed_player_ships == len(ships):
                 self.__event_aggregator.publish(Event.RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED, False)
-                MessageHelper.show(Side.LEFT, ["Game started!", "Make your first move..."], 0.1)
-                self.game_state = GameState.SINGLE_PLAYER
+                self.__event_aggregator.publish(Event.STATUS_LABEL_TEXT_SENT,
+                                                Texts.STATUS_LABEL_PLAYER_TURN)
+                MessageHelper.show(Side.LEFT, [Texts.GAME_STARTED], 0.1)
+                self.game_state = GameState.SINGLEPLAYER
             else:
                 self.show_message_place_ship(
                     ships[self.num_placed_player_ships], 0.1

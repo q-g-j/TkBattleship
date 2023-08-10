@@ -1,5 +1,5 @@
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
-from models.enums import GameState, Side
+from models.enums import GameState, Side, Texts
 from models.game import Game
 from models.images import Images
 from models.singleplayer import SinglePlayer
@@ -26,6 +26,7 @@ class RandomShipsButtonClickedEventHandler(EventHandlerBase):
         for ship in self.__game.ships_player:
             for pos in ship.positions:
                 self.__main_view.set_cell_image(Side.LEFT, pos, Images.UNDAMAGED)
-        self.__game.game_state = GameState.SINGLE_PLAYER
+        self.__game.game_state = GameState.SINGLEPLAYER
 
         self.__main_view.change_random_ships_button_visibility(False)
+        self.__main_view.set_status_label_text(Texts.STATUS_LABEL_PLAYER_TURN)
