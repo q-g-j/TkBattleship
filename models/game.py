@@ -21,7 +21,7 @@ class Game:
         self.game_state = GameState.FIRST_RUN
         self.whose_turn = Side.LEFT
 
-        self.__fits_in_direction = Direction.NONE
+        self.__fits_in_direction = Orientation.NONE
         self.num_placed_player_ships = 0
 
     def create_ships(self, side: Side) -> None:
@@ -76,15 +76,15 @@ class Game:
                 return
             fits_in_direction = validator.does_ship_fit_at_position(Side.LEFT, pos,
                                                                     current_ship.length)
-            if fits_in_direction == Direction.NONE:
-                self.__fits_in_direction = Direction.NONE
+            if fits_in_direction == Orientation.NONE:
+                self.__fits_in_direction = Orientation.NONE
                 return
             else:
                 self.__fits_in_direction = fits_in_direction
         if len(positions) >= 1:
-            if self.__fits_in_direction == Direction.HORIZONTAL and pos.row != positions[0].row:
+            if self.__fits_in_direction == Orientation.HORIZONTAL and pos.row != positions[0].row:
                 return
-            if self.__fits_in_direction == Direction.VERTICAL and pos.col != positions[0].col:
+            if self.__fits_in_direction == Orientation.VERTICAL and pos.col != positions[0].col:
                 return
 
             possible_positions = validator.get_possible_ship_positions(current_ship)
@@ -135,13 +135,13 @@ class Game:
             ship: Ship
             for ship in ships:
                 is_ship_placed = False
-                ship.orientation = choice([Direction.HORIZONTAL, Direction.VERTICAL])
+                ship.orientation = choice([Orientation.HORIZONTAL, Orientation.VERTICAL])
                 possible_rows = list(
-                    range(10 if ship.orientation == Direction.HORIZONTAL else 10 - ship.length)
+                    range(10 if ship.orientation == Orientation.HORIZONTAL else 10 - ship.length)
                 )
                 shuffle(possible_rows)
                 possible_columns = list(
-                    range(10 if ship.orientation == Direction.VERTICAL else 10 - ship.length)
+                    range(10 if ship.orientation == Orientation.VERTICAL else 10 - ship.length)
                 )
                 shuffle(possible_columns)
                 for row in possible_rows:
@@ -153,7 +153,7 @@ class Game:
                         do_place = True
                         positions: list[Position] = []
                         for i in range(ship.length):
-                            if ship.orientation == Direction.HORIZONTAL:
+                            if ship.orientation == Orientation.HORIZONTAL:
                                 positions.append(Position(row, column + i))
                             else:
                                 positions.append(Position(row + i, column))

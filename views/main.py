@@ -5,7 +5,7 @@ from PIL import ImageTk
 from factories.commandfactory import CommandFactory
 from models.images import Images
 from events.eventaggregator import EventAggregator
-from models.enums import Command, Direction, NotationColumns, Side
+from models.enums import Command, Orientation, NotationColumns, Side
 from models.position import Position
 from models.ship import Ship
 from models.settings import Settings
@@ -82,20 +82,20 @@ class Main(ViewBase):
             frame.rowconfigure(0, weight=1)
             text = (
                 str(row)
-                if direction == Direction.VERTICAL
+                if direction == Orientation.VERTICAL
                 else NotationColumns[column if column < 11 else column - 11]
             )
             label = ttk.Label(frame, text=text, anchor=tk.CENTER)
             label.grid(sticky="wens")
 
         for i in range(1, 11):
-            create_notation_cell(Direction.HORIZONTAL, 0, i)
-            create_notation_cell(Direction.HORIZONTAL, 11, i)
-            create_notation_cell(Direction.VERTICAL, i, 0)
-            create_notation_cell(Direction.VERTICAL, i, 11)
-            create_notation_cell(Direction.HORIZONTAL, 0, i + 11)
-            create_notation_cell(Direction.HORIZONTAL, 11, i + 11)
-            create_notation_cell(Direction.VERTICAL, i, 22)
+            create_notation_cell(Orientation.HORIZONTAL, 0, i)
+            create_notation_cell(Orientation.HORIZONTAL, 11, i)
+            create_notation_cell(Orientation.VERTICAL, i, 0)
+            create_notation_cell(Orientation.VERTICAL, i, 11)
+            create_notation_cell(Orientation.HORIZONTAL, 0, i + 11)
+            create_notation_cell(Orientation.HORIZONTAL, 11, i + 11)
+            create_notation_cell(Orientation.VERTICAL, i, 22)
 
     def __create_cells(self) -> None:
         sides = [

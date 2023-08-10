@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from models.enums import Side, CellContent, Direction
+from models.enums import Side, CellContent, Orientation
 from models.position import Position
 from models.ship import Ship
 from typing import TYPE_CHECKING
@@ -14,10 +14,10 @@ class Validator:
         self.__game = game
 
     def has_adjacent_cells_occupied(
-        self,
-        side: Side,
-        pos: Position,
-        except_positions: list = None,
+            self,
+            side: Side,
+            pos: Position,
+            except_positions: list = None,
     ) -> bool:
         if not except_positions:
             except_positions: list[Position] = []
@@ -28,23 +28,30 @@ class Validator:
         for r in range(pos.row - 1, pos.row + 2):
             for c in range(pos.col - 1, pos.col + 2):
                 if 0 <= r <= 9 and 0 <= c <= 9:
-                    if Position(r, c) not in except_positions:
+                    adj_pos = Position(r, c)
+                    if r == pos.row and c == pos.col:
+                        continue
+                    if adj_pos not in except_positions:
                         if playing_field[r][c] != CellContent.EMPTY:
                             return True
         return False
 
     @staticmethod
-    def get_adjacent_cells_any_nwse(pos: Position) -> list:
-        adjacent_cells: list[Position] = []
+    def get_adjacent_positions_nwse(pos: Position, from_positions: list[Position] | None = None) -> list[Position]:
+        adjacent_positions: list[Position] = []
 
         for r in range(pos.row - 1, pos.row + 2):
             for c in range(pos.col - 1, pos.col + 2):
                 if 0 <= r <= 9 and 0 <= c <= 9:
-                    adjacent_cells.append(Position(r, c))
-        return adjacent_cells
+                    if r == pos.row and c == pos.col:
+                        continue
+                    adj_pos = Position(r, c)
+                    if adj_pos not in adjacent_positions and (from_positions is None or adj_pos in from_positions):
+                        adjacent_positions.append(Position(r, c))
+        return adjacent_positions
 
     def get_adjacent_cells_free_ns(
-        self, side: Side, ship: Ship, except_positions: list = None
+            self, side: Side, ship: Ship, except_positions: list = None
     ) -> list:
         adjacent_positions = []
 
@@ -69,14 +76,14 @@ class Validator:
             if 0 <= pos.row <= 9:
                 if playing_field[pos.row][pos.col] == CellContent.EMPTY:
                     if not self.has_adjacent_cells_occupied(
-                        side, pos, except_positions
+                            side, pos, except_positions
                     ):
                         adjacent_positions.append(pos)
 
         return adjacent_positions
 
     def get_adjacent_cells_free_we(
-        self, side: Side, ship: Ship, except_positions: list = None
+            self, side: Side, ship: Ship, except_positions: list = None
     ) -> list:
         adjacent_positions = []
 
@@ -101,14 +108,14 @@ class Validator:
             if 0 <= pos.col <= 9:
                 if playing_field[pos.row][pos.col] == CellContent.EMPTY:
                     if not self.has_adjacent_cells_occupied(
-                        side, pos, except_positions
+                            side, pos, except_positions
                     ):
                         adjacent_positions.append(pos)
 
         return adjacent_positions
 
     def get_adjacent_cells_free_nwse(
-        self, side: Side, pos: Position, except_positions: list = None
+            self, side: Side, pos: Position, except_positions: list = None
     ) -> list:
         adjacent_positions = []
 
@@ -126,15 +133,15 @@ class Validator:
             if 0 <= pos.row <= 9 and 0 <= pos.col <= 9:
                 if playing_field[pos.row][pos.col] == CellContent.EMPTY:
                     if not self.has_adjacent_cells_occupied(
-                        side, pos, except_positions
+                            side, pos, except_positions
                     ):
                         adjacent_positions.append(pos)
 
         return adjacent_positions
 
     def does_ship_fit_at_position(
-        self, side: Side, pos: Position, length: int
-    ) -> Direction:
+            self, side: Side, pos: Position, length: int
+    ) -> Orientation:
         if side == Side.LEFT:
             playing_field = self.__game.playing_field_player
         else:
@@ -181,7 +188,9 @@ class Validator:
                         break
                     remaining: list[Position] = []
                     for c2 in range(pos.col - i, pos.col + length - i):
-                        if not self.has_adjacent_cells_occupied(side, Position(pos.row, c2)):
+                        if not self.has_adjacent_cells_occupied(
+                                side, Position(pos.row, c2)
+                        ):
                             remaining.append(Position(pos.row, c2))
                     if len(remaining) == length:
                         return True
@@ -198,7 +207,9 @@ class Validator:
                         break
                     remaining: list[Position] = []
                     for c2 in range(pos.col - length + 1 + i, pos.col + i + 1):
-                        if not self.has_adjacent_cells_occupied(side, Position(pos.row, c2)):
+                        if not self.has_adjacent_cells_occupied(
+                                side, Position(pos.row, c2)
+                        ):
                             remaining.append(Position(pos.row, c2))
                     if len(remaining) == length:
                         return True
@@ -220,7 +231,9 @@ class Validator:
                         break
                     remaining: list[Position] = []
                     for r2 in range(pos.row - i, pos.row + length - i):
-                        if not self.has_adjacent_cells_occupied(side, Position(r2, pos.col)):
+                        if not self.has_adjacent_cells_occupied(
+                                side, Position(r2, pos.col)
+                        ):
                             remaining.append(Position(r2, pos.col))
                     if len(remaining) == length:
                         return True
@@ -237,7 +250,9 @@ class Validator:
                         break
                     remaining: list[Position] = []
                     for r2 in range(pos.row - length + 1 + i, pos.row + i + 1):
-                        if not self.has_adjacent_cells_occupied(side, Position(r2, pos.col)):
+                        if not self.has_adjacent_cells_occupied(
+                                side, Position(r2, pos.col)
+                        ):
                             remaining.append(Position(r2, pos.col))
                     if len(remaining) == length:
                         return True
@@ -246,13 +261,13 @@ class Validator:
         fits_vertically = check_vertically()
 
         if fits_horizontally and fits_vertically:
-            return Direction.BOTH
+            return Orientation.BOTH
         elif fits_horizontally:
-            return Direction.HORIZONTAL
+            return Orientation.HORIZONTAL
         elif fits_vertically:
-            return Direction.VERTICAL
+            return Orientation.VERTICAL
 
-        return Direction.NONE
+        return Orientation.NONE
 
     def are_all_ships_destroyed(self, side: Side) -> bool:
         if side == Side.LEFT:
@@ -276,6 +291,30 @@ class Validator:
             return True
         return False
 
+    def get_ship_from_pos(self, side: Side, pos: Position) -> Ship | None:
+        if side == Side.LEFT:
+            ships = self.__game.ships_player
+        else:
+            ships = self.__game.ships_opponent
+
+        ship: Ship
+        for ship in ships:
+            if pos in ship.positions:
+                return ship
+
+        return None
+
+    @staticmethod
+    def is_ship_destroyed(ship: Ship) -> bool:
+        return len(ship.hit_positions) == ship.length
+
+    def is_ship_destroyed_at_position(self, side: Side, pos: Position) -> bool:
+        ship = self.get_ship_from_pos(side, pos)
+        if ship is not None:
+            return Validator.is_ship_destroyed(ship)
+
+        return False
+
     def get_destroyed_ship(self, side: Side, pos: Position) -> Ship | None:
         if side == Side.LEFT:
             ships = self.__game.ships_player
@@ -286,12 +325,17 @@ class Validator:
 
         for ship in ships:
             if pos in ship.positions:
-                if pos not in ship.hit_positions:
-                    ship.hit_positions.append(pos)
                 if len(ship.hit_positions) == ship.length:
                     ship.is_destroyed = True
                     return ship
         return None
+
+    @staticmethod
+    def get_ship_orientation_from_positions(pos1: Position, pos2: Position) -> Orientation:
+        if pos1.row == pos2.row:
+            return Orientation.HORIZONTAL
+        else:
+            return Orientation.VERTICAL
 
     def get_possible_ship_positions(self, current_ship: Ship) -> list:
         positions = current_ship.positions
@@ -302,16 +346,13 @@ class Validator:
             )
 
         if len(positions) == 2:
-            if positions[0].row == positions[1].row:
-                current_ship.orientation = Direction.HORIZONTAL
-            else:
-                current_ship.orientation = Direction.VERTICAL
+            current_ship.orientation = self.get_ship_orientation_from_positions(positions[0], positions[1])
 
-        if current_ship.orientation == Direction.HORIZONTAL:
+        if current_ship.orientation == Orientation.HORIZONTAL:
             return self.get_adjacent_cells_free_we(
                 Side.LEFT, current_ship, current_ship.positions
             )
-        if current_ship.orientation == Direction.VERTICAL:
+        if current_ship.orientation == Orientation.VERTICAL:
             return self.get_adjacent_cells_free_ns(
                 Side.LEFT, current_ship, current_ship.positions
             )

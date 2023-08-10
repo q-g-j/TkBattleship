@@ -6,17 +6,18 @@ from models.images import Images
 from models.position import Position
 from models.singleplayer import SinglePlayer
 from models.validator import Validator
+from utils.messagehelper import MessageHelper
 from views.main import Main
 
 
 class CellClickedEventHandler(EventHandlerBase):
     def __init__(
-        self,
-        main_view: Main,
-        game: Game,
-        validator: Validator,
-        singleplayer: SinglePlayer,
-        event_aggregator: EventAggregator,
+            self,
+            main_view: Main,
+            game: Game,
+            validator: Validator,
+            singleplayer: SinglePlayer,
+            event_aggregator: EventAggregator,
     ) -> None:
         self.__main_view = main_view
         self.__game = game
@@ -33,23 +34,23 @@ class CellClickedEventHandler(EventHandlerBase):
 
         # close the messagebox if open and RETURN:
         if (
-            self.__main_view.is_messagebox_open
-            and not self.__game.game_state == GameState.GAME_OVER
+                self.__main_view.is_messagebox_open
+                and not self.__game.game_state == GameState.GAME_OVER
         ):
             self.__main_view.close_messagebox()
             return
 
         # don't allow cell clicks on first run and game over:
         if self.__game.game_state in (
-            GameState.FIRST_RUN,
-            GameState.GAME_OVER,
+                GameState.FIRST_RUN,
+                GameState.GAME_OVER,
         ):
             return
 
         # when game has started don't allow to click on the left side:
         if (
-            self.__game.game_state in (GameState.SINGLE_PLAYER, GameState.MULTIPLAYER)
-            and side == Side.LEFT
+                self.__game.game_state in (GameState.SINGLE_PLAYER, GameState.MULTIPLAYER)
+                and side == Side.LEFT
         ):
             return
 
@@ -67,14 +68,11 @@ class CellClickedEventHandler(EventHandlerBase):
         # finally:
         # if cell is filled, mark it as hit and check if ship is destroyed:
         if not self.__validator.is_cell_empty(side, pos):
-            self.__main_view.set_cell_image(side, pos, Images.HIT)
-            self.__event_aggregator.publish(
-                Event.CHECK_SHIP_DESTROYED_REQUESTED, side, pos
-            )
+            self.__event_aggregator.publish(Event.SHIP_HIT, side, pos)
 
         # singleplayer mode: let the AI make it's move:
         if (
-            self.__game.whose_turn == Side.LEFT
-            and self.__game.game_state == GameState.SINGLE_PLAYER
+                self.__game.whose_turn == Side.LEFT
+                and self.__game.game_state == GameState.SINGLE_PLAYER
         ):
             self.__singleplayer.ai_make_move()

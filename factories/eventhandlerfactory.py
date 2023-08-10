@@ -18,7 +18,7 @@ from events.eventhandlers.messageboxtextsent import MessageBoxTextSentEventHandl
 from events.eventhandlers.messageboxclosed import MessageBoxClosedEventHandler
 from events.eventhandlers.menuclosed import MenuClosedEventHandler
 from events.eventhandlers.cellimageset import CellImageSetEventHandler
-from events.eventhandlers.checkshipdestroyedrequested import CheckShipDestroyedRequestedEventHandler
+from events.eventhandlers.shiphit import ShipHitEventHandler
 from events.eventhandlers.randomshipsbuttonclicked import RandomShipsButtonClickedEventHandler
 from events.eventhandlers.multiplayerbuttonclicked import MultiplayerButtonClickedEventHandler
 
@@ -51,10 +51,10 @@ class EventHandlerFactory:
             return MessageBoxClosedEventHandler(self.__main_view)
         if event == Event.CELL_IMAGE_SET:
             return CellImageSetEventHandler(self.__main_view)
-        if event == Event.CHECK_SHIP_DESTROYED_REQUESTED:
-            return CheckShipDestroyedRequestedEventHandler(self.__main_view,
-                                                           self.__game,
-                                                           self.__validator)
+        if event == Event.SHIP_HIT:
+            return ShipHitEventHandler(self.__main_view,
+                                       self.__game,
+                                       self.__validator)
         if event == Event.RANDOM_SHIPS_BUTTON_CLICKED:
             return RandomShipsButtonClickedEventHandler(self.__main_view,
                                                         self.__game,

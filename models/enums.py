@@ -23,7 +23,7 @@ class Event(Enum):
     MESSAGEBOX_TEXT_SENT = 7
     MESSAGEBOX_CLOSED = 8
     CELL_IMAGE_SET = 9
-    CHECK_SHIP_DESTROYED_REQUESTED = 10
+    SHIP_HIT = 10
     RANDOM_SHIPS_BUTTON_CLICKED = 11
     RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED = 12
 
@@ -62,11 +62,11 @@ NotationColumns = {
 
 ShipTypes = [
     # ("name", length, number_to_place)
-    ("Destroyer", 2, 2),
-    ("Submarine", 3, 2),
-    ("Cruiser", 3, 1),
-    ("Battleship", 4, 1),
-    ("Carrier", 5, 1),
+    # ("Destroyer", 2, 8),
+    # ("Submarine", 3, 2),
+    # ("Cruiser", 3, 1),
+    ("Battleship", 4, 7),
+    # ("Carrier", 5, 1),
 ]
 
 
@@ -77,7 +77,7 @@ class Side(IntFlag):
     BOTH = LEFT | RIGHT
 
 
-class Direction(IntFlag):
+class Orientation(IntFlag):
     NONE = 0
     HORIZONTAL = 1
     VERTICAL = 2
