@@ -5,11 +5,11 @@ from models.position import Position
 from models.ship import Ship
 from models.validator import Validator
 from utils.messagehelper import MessageHelper
-from views.mainview import MainView
+from views.main import Main
 
 
 class CheckShipDestroyedRequestedEventHandler(EventHandlerBase):
-    def __init__(self, main_view: MainView, game: Game, validator: Validator) -> None:
+    def __init__(self, main_view: Main, game: Game, validator: Validator) -> None:
         self.__main_view = main_view
         self.__game = game
         self.__validator = validator
@@ -27,4 +27,4 @@ class CheckShipDestroyedRequestedEventHandler(EventHandlerBase):
                 else:
                     messages.append("You have won")
 
-            MessageHelper.show(side, messages, 0.3)
+            MessageHelper.show(side, messages, 0.1)

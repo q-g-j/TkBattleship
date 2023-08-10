@@ -14,14 +14,15 @@ class CommandFactory:
         self.__event_aggregator = event_aggregator
 
     def get_command(self, view_name: str, command: Command) -> CommandBase:
-        if view_name == "MainView":
+        if view_name == "Main":
             if command == Command.MENU_BUTTON_CLICKED:
                 return MenuButtonClickedCommand(self.__event_aggregator)
-            if command == Command.CELL_CLICKED:
-                return CellClickedCommand(self.__event_aggregator)
             if command == Command.RANDOM_SHIPS_BUTTON_CLICKED:
                 return RandomShipsButtonClickedCommand(self.__event_aggregator)
-        if view_name == "Menu":
+        elif view_name == "Cell":
+            if command == Command.CELL_CLICKED:
+                return CellClickedCommand(self.__event_aggregator)
+        elif view_name == "Menu":
             if command == Command.QUIT_GAME:
                 return QuitGameCommand(self.__event_aggregator)
             if command == Command.START_SINGLEPLAYER:

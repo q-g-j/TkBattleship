@@ -1,5 +1,7 @@
-import os
-import sys
+import os, sys
+from appdirs import user_config_dir
+
+from models.settings import Settings
 
 
 class Files:
@@ -11,3 +13,17 @@ class Files:
         else:
             path = os.path.abspath(".") + "/" + filename
             return path
+
+    @staticmethod
+    def get_user_config_folder():
+        return user_config_dir()
+
+    @staticmethod
+    def read_settings_from_file() -> Settings:
+        settings = Settings()
+
+        return settings
+
+    @staticmethod
+    def write_settings_to_file(settings: Settings):
+        pass

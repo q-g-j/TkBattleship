@@ -1,11 +1,11 @@
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from models.enums import GameState
 from models.game import Game
-from views.mainview import MainView
+from views.main import Main
 
 
 class MenuButtonClickedEventHandler(EventHandlerBase):
-    def __init__(self, main_view: MainView, game: Game) -> None:
+    def __init__(self, main_view: Main, game: Game) -> None:
         self.__main_view = main_view
         self.__game = game
 

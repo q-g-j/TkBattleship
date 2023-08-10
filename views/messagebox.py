@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, Frame
+from tkinter import ttk
 
 from factories.commandfactory import CommandFactory
 from models.enums import Event
@@ -9,9 +9,8 @@ from views.viewbase import ViewBase
 
 
 class Messagebox(ViewBase):
-    def __init__(self, parent: Frame, event_aggregator: EventAggregator, command_factory: CommandFactory) -> None:
+    def __init__(self, parent: ttk.Frame, event_aggregator: EventAggregator, command_factory: CommandFactory) -> None:
         self.__event_aggregator = event_aggregator
-        self.__command_factory = command_factory
         super().__init__(parent, command_factory, bg="darkgray", padx=15, pady=15)
 
     def show(self, messages: list) -> None:
