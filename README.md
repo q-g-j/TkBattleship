@@ -17,7 +17,7 @@ After starting a new game (currently only singleplayer) the player has to place 
 | Battleship | 4 cells | 1      |
 | Carrier    | 5 cells | 1      |
 
-The ships have to be placed with at least 1 cell between them in all directions.</br>
+The ships have to be placed with at least 1 cell between them.</br>
 There is a button to let the computer place all ships randomly.
 
 The players now take turns in trying to hit and destroy the opponent's ships.</br>
@@ -28,6 +28,7 @@ Python 3 (tested with 3.10)
 
 #### Libraries (install via pip):
 - Pillow >= 10.0.0
+- appdirs >= 1.4.4
 
 ### Technical details
 
