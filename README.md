@@ -9,7 +9,7 @@ The game is a work-in-progress.
 ### Gameplay
 After starting a new game (currently only singleplayer) the player has to place his / her ships:
 
-| Ship       | length  | number |
+| Ship       | Length  | Number |
 |------------|---------|--------|
 | Destroyer  | 2 cells | 2      |
 | Submarine  | 3 cells | 2      |
