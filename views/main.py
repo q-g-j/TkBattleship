@@ -106,10 +106,10 @@ class Main(ViewBase):
         for item in sides:
             side: Side = item[0]
             field_frame: ttk.Frame = item[1]
-            cells: list[ttk.Frame] = item[2]
+            cells: list[list[Cell]] = item[2]
 
             for row in range(0, 10):
-                inner_list: list[ttk.Frame] = []
+                inner_list: list[Cell] = []
                 for column in range(0, 10):
                     pos = Position(row, column)
                     cell = Cell(
