@@ -1,19 +1,15 @@
-from __future__ import annotations
-
 from models.enums import Side, CellContent, Orientation
 from models.position import Position
 from models.ship import Ship
-from typing import TYPE_CHECKING
 
 from services.injector import inject
 
-if TYPE_CHECKING:
-    from models.game import Game
+from models.game import Game
 
 
-@inject("game")
+@inject(Game)
 class Validator:
-    def __init__(self, game: Game):
+    def __init__(self, game):
         self.__game = game
 
     def has_adjacent_cells_occupied(

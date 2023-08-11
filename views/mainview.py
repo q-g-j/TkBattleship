@@ -18,7 +18,7 @@ from views.viewbase import ViewBase
 from utils.sleep import threaded_sleep
 
 
-@inject("root", "event_aggregator", "command_factory")
+@inject(Tk, EventAggregator, CommandFactory)
 class MainView(ViewBase):
     def __init__(
         self,

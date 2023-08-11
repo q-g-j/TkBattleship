@@ -10,7 +10,7 @@ from models.enums import Command
 from services.injector import inject
 
 
-@inject("event_aggregator")
+@inject(EventAggregator)
 class CommandFactory:
     def __init__(self, event_aggregator: EventAggregator) -> None:
         self.__event_aggregator = event_aggregator

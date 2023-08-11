@@ -1,30 +1,18 @@
-class DependencyInjector2:
-    def __init__(self):
-        self.dependencies = {}
-
-    def register(self, key, dependency):
-        self.dependencies[key] = dependency
-
-    def resolve(self, clazz):
-        dependencies = [self.dependencies[dep] for dep in getattr(clazz, '__dependencies__', [])]
-        return clazz(*dependencies)
-
-
 class DependencyInjector:
     def __init__(self):
-        self.dependencies = {}
+        self.__singletons = {}
 
-    def register(self, key, dependency):
-        self.dependencies[key] = dependency
+    def resolve(self, cls):
+        if cls in self.__singletons and self.__singletons[cls] is not None:
+            return self.__singletons[cls]
 
-    def resolve(self, clazz):
-        if clazz.__name__ in self.dependencies:
-            return self.dependencies[clazz.__name__]
-        dependencies = [self.dependencies[dep] for dep in getattr(clazz, '__dependencies__', [])]
-        instance = clazz(*dependencies)
-        self.dependencies[clazz.__name__] = instance
+        dependencies = [self.resolve(dep) for dep in getattr(cls, '__dependencies__', [])]
+        instance = cls(*dependencies)
+        self.__singletons[cls] = instance
         return instance
 
+    def add_singleton(self, cls):
+        self.__singletons[cls] = None
 
 
 def inject(*dependencies):

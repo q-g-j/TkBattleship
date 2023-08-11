@@ -4,13 +4,12 @@ from models.enums import *
 from models.images import Images
 from models.position import Position
 from models.ship import Ship
-from models.validator import Validator
 from events.eventaggregator import EventAggregator
 from services.injector import inject
 from utils.messagehelper import MessageHelper
 
 
-@inject("event_aggregator")
+@inject(EventAggregator)
 class Game:
     def __init__(self, event_aggregator: EventAggregator) -> None:
         self.__event_aggregator = event_aggregator
@@ -64,7 +63,7 @@ class Game:
                 if side & Side.RIGHT == Side.RIGHT:
                     self.playing_field_opponent[row][column] = CellContent.EMPTY
 
-    def player_place_ship(self, validator: Validator, pos: Position) -> None:
+    def player_place_ship(self, validator, pos: Position) -> None:
         current_ship: Ship = self.ships_player[self.num_placed_player_ships]
         positions = current_ship.positions
         playing_field = self.playing_field_player
@@ -113,7 +112,7 @@ class Game:
                     ships[self.num_placed_player_ships], 0.1
                 )
 
-    def place_random_ships(self, validator: Validator, side: Side) -> None:
+    def place_random_ships(self, validator, side: Side) -> None:
         ships = []
         playing_field = []
 

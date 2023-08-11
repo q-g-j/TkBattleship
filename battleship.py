@@ -1,15 +1,18 @@
 from tkinter import Tk
 from controllers.gamecontroller import GameController
-from utils.files import Files
+from services.injector import DependencyInjector
 
 
 def main() -> None:
-    root = Tk()
-    
+    injector = DependencyInjector()
+    injector.add_singleton(Tk)
+
+    root = injector.resolve(Tk)
+
     root.title("Battleship")
     root.resizable(False, False)
 
-    controller = GameController(root)
+    controller = GameController(injector)
     controller.start()
 
     root.mainloop()

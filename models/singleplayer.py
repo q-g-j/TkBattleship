@@ -8,7 +8,7 @@ from events.eventaggregator import EventAggregator
 from services.injector import inject
 
 
-@inject("event_aggregator", "game", "validator")
+@inject(EventAggregator, Game, Validator)
 class SinglePlayer:
     def __init__(
             self, event_aggregator: EventAggregator, game: Game, validator: Validator

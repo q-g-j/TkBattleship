@@ -16,14 +16,15 @@ from models.styles import StyleDefinition
 
 
 class GameController:
-    def __init__(self, root: Tk) -> None:
-        self.__root = root
-        self.__injector = DependencyInjector()
+    def __init__(self, injector: DependencyInjector) -> None:
+        self.__injector = injector
+
+        self.__root = injector.resolve(Tk)
 
         StyleDefinition.init(self.__root)
         Images.init()
-        
-        self.__register_services()        
+
+        self.__register_services()
         self.__subscribe_events()
 
         MessageHelper.init(self.__injector.resolve(EventAggregator))
@@ -32,31 +33,16 @@ class GameController:
         main_view = self.__injector.resolve(MainView)
 
         main_view.pack()
-        main_view.show_menu(0)
-        
+        main_view.show_menu(1)
+
     def __register_services(self):
-        self.__injector.register("root", self.__root)
-
-        event_aggregator = self.__injector.resolve(EventAggregator)
-        self.__injector.register("event_aggregator", event_aggregator)
-
-        game = self.__injector.resolve(Game)
-        self.__injector.register("game", game)
-
-        validator = self.__injector.resolve(Validator)
-        self.__injector.register("validator", validator)
-
-        command_factory = self.__injector.resolve(CommandFactory)
-        self.__injector.register("command_factory", command_factory)
-
-        main_view = self.__injector.resolve(MainView)
-        self.__injector.register("main_view", main_view)
-
-        singleplayer = self.__injector.resolve(SinglePlayer)
-        self.__injector.register("singleplayer", singleplayer)
-
-        eventhandler_factory = self.__injector.resolve(EventHandlerFactory)
-        self.__injector.register("eventhandler_factory", eventhandler_factory)
+        self.__injector.add_singleton(EventAggregator)
+        self.__injector.add_singleton(Game)
+        self.__injector.add_singleton(CommandFactory)
+        self.__injector.add_singleton(EventHandlerFactory)
+        self.__injector.add_singleton(MainView)
+        self.__injector.add_singleton(Validator)
+        self.__injector.add_singleton(SinglePlayer)
 
     def __subscribe_events(self) -> None:
         event_aggregator = self.__injector.resolve(EventAggregator)
