@@ -34,9 +34,9 @@ Python 3 (tested with 3.10)
 
 This is a practice project to implement the MVC pattern in a TKinter application while following some OOP related principles. It uses the event aggregator pattern for state change notifications between the models, the views and the controller.
 
-I added a dependency injection service which allows for registering class instances and resolve them via constructor injection.
+I have added a dependency injection service which allows for registering class instances and resolving them via constructor injection.
 
-#### DI usage:
+#### Dependency Injection usage example:
 **Controller:**
 ```py
 def __init__(self, root: Tk) -> None:
