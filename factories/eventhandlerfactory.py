@@ -10,6 +10,7 @@ from models.game import Game
 from models.singleplayer import SinglePlayer
 from models.validator import Validator
 from services.injector import inject
+from utils.messagehelper import MessageHelper
 from views.mainview import MainView
 
 from events.eventhandlers.menubuttonclicked import MenuButtonClickedEventHandler
@@ -25,16 +26,17 @@ from events.eventhandlers.randomshipsbuttonclicked import RandomShipsButtonClick
 from events.eventhandlers.multiplayerbuttonclicked import MultiplayerButtonClickedEventHandler
 
 
-@inject(Tk, MainView, Game, Validator, SinglePlayer, EventAggregator)
+@inject(Tk, MainView, Game, Validator, SinglePlayer, EventAggregator, MessageHelper)
 class EventHandlerFactory:
-    def __init__(self, root: Tk, main_view: MainView, game: Game, validator: Validator,
-                 singleplayer: SinglePlayer, event_aggregator: EventAggregator) -> None:
+    def __init__(self, root: Tk, main_view: MainView, game: Game, validator: Validator, singleplayer: SinglePlayer,
+                 event_aggregator: EventAggregator, message_helper: MessageHelper) -> None:
         self.__root = root
         self.__main_view = main_view
         self.__game = game
         self.__validator = validator
         self.__singleplayer = singleplayer
         self.__event_aggregator = event_aggregator
+        self.__message_helper = message_helper
 
     def get_event_handler(self, event: Event) -> EventHandlerBase:
         if event == Event.MENU_BUTTON_CLICKED:
@@ -57,7 +59,8 @@ class EventHandlerFactory:
         if event == Event.SHIP_HIT:
             return ShipHitEventHandler(self.__main_view,
                                        self.__game,
-                                       self.__validator)
+                                       self.__validator,
+                                       self.__message_helper)
         if event == Event.RANDOM_SHIPS_BUTTON_CLICKED:
             return RandomShipsButtonClickedEventHandler(self.__main_view,
                                                         self.__game,

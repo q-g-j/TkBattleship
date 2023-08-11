@@ -10,10 +10,11 @@ from views.mainview import MainView
 
 
 class ShipHitEventHandler(EventHandlerBase):
-    def __init__(self, main_view: MainView, game: Game, validator: Validator) -> None:
+    def __init__(self, main_view: MainView, game: Game, validator: Validator, message_helper: MessageHelper) -> None:
         self.__main_view = main_view
         self.__game = game
         self.__validator = validator
+        self.__message_helper = message_helper
 
     def execute(self, side: Side, pos: Position, game_state: GameState):
         hit_ship = self.__validator.get_ship_from_pos(side, pos)
@@ -35,6 +36,6 @@ class ShipHitEventHandler(EventHandlerBase):
                     elif game_state == GameState.MULTIPLAYER:
                         messages.append(Texts.OPPONENT_WON)
                 self.__main_view.set_status_label_text("")
-            MessageHelper.show(side, messages, 0.1)
+            self.__message_helper.show(side, messages, 0.1)
         else:
             self.__main_view.set_cell_image(side, pos, Images.HIT)

@@ -17,22 +17,26 @@ from models.styles import StyleDefinition
 
 class GameController:
     def __init__(self, root: Tk) -> None:
-        self.__root = root
         self.__injector = DependencyInjector()
 
-        StyleDefinition.init(root)
-        Images.init()
+        self.__root = root
 
+        self.__configure_root_window()
         self.__register_services()
         self.__subscribe_events()
 
-        MessageHelper.init(self.__injector.resolve(EventAggregator))
-
-    def start(self) -> None:
+    def start_game(self) -> None:
         main_view = self.__injector.resolve(MainView)
 
         main_view.pack()
         main_view.show_menu(1)
+
+    def __configure_root_window(self):
+        self.__root.title("Battleship")
+        self.__root.resizable(False, False)
+
+        StyleDefinition.init(self.__root)
+        Images.init()
 
     def __register_services(self):
         self.__injector.register_instance(self.__root)
@@ -43,6 +47,7 @@ class GameController:
         self.__injector.add_singleton(MainView)
         self.__injector.add_singleton(Validator)
         self.__injector.add_singleton(SinglePlayer)
+        self.__injector.add_singleton(MessageHelper)
 
     def __subscribe_events(self) -> None:
         event_aggregator = self.__injector.resolve(EventAggregator)

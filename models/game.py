@@ -9,10 +9,11 @@ from services.injector import inject
 from utils.messagehelper import MessageHelper
 
 
-@inject(EventAggregator)
+@inject(EventAggregator, MessageHelper)
 class Game:
-    def __init__(self, event_aggregator: EventAggregator) -> None:
+    def __init__(self, event_aggregator: EventAggregator, message_helper: MessageHelper) -> None:
         self.__event_aggregator = event_aggregator
+        self.__message_helper = message_helper
 
         self.ships_player: list[Ship] = []
         self.ships_opponent: list[Ship] = []
@@ -105,7 +106,7 @@ class Game:
                 self.__event_aggregator.publish(Event.RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED, False)
                 self.__event_aggregator.publish(Event.STATUS_LABEL_TEXT_SENT,
                                                 Texts.STATUS_LABEL_PLAYER_TURN)
-                MessageHelper.show(Side.LEFT, [Texts.GAME_STARTED], 0.1)
+                self.__message_helper.show(Side.LEFT, [Texts.GAME_STARTED], 0.1)
                 self.game_state = GameState.SINGLEPLAYER
             else:
                 self.show_message_place_ship(
@@ -175,7 +176,6 @@ class Game:
 
         # print("placed ships: {0}, tries: {1}".format(num_placed_ships, num_tries))
 
-    @staticmethod
-    def show_message_place_ship(ship: Ship, delay: float) -> None:
+    def show_message_place_ship(self, ship: Ship, delay: float) -> None:
         message = "Place a {0} (length: {1})".format(ship.name, ship.length)
-        MessageHelper.show(Side.LEFT, [message], delay)
+        self.__message_helper.show(Side.LEFT, [message], delay)
