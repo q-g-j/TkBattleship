@@ -47,7 +47,7 @@ self.__injector.register("event_aggregator", event_aggregator)
 command_factory = self.__injector.resolve(CommandFactory)
 self.__injector.register("command_factory", command_factory)
 
-# All dependencies are resolved automatically, there is no need to specify them during registering:
+# All dependencies are resolved automatically, there is no need to specify them during registration:
 main_view = self.__injector.resolve(MainView)
 self.__injector.register("main_view", main_view)
 ```
