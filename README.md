@@ -36,6 +36,7 @@ This is a practice project to implement the MVC pattern in a TKinter application
 
 I added a dependency injection service which allows for registering class instances and resolve them via constructor injection.
 
+#### DI usage:
 **Controller:**
 ```py
 self.__injector.register("root", self.__root)
