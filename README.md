@@ -41,15 +41,15 @@ I added a dependency injection service which allows for registering class instan
 ```py
 self.__injector.register("root", self.__root)
 
-self.__event_aggregator = self.__injector.resolve(EventAggregator)
-self.__injector.register("event_aggregator", self.__event_aggregator)
+event_aggregator = self.__injector.resolve(EventAggregator)
+self.__injector.register("event_aggregator", event_aggregator)
 
-self.__command_factory = self.__injector.resolve(CommandFactory)
-self.__injector.register("command_factory", self.__command_factory)
+command_factory = self.__injector.resolve(CommandFactory)
+self.__injector.register("command_factory", command_factory)
 
 # All dependencies are resolved automatically, there is no need to specify them during registering:
-self.__main_view = self.__injector.resolve(MainView)
-self.__injector.register("main_view", self.__main_view)
+main_view = self.__injector.resolve(MainView)
+self.__injector.register("main_view", main_view)
 ```
 
 **Main view:**
