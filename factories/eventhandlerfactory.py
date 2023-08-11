@@ -9,7 +9,8 @@ from models.enums import Event
 from models.game import Game
 from models.singleplayer import SinglePlayer
 from models.validator import Validator
-from views.main import Main
+from services.injector import inject
+from views.mainview import MainView
 
 from events.eventhandlers.menubuttonclicked import MenuButtonClickedEventHandler
 from events.eventhandlers.randomshipsbuttonvisibilitychanged import RandomShipsButtonVisiblityChangedEventHandler
@@ -24,8 +25,9 @@ from events.eventhandlers.randomshipsbuttonclicked import RandomShipsButtonClick
 from events.eventhandlers.multiplayerbuttonclicked import MultiplayerButtonClickedEventHandler
 
 
+@inject("root", "main_view", "game", "validator", "singleplayer", "event_aggregator")
 class EventHandlerFactory:
-    def __init__(self, root: Tk, main_view: Main, game: Game, validator: Validator,
+    def __init__(self, root: Tk, main_view: MainView, game: Game, validator: Validator,
                  singleplayer: SinglePlayer, event_aggregator: EventAggregator) -> None:
         self.__root = root
         self.__main_view = main_view

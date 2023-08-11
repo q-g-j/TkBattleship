@@ -7,14 +7,16 @@ from commands.menuview.startmultiplayer import StartMultiplayerCommand
 from commands.menuview.startsingleplayer import StartSingleplayerCommand
 from events.eventaggregator import EventAggregator
 from models.enums import Command
+from services.injector import inject
 
 
+@inject("event_aggregator")
 class CommandFactory:
     def __init__(self, event_aggregator: EventAggregator) -> None:
         self.__event_aggregator = event_aggregator
 
     def get_command(self, view_name: str, command: Command) -> CommandBase:
-        if view_name == "Main":
+        if view_name == "MainView":
             if command == Command.MENU_BUTTON_CLICKED:
                 return MenuButtonClickedCommand(self.__event_aggregator)
             if command == Command.RANDOM_SHIPS_BUTTON_CLICKED:

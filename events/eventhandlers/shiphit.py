@@ -6,11 +6,11 @@ from models.position import Position
 from models.ship import Ship
 from models.validator import Validator
 from utils.messagehelper import MessageHelper
-from views.main import Main
+from views.mainview import MainView
 
 
 class ShipHitEventHandler(EventHandlerBase):
-    def __init__(self, main_view: Main, game: Game, validator: Validator) -> None:
+    def __init__(self, main_view: MainView, game: Game, validator: Validator) -> None:
         self.__main_view = main_view
         self.__game = game
         self.__validator = validator

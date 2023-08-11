@@ -1,8 +1,10 @@
 from models.enums import Side
 from events.eventaggregator import EventAggregator
 from utils.sleep import threaded_sleep
+from services.injector import inject
 
 
+@inject("event_aggregator")
 class MessageHelper:
     __event_aggregator = None
 

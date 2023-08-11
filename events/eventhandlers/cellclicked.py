@@ -6,13 +6,13 @@ from models.position import Position
 from models.singleplayer import SinglePlayer
 from models.validator import Validator
 from utils.sleep import threaded_sleep
-from views.main import Main
+from views.mainview import MainView
 
 
 class CellClickedEventHandler(EventHandlerBase):
     def __init__(
             self,
-            main_view: Main,
+            main_view: MainView,
             game: Game,
             validator: Validator,
             singleplayer: SinglePlayer,

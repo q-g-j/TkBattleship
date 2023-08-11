@@ -1,11 +1,11 @@
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
-from views.main import Main
+from views.mainview import MainView
 
 
 class StatusLabelEventHandler(EventHandlerBase):
     def __init__(
             self,
-            main_view: Main,
+            main_view: MainView,
     ) -> None:
         self.__main_view = main_view
 

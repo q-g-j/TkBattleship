@@ -6,9 +6,11 @@ from models.position import Position
 from models.ship import Ship
 from models.validator import Validator
 from events.eventaggregator import EventAggregator
+from services.injector import inject
 from utils.messagehelper import MessageHelper
 
 
+@inject("event_aggregator")
 class Game:
     def __init__(self, event_aggregator: EventAggregator) -> None:
         self.__event_aggregator = event_aggregator

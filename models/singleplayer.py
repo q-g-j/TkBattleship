@@ -5,8 +5,10 @@ from models.game import Game
 from models.position import Position
 from models.validator import Validator
 from events.eventaggregator import EventAggregator
+from services.injector import inject
 
 
+@inject("event_aggregator", "game", "validator")
 class SinglePlayer:
     def __init__(
             self, event_aggregator: EventAggregator, game: Game, validator: Validator
@@ -125,11 +127,10 @@ class SinglePlayer:
             if not do_try:
                 break
             for hit_pos in self.__ai_last_hit_positions:
-                if \
-                        pos.row == hit_pos.row + 1 or \
-                                pos.row == hit_pos.row - 1 or \
-                                pos.col == hit_pos.col + 1 or \
-                                pos.col == hit_pos.col - 1:
+                if pos.row == hit_pos.row + 1 or \
+                        pos.row == hit_pos.row - 1 or \
+                        pos.col == hit_pos.col + 1 or \
+                        pos.col == hit_pos.col - 1:
                     adj_pos = pos
                     do_try = False
                     break
@@ -141,6 +142,20 @@ class SinglePlayer:
             self.__ai_place_mark(adj_pos)
 
         return
+
+    def __ai_reset_for_new_game(self):
+        self.__ai_all_positions_to_try.clear()
+        for row in range(10):
+            for col in range(10):
+                pos = Position(row, col)
+                if pos not in self.__ai_all_positions_to_try:
+                    self.__ai_all_positions_to_try.append(Position(row, col))
+        self.__reset_for_destroyed_ship()
+
+    def __reset_for_destroyed_ship(self):
+        self.__ai_last_hit_positions.clear()
+        self.__ai_last_hit_possible_new_positions.clear()
+        self.__ai_last_hit_ship_orientation = Orientation.NONE
 
     def ai_make_move(self) -> None:
         self.__game.whose_turn = Side.LEFT
@@ -159,20 +174,6 @@ class SinglePlayer:
 
         if not self.__game.game_state == GameState.GAME_OVER:
             self.__event_aggregator.publish(Event.STATUS_LABEL_TEXT_SENT, Texts.STATUS_LABEL_PLAYER_TURN)
-
-    def __ai_reset_for_new_game(self):
-        self.__ai_all_positions_to_try.clear()
-        for row in range(10):
-            for col in range(10):
-                pos = Position(row, col)
-                if pos not in self.__ai_all_positions_to_try:
-                    self.__ai_all_positions_to_try.append(Position(row, col))
-        self.__reset_for_destroyed_ship()
-
-    def __reset_for_destroyed_ship(self):
-        self.__ai_last_hit_positions.clear()
-        self.__ai_last_hit_possible_new_positions.clear()
-        self.__ai_last_hit_ship_orientation = Orientation.NONE
 
     def start(self) -> None:
         self.__ai_reset_for_new_game()

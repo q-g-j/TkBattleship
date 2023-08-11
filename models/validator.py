@@ -5,10 +5,13 @@ from models.position import Position
 from models.ship import Ship
 from typing import TYPE_CHECKING
 
+from services.injector import inject
+
 if TYPE_CHECKING:
     from models.game import Game
 
 
+@inject("game")
 class Validator:
     def __init__(self, game: Game):
         self.__game = game
