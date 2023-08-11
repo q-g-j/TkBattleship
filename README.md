@@ -34,6 +34,36 @@ Python 3 (tested with 3.10)
 
 This is a practice project to implement the MVC pattern in a TKinter application while following some OOP related principles. It uses the event aggregator pattern for state change notifications between the models, the views and the controller.
 
+I added a dependency injection service which allows for registering class instances and resolve them via constructor injection.
+
+**Controller:**
+```py
+self.__injector.register("root", self.__root)
+
+self.__event_aggregator = self.__injector.resolve(EventAggregator)
+self.__injector.register("event_aggregator", self.__event_aggregator)
+
+self.__command_factory = self.__injector.resolve(CommandFactory)
+self.__injector.register("command_factory", self.__command_factory)
+
+# All dependencies are resolved automatically, there is no need to specify them during registering:
+self.__main_view = self.__injector.resolve(MainView)
+self.__injector.register("main_view", self.__main_view)
+```
+
+**Main view:**
+```py
+@inject("root", "event_aggregator", "command_factory")
+class MainView(ViewBase):
+    def __init__(
+        self,
+        root: Tk,
+        event_aggregator: EventAggregator,
+        command_factory: CommandFactory,
+    )
+```
+
+
 The views make use of the command pattern for their button commands similar to the ICommand interface from WPF.
 
 Both the event handlers and the commands have been put in their own modules and are retrieved through factory methods to keep the other components as clean as possible.
