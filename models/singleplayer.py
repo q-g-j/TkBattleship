@@ -21,23 +21,31 @@ class SinglePlayer:
         self.__ai_last_hit_possible_new_positions: list[Position] = []
         self.__ai_last_hit_ship_orientation: Orientation = Orientation.NONE
 
-    def ai_place_mark(self, pos: Position):
+    def __ai_place_mark(self, pos: Position):
         self.__ai_last_hit_positions.append(pos)
 
         self.__event_aggregator.publish(Event.SHIP_HIT, Side.LEFT, pos, self.__game.game_state)
 
         if self.__validator.is_ship_destroyed_at_position(Side.LEFT, pos):
+            self.__ai_exclude_from_list_if_ship_destroyed()
             self.__reset_for_destroyed_ship()
 
-    def ai_try_random_position(self):
+    def __ai_exclude_from_list_if_ship_destroyed(self):
+        for pos in self.__ai_last_hit_positions:
+            adjacent_free_positions = self.__validator.get_adjacent_positions_nwse(pos)
+            for adj_free_pos in adjacent_free_positions:
+                if adj_free_pos in self.__ai_all_positions_to_try:
+                    self.__ai_all_positions_to_try.remove(adj_free_pos)
+
+    def __ai_try_random_position(self):
         random_pos = random.choice(self.__ai_all_positions_to_try)
 
         self.__ai_all_positions_to_try.remove(random_pos)
 
         if not self.__validator.is_cell_empty(Side.LEFT, random_pos):
-            self.ai_place_mark(random_pos)
+            self.__ai_place_mark(random_pos)
 
-    def ai_try_adjacent_position(self):
+    def __ai_try_adjacent_position(self):
         num_last_hit_positions = len(self.__ai_last_hit_positions)
 
         # try an adjacent position:
@@ -53,7 +61,7 @@ class SinglePlayer:
             self.__ai_last_hit_possible_new_positions.remove(adj_pos)
 
             if not self.__validator.is_cell_empty(Side.LEFT, adj_pos):
-                self.ai_place_mark(adj_pos)
+                self.__ai_place_mark(adj_pos)
 
             return
 
@@ -114,21 +122,23 @@ class SinglePlayer:
         adj_pos: Position | None = None
         do_try = True
         for pos in self.__ai_last_hit_possible_new_positions:
-            if do_try:
-                for hit_pos in self.__ai_last_hit_positions:
-                    if pos.row == hit_pos.row + 1 or \
-                            pos.row == hit_pos.row - 1 or \
-                            pos.col == hit_pos.col + 1 or \
-                            pos.col == hit_pos.col - 1:
-                        adj_pos = pos
-                        do_try = False
-                        break
+            if not do_try:
+                break
+            for hit_pos in self.__ai_last_hit_positions:
+                if \
+                        pos.row == hit_pos.row + 1 or \
+                                pos.row == hit_pos.row - 1 or \
+                                pos.col == hit_pos.col + 1 or \
+                                pos.col == hit_pos.col - 1:
+                    adj_pos = pos
+                    do_try = False
+                    break
 
         self.__ai_all_positions_to_try.remove(adj_pos)
         self.__ai_last_hit_possible_new_positions.remove(adj_pos)
 
         if not self.__validator.is_cell_empty(Side.LEFT, adj_pos):
-            self.ai_place_mark(adj_pos)
+            self.__ai_place_mark(adj_pos)
 
         return
 
@@ -140,12 +150,12 @@ class SinglePlayer:
         # if nothing was hit at the last move:
         if num_last_hit_positions == 0:
             # try a random position:
-            self.ai_try_random_position()
+            self.__ai_try_random_position()
 
         # if there are tracked hit positions:
         else:
             # try an adjacent position next:
-            self.ai_try_adjacent_position()
+            self.__ai_try_adjacent_position()
 
         if not self.__game.game_state == GameState.GAME_OVER:
             self.__event_aggregator.publish(Event.STATUS_LABEL_TEXT_SENT, Texts.STATUS_LABEL_PLAYER_TURN)
