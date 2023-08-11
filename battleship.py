@@ -4,15 +4,12 @@ from services.injector import DependencyInjector
 
 
 def main() -> None:
-    injector = DependencyInjector()
-    injector.add_singleton(Tk)
-
-    root = injector.resolve(Tk)
+    root = Tk()
 
     root.title("Battleship")
     root.resizable(False, False)
 
-    controller = GameController(injector)
+    controller = GameController(root)
     controller.start()
 
     root.mainloop()

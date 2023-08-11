@@ -16,12 +16,11 @@ from models.styles import StyleDefinition
 
 
 class GameController:
-    def __init__(self, injector: DependencyInjector) -> None:
-        self.__injector = injector
+    def __init__(self, root: Tk) -> None:
+        self.__root = root
+        self.__injector = DependencyInjector()
 
-        self.__root = injector.resolve(Tk)
-
-        StyleDefinition.init(self.__root)
+        StyleDefinition.init(root)
         Images.init()
 
         self.__register_services()
@@ -36,6 +35,7 @@ class GameController:
         main_view.show_menu(1)
 
     def __register_services(self):
+        self.__injector.register_instance(self.__root)
         self.__injector.add_singleton(EventAggregator)
         self.__injector.add_singleton(Game)
         self.__injector.add_singleton(CommandFactory)

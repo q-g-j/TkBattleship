@@ -14,6 +14,10 @@ class DependencyInjector:
     def add_singleton(self, cls):
         self.__singletons[cls] = None
 
+    def register_instance(self, instance):
+        if instance.__class__ not in self.__singletons:
+            self.__singletons[instance.__class__] = instance
+
 
 def inject(*dependencies):
     def decorator(cls):

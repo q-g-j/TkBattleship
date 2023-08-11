@@ -9,7 +9,7 @@ from models.game import Game
 
 @inject(Game)
 class Validator:
-    def __init__(self, game):
+    def __init__(self, game: Game):
         self.__game = game
 
     def has_adjacent_cells_occupied(
