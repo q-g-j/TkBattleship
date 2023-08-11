@@ -26,40 +26,46 @@ class GameController:
         self.__register_services()        
         self.__subscribe_events()
 
-        MessageHelper.init(self.__event_aggregator)
+        MessageHelper.init(self.__injector.resolve(EventAggregator))
 
     def start(self) -> None:
-        self.__main_view.pack()
-        self.__main_view.show_menu(0)
+        main_view = self.__injector.resolve(MainView)
+
+        main_view.pack()
+        main_view.show_menu(0)
         
     def __register_services(self):
         self.__injector.register("root", self.__root)
 
-        self.__event_aggregator = self.__injector.resolve(EventAggregator)
-        self.__injector.register("event_aggregator", self.__event_aggregator)
+        event_aggregator = self.__injector.resolve(EventAggregator)
+        self.__injector.register("event_aggregator", event_aggregator)
 
-        self.__game = self.__injector.resolve(Game)
-        self.__injector.register("game", self.__game)
+        game = self.__injector.resolve(Game)
+        self.__injector.register("game", game)
 
-        self.__validator = self.__injector.resolve(Validator)
-        self.__injector.register("validator", self.__validator)
+        validator = self.__injector.resolve(Validator)
+        self.__injector.register("validator", validator)
 
-        self.__command_factory = self.__injector.resolve(CommandFactory)
-        self.__injector.register("command_factory", self.__command_factory)
+        command_factory = self.__injector.resolve(CommandFactory)
+        self.__injector.register("command_factory", command_factory)
 
-        self.__main_view = self.__injector.resolve(MainView)
-        self.__injector.register("main_view", self.__main_view)
+        main_view = self.__injector.resolve(MainView)
+        self.__injector.register("main_view", main_view)
 
-        self.__singleplayer = self.__injector.resolve(SinglePlayer)
-        self.__injector.register("singleplayer", self.__singleplayer)
+        singleplayer = self.__injector.resolve(SinglePlayer)
+        self.__injector.register("singleplayer", singleplayer)
 
-        self.__eventhandler_factory = self.__injector.resolve(EventHandlerFactory)
-        self.__injector.register("eventhandler_factory", self.__eventhandler_factory)
+        eventhandler_factory = self.__injector.resolve(EventHandlerFactory)
+        self.__injector.register("eventhandler_factory", eventhandler_factory)
 
     def __subscribe_events(self) -> None:
+        event_aggregator = self.__injector.resolve(EventAggregator)
+
         for event in [member.value for member in Event]:
-            self.__event_aggregator.subscribe(Event(event), self.__handle_event)
+            event_aggregator.subscribe(Event(event), self.__handle_event)
 
     def __handle_event(self, event: Event, *args):
-        event_handler = self.__eventhandler_factory.get_event_handler(event)
+        eventhandler_factory = self.__injector.resolve(EventHandlerFactory)
+
+        event_handler = eventhandler_factory.get_event_handler(event)
         event_handler.execute(*args)
