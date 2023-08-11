@@ -39,29 +39,25 @@ I added a dependency injection service which allows for registering class instan
 #### DI usage:
 **Controller:**
 ```py
-self.__injector.register("root", self.__root)
+def __init__(self, root: Tk) -> None:
+    self.__root = root
+    self.__injector = DependencyInjector()
 
-event_aggregator = self.__injector.resolve(EventAggregator)
-self.__injector.register("event_aggregator", event_aggregator)
-
-command_factory = self.__injector.resolve(CommandFactory)
-self.__injector.register("command_factory", command_factory)
-
-# All dependencies are resolved automatically, there is no need to specify them during registration:
-main_view = self.__injector.resolve(MainView)
-self.__injector.register("main_view", main_view)
+    self.__injector.register_instance(self.__root)
+    self.__injector.add_singleton(EventAggregator)
+    self.__injector.add_singleton(CommandFactory)
 ```
 
 **Main view:**
 ```py
-@inject("root", "event_aggregator", "command_factory")
+@inject(Tk, EventAggregator, CommandFactory)
 class MainView(ViewBase):
     def __init__(
         self,
         root: Tk,
         event_aggregator: EventAggregator,
         command_factory: CommandFactory,
-    )
+    ) -> None:
 ```
 
 
