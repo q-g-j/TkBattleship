@@ -26,7 +26,6 @@ class ShipHitEventHandler(EventHandlerBase):
             self.__main_view.mark_ship_destroyed(side, hit_ship)
             hit_ship.is_destroyed = True
             if self.__validator.are_all_ships_destroyed(side):
-                self.__game_store.game.game_state = GameState.GAME_OVER
                 messages.append("")
                 if side == Side.RIGHT:
                     messages.append(Texts.PLAYER_WON)
@@ -36,6 +35,7 @@ class ShipHitEventHandler(EventHandlerBase):
                     elif self.__game_store.game.game_state == GameState.MULTIPLAYER:
                         messages.append(Texts.OPPONENT_WON)
                 self.__main_view.set_status_label_text("")
+                self.__game_store.game.game_state = GameState.GAME_OVER
             self.__message_helper.show(side, messages, 0.1)
         else:
             self.__main_view.set_cell_image(side, pos, Images.HIT)

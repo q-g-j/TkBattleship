@@ -84,4 +84,4 @@ class CellClickedEventHandler(EventHandlerBase):
         ):
             self.__game_store.game.whose_turn = Side.RIGHT
             self.__main_view.set_status_label_text(Texts.STATUS_LABEL_AI_TURN)
-            threaded_sleep(lambda: self.__game_store.game.singleplayer_make_ai_move(), 0.5)
+            threaded_sleep(lambda: self.__game_store.game.singleplayer_make_ai_move(), 0.4)
