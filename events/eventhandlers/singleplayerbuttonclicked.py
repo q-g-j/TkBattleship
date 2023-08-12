@@ -1,5 +1,6 @@
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from factories.gamefactory import GameFactory
+from models.debug import Debug
 from models.enums import Side
 from models.validator import Validator
 from store.gamestore import GameStore
@@ -19,6 +20,6 @@ class SinglePlayerButtonClickedEventHandler(EventHandlerBase):
         self.__game_store.game = self.__game_factory.get_game()
         self.__game_store.game.start_singleplayer(self.__validator)
 
-        # Debug.print_playing_field(self.__game.playing_field_opponent)
+        Debug.print_playing_field(self.__game_store.game.playing_field_opponent)
 
         self.__game_store.game.show_message_place_ship(self.__game_store.game.ships_player[0], 0)

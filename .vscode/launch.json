@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: main.py",
+            "name": "Python: battleship.pyw",
             "type": "python",
             "request": "launch",
-            "program": "battleship.py",
+            "program": "battleship.pyw",
             "console": "integratedTerminal",
             "justMyCode": true
         },

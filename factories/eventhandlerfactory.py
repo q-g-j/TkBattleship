@@ -2,6 +2,7 @@ from __future__ import annotations
 from tkinter import Tk
 
 from events.eventaggregator import EventAggregator
+from events.eventhandlers.ainextmoverequested import AINextMoveRequested
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from events.eventhandlers.quitbuttonclicked import QuitButtonClickedEventHandler
 from events.eventhandlers.statuslabeltextsent import StatusLabelEventHandler
@@ -22,7 +23,7 @@ from events.eventhandlers.singleplayerbuttonclicked import (
 )
 from events.eventhandlers.cellclicked import CellClickedEventHandler
 from events.eventhandlers.messageboxtextsent import MessageBoxTextSentEventHandler
-from events.eventhandlers.messageboxclosed import MessageBoxClosedEventHandler
+from events.eventhandlers.messageboxclosed import MessageBoxCloseRequestedEventHandler
 from events.eventhandlers.menuclosed import MenuClosedEventHandler
 from events.eventhandlers.cellimageset import CellImageSetEventHandler
 from events.eventhandlers.shiphit import ShipHitEventHandler
@@ -75,15 +76,15 @@ class EventHandlerFactory:
         if event == Event.MESSAGEBOX_TEXT_SENT:
             return MessageBoxTextSentEventHandler(self.__main_view)
 
-        if event == Event.MESSAGEBOX_CLOSED:
-            return MessageBoxClosedEventHandler(self.__main_view)
+        if event == Event.MESSAGEBOX_CLOSE_REQUESTED:
+            return MessageBoxCloseRequestedEventHandler(self.__main_view, self.__event_aggregator)
 
         if event == Event.CELL_IMAGE_SET:
             return CellImageSetEventHandler(self.__main_view)
 
         if event == Event.SHIP_HIT:
             return ShipHitEventHandler(
-                self.__main_view, self.__game_store, self.__validator, self.__message_helper
+                self.__main_view, self.__game_store, self.__validator, self.__message_helper, self.__event_aggregator
             )
 
         if event == Event.RANDOM_SHIPS_BUTTON_CLICKED:
@@ -104,3 +105,6 @@ class EventHandlerFactory:
 
         if event == Event.STATUS_LABEL_TEXT_SENT:
             return StatusLabelEventHandler(self.__main_view)
+
+        if event == Event.AI_NEXT_MOVE_REQUESTED:
+            return AINextMoveRequested(self.__game_store, self.__main_view)

@@ -7,5 +7,5 @@ class MessageBoxTextSentEventHandler(EventHandlerBase):
     def __init__(self, main_view: MainView) -> None:
         self.__main_view = main_view
 
-    def execute(self, side: Side, messages: list[str]) -> None:
-        self.__main_view.show_messagebox(side, messages)
+    def execute(self, side: Side, messages: list[str], ai_next=False) -> None:
+        self.__main_view.show_messagebox(side, messages, ai_next)

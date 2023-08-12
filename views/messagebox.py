@@ -24,5 +24,4 @@ class Messagebox(ViewBase):
         self.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
     def close(self) -> None:
-        self.__event_aggregator.publish(Event.MESSAGEBOX_CLOSED)
-        self.destroy()
+        self.__event_aggregator.publish(Event.MESSAGEBOX_CLOSE_REQUESTED)

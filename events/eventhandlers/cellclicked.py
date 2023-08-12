@@ -1,6 +1,6 @@
 from events.eventaggregator import EventAggregator
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
-from models.enums import Side, GameState, Event, Texts
+from models.enums import Side, GameState, Event
 from models.images import Images
 from models.position import Position
 from models.validator import Validator
@@ -75,22 +75,22 @@ class CellClickedEventHandler(EventHandlerBase):
 
         # finally:
         # if cell is filled, mark it as hit and check if ship is destroyed:
-        if not self.__validator.is_cell_empty(side, pos):
-            self.__event_aggregator.publish(Event.SHIP_HIT, side, pos)
-
-        else:
-            self.__event_aggregator.publish(Event.CELL_IMAGE_SET, side, pos, Images.SPLASH)
-
-            def clear_image():
-                self.__event_aggregator.publish(Event.CELL_IMAGE_SET, side, pos, Images.EMPTY)
-
-            threaded_sleep(clear_image, 0.5)
-
-        # singleplayer mode: let the AI make it's move:
-        if (
-                self.__game_store.game.whose_turn == Side.LEFT
-                and self.__game_store.game.game_state == GameState.SINGLEPLAYER
-        ):
+        if self.__game_store.game.whose_turn == Side.LEFT:
             self.__game_store.game.whose_turn = Side.RIGHT
-            self.__main_view.set_status_label_text(Texts.STATUS_LABEL_AI_TURN)
-            threaded_sleep(lambda: self.__game_store.game.singleplayer_make_ai_move(), 0.4)
+
+            if not self.__validator.is_cell_empty(side, pos):
+                self.__event_aggregator.publish(Event.SHIP_HIT, side, pos)
+
+            else:
+                self.__event_aggregator.publish(Event.CELL_IMAGE_SET, side, pos, Images.SPLASH)
+
+                def clear_image_and_make_ai_move():
+                    self.__event_aggregator.publish(Event.CELL_IMAGE_SET, side, pos, Images.EMPTY)
+                    self.__event_aggregator.publish(Event.AI_NEXT_MOVE_REQUESTED)
+
+                # singleplayer mode: let the AI make it's move:
+                if (
+                        self.__game_store.game.game_state == GameState.SINGLEPLAYER
+                        and not self.__main_view.is_messagebox_open
+                ):
+                    threaded_sleep(clear_image_and_make_ai_move, 0.5)

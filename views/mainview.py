@@ -5,7 +5,7 @@ from PIL import ImageTk
 from factories.commandfactory import CommandFactory
 from models.images import Images
 from events.eventaggregator import EventAggregator
-from models.enums import Command, Orientation, NotationColumns, Side
+from models.enums import Command, Orientation, NotationColumns, Side, Event
 from models.position import Position
 from models.ship import Ship
 from models.settings import Settings
@@ -67,6 +67,7 @@ class MainView(ViewBase):
 
         self.is_menu_open = False
         self.is_messagebox_open = False
+        self.__is_ai_next = False
 
     def __create_playing_fields(self) -> None:
         self.__field_frame_left = ttk.Frame(self.__game_frame)
@@ -183,7 +184,9 @@ class MainView(ViewBase):
     def set_status_label_text(self, text: str):
         self.__status_label.config(text=text)
 
-    def show_messagebox(self, side: Side, messages: list) -> None:
+    def show_messagebox(self, side: Side, messages: list, ai_next=False) -> None:
+        self.__is_ai_next = ai_next
+        self.is_messagebox_open = True
         frame: ttk.Frame | None = None
         if side == Side.LEFT:
             frame = self.__field_frame_left
@@ -193,13 +196,17 @@ class MainView(ViewBase):
             frame = self.__game_frame
 
         if self.__messagebox is not None:
-            self.is_messagebox_open = False
-            self.__messagebox.close()
+            self.close_messagebox()
         self.__messagebox = Messagebox(
             frame, self.__event_aggregator, self.__command_factory
         )
         self.__messagebox.show(messages)
-        self.is_messagebox_open = True
 
     def close_messagebox(self) -> None:
-        self.__messagebox.close()
+        if self.__messagebox is not None:
+            self.is_messagebox_open = False
+            self.__messagebox.destroy()
+            self.__messagebox = None
+            if self.__is_ai_next:
+                self.__event_aggregator.publish(Event.AI_NEXT_MOVE_REQUESTED)
+                self.__is_ai_next = False
