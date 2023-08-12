@@ -40,7 +40,7 @@ class SinglePlayer:
 
     def __ai_exclude_from_list_if_ship_destroyed(self):
         for pos in self.__ai_last_hit_positions:
-            adjacent_free_positions = self.__validator.get_adjacent_positions_nwse(pos)
+            adjacent_free_positions = self.__validator.get_adjacent_positions(pos)
             for adj_free_pos in adjacent_free_positions:
                 if adj_free_pos in self.__ai_all_positions_to_try:
                     self.__ai_all_positions_to_try.remove(adj_free_pos)

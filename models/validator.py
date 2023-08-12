@@ -34,20 +34,6 @@ class Validator:
                             return True
         return False
 
-    @staticmethod
-    def get_adjacent_positions_nwse(pos: Position, from_positions: list[Position] | None = None) -> list[Position]:
-        adjacent_positions: list[Position] = []
-
-        for r in range(pos.row - 1, pos.row + 2):
-            for c in range(pos.col - 1, pos.col + 2):
-                if 0 <= r <= 9 and 0 <= c <= 9:
-                    if r == pos.row and c == pos.col:
-                        continue
-                    adj_pos = Position(r, c)
-                    if adj_pos not in adjacent_positions and (from_positions is None or adj_pos in from_positions):
-                        adjacent_positions.append(Position(r, c))
-        return adjacent_positions
-
     def get_adjacent_cells_free_ns(
             self, side: Side, ship: Ship, except_positions: list = None
     ) -> list:
@@ -135,6 +121,36 @@ class Validator:
                     ):
                         adjacent_positions.append(pos)
 
+        return adjacent_positions
+
+    @staticmethod
+    def get_adjacent_positions(pos: Position, from_positions: list[Position] | None = None) -> list[Position]:
+        adjacent_positions: list[Position] = []
+
+        for r in range(pos.row - 1, pos.row + 2):
+            for c in range(pos.col - 1, pos.col + 2):
+                if 0 <= r <= 9 and 0 <= c <= 9:
+                    if r == pos.row and c == pos.col:
+                        continue
+                    adj_pos = Position(r, c)
+                    if adj_pos not in adjacent_positions and (from_positions is None or adj_pos in from_positions):
+                        adjacent_positions.append(Position(r, c))
+        return adjacent_positions
+
+    @staticmethod
+    def get_adjacent_positions_nwse(pos: Position, from_positions: list[Position] | None = None) -> list[Position]:
+        adjacent_positions: list[Position] = []
+
+        for adj_pos in [
+            Position(pos.row - 1, pos.col),
+            Position(pos.row, pos.col + 1),
+            Position(pos.row + 1, pos.col),
+            Position(pos.row, pos.col - 1),
+
+        ]:
+            if 0 < adj_pos.row < 10 and 0 < adj_pos.col < 10:
+                if from_positions is None or adj_pos in from_positions:
+                    adjacent_positions.append(adj_pos)
         return adjacent_positions
 
     def does_ship_fit_at_position(
