@@ -1,22 +1,22 @@
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from models.enums import Side, GameState, Texts
-from models.game import Game
 from models.images import Images
 from models.position import Position
-from models.ship import Ship
 from models.validator import Validator
+from store.gamestore import GameStore
 from utils.messagehelper import MessageHelper
 from views.mainview import MainView
 
 
 class ShipHitEventHandler(EventHandlerBase):
-    def __init__(self, main_view: MainView, game: Game, validator: Validator, message_helper: MessageHelper) -> None:
+    def __init__(self, main_view: MainView, game_store: GameStore, validator: Validator,
+                 message_helper: MessageHelper) -> None:
         self.__main_view = main_view
-        self.__game = game
+        self.__game_store = game_store
         self.__validator = validator
         self.__message_helper = message_helper
 
-    def execute(self, side: Side, pos: Position, game_state: GameState):
+    def execute(self, side: Side, pos: Position):
         hit_ship = self.__validator.get_ship_from_pos(side, pos)
         if pos in hit_ship.hit_positions:
             return
@@ -26,14 +26,14 @@ class ShipHitEventHandler(EventHandlerBase):
             self.__main_view.mark_ship_destroyed(side, hit_ship)
             hit_ship.is_destroyed = True
             if self.__validator.are_all_ships_destroyed(side):
-                self.__game.game_state = GameState.GAME_OVER
+                self.__game_store.game.game_state = GameState.GAME_OVER
                 messages.append("")
                 if side == Side.RIGHT:
                     messages.append(Texts.PLAYER_WON)
                 else:
-                    if game_state == GameState.SINGLEPLAYER:
+                    if self.__game_store.game.game_state == GameState.SINGLEPLAYER:
                         messages.append(Texts.AI_WON)
-                    elif game_state == GameState.MULTIPLAYER:
+                    elif self.__game_store.game.game_state == GameState.MULTIPLAYER:
                         messages.append(Texts.OPPONENT_WON)
                 self.__main_view.set_status_label_text("")
             self.__message_helper.show(side, messages, 0.1)

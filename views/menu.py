@@ -9,7 +9,8 @@ from views.viewbase import ViewBase
 
 
 class Menu(ViewBase):
-    def __init__(self, field_frame: ttk.Frame, event_aggregator: EventAggregator, command_factory: CommandFactory) -> None:
+    def __init__(self, field_frame: ttk.Frame, event_aggregator: EventAggregator,
+                 command_factory: CommandFactory) -> None:
         self.__event_aggregator = event_aggregator
         super().__init__(field_frame, command_factory, bg="darkgray", padx=15, pady=15)
 

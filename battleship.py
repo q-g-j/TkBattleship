@@ -7,7 +7,7 @@ def main() -> None:
     root = Tk()
 
     controller = GameController(root)
-    controller.start_game()
+    controller.start()
 
     root.mainloop()
 

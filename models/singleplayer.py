@@ -1,20 +1,18 @@
 import random
 
-from models.enums import Event, Side, GameState, Orientation, Texts
-from models.game import Game
+from models.enums import Event, Side, Orientation
 from models.position import Position
 from models.validator import Validator
 from events.eventaggregator import EventAggregator
 from services.injector import inject
 
 
-@inject(EventAggregator, Game, Validator)
+@inject(EventAggregator, Validator)
 class SinglePlayer:
     def __init__(
-            self, event_aggregator: EventAggregator, game: Game, validator: Validator
+            self, event_aggregator: EventAggregator, validator: Validator
     ) -> None:
         self.__event_aggregator = event_aggregator
-        self.__game = game
         self.__validator = validator
 
         self.__ai_all_positions_to_try: list[Position] = []
@@ -26,7 +24,7 @@ class SinglePlayer:
     def __ai_place_mark(self, pos: Position):
         self.__ai_last_hit_positions.append(pos)
 
-        self.__event_aggregator.publish(Event.SHIP_HIT, Side.LEFT, pos, self.__game.game_state)
+        self.__event_aggregator.publish(Event.SHIP_HIT, Side.LEFT, pos)
 
         if self.__validator.is_ship_destroyed_at_position(Side.LEFT, pos):
             self.__ai_exclude_from_list_if_ship_destroyed()
@@ -143,23 +141,12 @@ class SinglePlayer:
 
         return
 
-    def __ai_reset_for_new_game(self):
-        self.__ai_all_positions_to_try.clear()
-        for row in range(10):
-            for col in range(10):
-                pos = Position(row, col)
-                if pos not in self.__ai_all_positions_to_try:
-                    self.__ai_all_positions_to_try.append(Position(row, col))
-        self.__reset_for_destroyed_ship()
-
     def __reset_for_destroyed_ship(self):
         self.__ai_last_hit_positions.clear()
         self.__ai_last_hit_possible_new_positions.clear()
         self.__ai_last_hit_ship_orientation = Orientation.NONE
 
     def ai_make_move(self) -> None:
-        self.__game.whose_turn = Side.LEFT
-
         num_last_hit_positions = len(self.__ai_last_hit_positions)
 
         # if nothing was hit at the last move:
@@ -172,25 +159,11 @@ class SinglePlayer:
             # try an adjacent position next:
             self.__ai_try_adjacent_position()
 
-        if not self.__game.game_state == GameState.GAME_OVER:
-            self.__event_aggregator.publish(Event.STATUS_LABEL_TEXT_SENT, Texts.STATUS_LABEL_PLAYER_TURN)
-
-    def start(self) -> None:
-        self.__ai_reset_for_new_game()
-
-        if self.__game.game_state == GameState.FIRST_RUN:
-            self.__game.create_ships(Side.BOTH)
-            self.__game.create_playing_field(Side.BOTH)
-        else:
-            self.__game.reset_playing_field(Side.BOTH)
-            self.__game.reset_ships(Side.BOTH)
-        self.__game.game_state = GameState.PLAYER_PLACING_SHIPS
-        self.__game.whose_turn = Side.LEFT
-
-        self.__event_aggregator.publish(
-            Event.RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED, True
-        )
-
-        self.__game.place_random_ships(self.__validator, Side.RIGHT)
-
-        self.__event_aggregator.publish(Event.STATUS_LABEL_TEXT_SENT, Texts.STATUS_LABEL_SINGLEPLAYER_STARTED)
+    def ai_reset_for_new_game(self):
+        self.__ai_all_positions_to_try.clear()
+        for row in range(10):
+            for col in range(10):
+                pos = Position(row, col)
+                if pos not in self.__ai_all_positions_to_try:
+                    self.__ai_all_positions_to_try.append(Position(row, col))
+        self.__reset_for_destroyed_ship()

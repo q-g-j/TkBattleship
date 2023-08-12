@@ -1,24 +1,30 @@
 from random import shuffle, choice
 
+from factories.singleandmultiplayerfactory import SingleAndMultiplayerFactory
 from models.enums import *
 from models.images import Images
 from models.position import Position
 from models.ship import Ship
 from events.eventaggregator import EventAggregator
+from models.singleplayer import SinglePlayer
 from services.injector import inject
 from utils.messagehelper import MessageHelper
 
 
-@inject(EventAggregator, MessageHelper)
+@inject(EventAggregator, SingleAndMultiplayerFactory, MessageHelper)
 class Game:
-    def __init__(self, event_aggregator: EventAggregator, message_helper: MessageHelper) -> None:
+    def __init__(self, event_aggregator: EventAggregator, single_and_multiplayerfactory: SingleAndMultiplayerFactory,
+                 message_helper: MessageHelper) -> None:
         self.__event_aggregator = event_aggregator
+        self.__single_and_multiplayerfactory = single_and_multiplayerfactory
         self.__message_helper = message_helper
 
         self.ships_player: list[Ship] = []
         self.ships_opponent: list[Ship] = []
         self.playing_field_player: list[list[str]] = []
         self.playing_field_opponent: list[list[str]] = []
+
+        self.__singleplayer: SinglePlayer | None = None
 
         self.game_state = GameState.FIRST_RUN
         self.whose_turn = Side.LEFT
@@ -179,3 +185,32 @@ class Game:
     def show_message_place_ship(self, ship: Ship, delay: float) -> None:
         message = "Place a {0} (length: {1})".format(ship.name, ship.length)
         self.__message_helper.show(Side.LEFT, [message], delay)
+
+    def singleplayer_make_ai_move(self):
+        self.__singleplayer.ai_make_move()
+        self.whose_turn = Side.LEFT
+
+        if not self.game_state == GameState.GAME_OVER:
+            self.__event_aggregator.publish(Event.STATUS_LABEL_TEXT_SENT, Texts.STATUS_LABEL_PLAYER_TURN)
+
+    def start_singleplayer(self, validator):
+        self.__singleplayer = self.__single_and_multiplayerfactory.get_singleplayer()
+
+        self.__singleplayer.ai_reset_for_new_game()
+
+        if self.game_state == GameState.FIRST_RUN:
+            self.create_ships(Side.BOTH)
+            self.create_playing_field(Side.BOTH)
+        else:
+            self.reset_playing_field(Side.BOTH)
+            self.reset_ships(Side.BOTH)
+        self.game_state = GameState.PLAYER_PLACING_SHIPS
+        self.whose_turn = Side.LEFT
+
+        self.__event_aggregator.publish(
+            Event.RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED, True
+        )
+
+        self.place_random_ships(validator, Side.RIGHT)
+
+        self.__event_aggregator.publish(Event.STATUS_LABEL_TEXT_SENT, Texts.STATUS_LABEL_SINGLEPLAYER_STARTED)
