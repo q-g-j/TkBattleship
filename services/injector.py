@@ -16,7 +16,7 @@ class DependencyInjector:
         instance = cls(*dependencies)
         if is_singleton:
             self.__singletons[cls] = instance
-        print(cls)
+        # print(cls)
         return instance
 
     def add_singleton(self, cls):
