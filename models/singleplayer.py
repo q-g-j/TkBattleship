@@ -65,8 +65,6 @@ class SinglePlayer:
                 self.__ai_last_hit_possible_new_positions = self.__validator.get_adjacent_positions_nwse(
                     self.__ai_last_hit_positions[0], self.__ai_all_positions_to_try)
 
-            print(self.__ai_last_hit_possible_new_positions)
-
             adj_pos = random.choice(self.__ai_last_hit_possible_new_positions)
 
             self.__ai_all_positions_to_try.remove(adj_pos)
