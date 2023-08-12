@@ -1,3 +1,4 @@
+import tkinter
 from tkinter import Tk, ttk
 
 
@@ -13,9 +14,11 @@ class StyleDefinition:
     MESSAGEBOX_LABEL = "Message.TLabel"
     MESSAGEBOX_BUTTON = "Message.TButton"
 
+    CELL_BUTTON = "CellButton.TButton"
+
     @staticmethod
     def init(root: Tk) -> None:
-        style = ttk.Style(root)
+        style: ttk.Style = ttk.Style(root)
 
         style.configure(
             StyleDefinition.MENU_BUTTON,
@@ -62,4 +65,8 @@ class StyleDefinition:
             foreground="black",
             background="darkgray",
             font=("Helvetica", 12),
+        )
+        style.configure(
+            StyleDefinition.CELL_BUTTON,
+            relief=tkinter.FLAT
         )

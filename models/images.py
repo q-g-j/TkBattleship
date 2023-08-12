@@ -26,21 +26,14 @@ class Images(object):
 
     @staticmethod
     def init() -> None:
-        image_empty_pil = Image.open(ImageFiles.EMPTY)
-        image_undamaged_pil = Image.open(ImageFiles.UNDAMAGED)
-        image_undamaged_pil.thumbnail((30, 30))
-        image_undamaged_blue_pil = Image.open(ImageFiles.UNDAMAGED_BLUE)
-        image_undamaged_blue_pil.thumbnail((30, 30))
-        image_undamaged_red_pil = Image.open(ImageFiles.UNDAMAGED_RED)
-        image_undamaged_red_pil.thumbnail((30, 30))
-        image_undamaged_green_pil = Image.open(ImageFiles.UNDAMAGED_GREEN)
-        image_undamaged_green_pil.thumbnail((30, 30))
-        image_hit_pil = Image.open(ImageFiles.HIT)
-        image_hit_pil.thumbnail((25, 25))
-        image_destroyed_pil = Image.open(ImageFiles.DESTROYED)
-        image_destroyed_pil.thumbnail((25, 25))
-        image_splash_pil = Image.open(ImageFiles.SPLASH)
-        image_splash_pil.thumbnail((25, 25))
+        image_empty_pil: Image.Image = Image.open(ImageFiles.EMPTY)
+        image_undamaged_pil: Image.Image = Image.open(ImageFiles.UNDAMAGED).resize((32, 32))
+        image_undamaged_blue_pil: Image.Image = Image.open(ImageFiles.UNDAMAGED_BLUE).resize((32, 32))
+        image_undamaged_red_pil: Image.Image = Image.open(ImageFiles.UNDAMAGED_RED).resize((32, 32))
+        image_undamaged_green_pil: Image.Image = Image.open(ImageFiles.UNDAMAGED_GREEN).resize((32, 32))
+        image_hit_pil: Image.Image = Image.open(ImageFiles.HIT).resize((25, 25))
+        image_destroyed_pil: Image.Image = Image.open(ImageFiles.DESTROYED).resize((25, 25))
+        image_splash_pil: Image.Image = Image.open(ImageFiles.SPLASH).resize((25, 25))
 
         Images.EMPTY = ImageTk.PhotoImage(image_empty_pil)
         Images.UNDAMAGED = ImageTk.PhotoImage(image_undamaged_pil)
@@ -50,3 +43,13 @@ class Images(object):
         Images.HIT = ImageTk.PhotoImage(image_hit_pil)
         Images.DESTROYED = ImageTk.PhotoImage(image_destroyed_pil)
         Images.SPLASH = ImageTk.PhotoImage(image_splash_pil)
+
+    @staticmethod
+    def resize_image(image, maxsize):
+        r1 = image.size[0] / maxsize[0]  # width ratio
+        r2 = image.size[1] / maxsize[1]  # height ratio
+        ratio = max(r1, r2)
+        newsize = (int(image.size[0] / ratio), int(image.size[1] / ratio))
+        print(newsize)
+        image = image.resize(newsize)
+        return image

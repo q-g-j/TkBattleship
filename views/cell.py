@@ -1,9 +1,11 @@
+import tkinter
 from tkinter import ttk
 
 from factories.commandfactory import CommandFactory
 
 from models.enums import Command, Side
 from models.position import Position
+from models.styles import StyleDefinition
 from views.viewbase import ViewBase
 
 
@@ -14,7 +16,7 @@ class Cell(ViewBase):
         self.grid_propagate(False)
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
-        self.button = ttk.Button(self, takefocus=False)
+        self.button = ttk.Button(self, takefocus=False, style=StyleDefinition.CELL_BUTTON)
         self.button.grid(sticky="wens")
         self.button.config(
             command=lambda cmd=Command.CELL_CLICKED, s=side, p=pos: self._handle_command(

@@ -16,5 +16,6 @@ class MenuButtonClickedEventHandler(EventHandlerBase):
             self.__main_view.show_menu()
             self.__main_view.is_menu_open = True
         else:
-            if self.__game_store. game.game_state != GameState.FIRST_RUN:
-                self.__main_view.close_menu()
+            if self.__game_store.game is not None:
+                if self.__game_store.game.game_state != GameState.FIRST_RUN:
+                    self.__main_view.close_menu()
