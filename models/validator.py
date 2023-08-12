@@ -148,7 +148,7 @@ class Validator:
             Position(pos.row, pos.col - 1),
 
         ]:
-            if 0 < adj_pos.row < 10 and 0 < adj_pos.col < 10:
+            if 0 <= adj_pos.row < 10 and 0 <= adj_pos.col < 10:
                 if from_positions is None or adj_pos in from_positions:
                     adjacent_positions.append(adj_pos)
         return adjacent_positions
