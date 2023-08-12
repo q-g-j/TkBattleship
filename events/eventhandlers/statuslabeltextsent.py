@@ -2,7 +2,7 @@ from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from views.mainview import MainView
 
 
-class StatusLabelEventHandler(EventHandlerBase):
+class StatusLabelTextSentEventHandler(EventHandlerBase):
     def __init__(
             self,
             main_view: MainView,

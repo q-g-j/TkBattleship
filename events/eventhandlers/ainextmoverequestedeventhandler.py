@@ -5,7 +5,7 @@ from utils.sleep import threaded_sleep
 from views.mainview import MainView
 
 
-class AINextMoveRequested(EventHandlerBase):
+class AINextMoveRequestedEventHandler(EventHandlerBase):
     def __init__(self, game_store: GameStore, main_view: MainView):
         self.__game_store = game_store
         self.__main_view = main_view

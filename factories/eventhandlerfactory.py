@@ -2,10 +2,10 @@ from __future__ import annotations
 from tkinter import Tk
 
 from events.eventaggregator import EventAggregator
-from events.eventhandlers.ainextmoverequested import AINextMoveRequested
+from events.eventhandlers.ainextmoverequestedeventhandler import AINextMoveRequestedEventHandler
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from events.eventhandlers.quitbuttonclicked import QuitButtonClickedEventHandler
-from events.eventhandlers.statuslabeltextsent import StatusLabelEventHandler
+from events.eventhandlers.statuslabeltextsent import StatusLabelTextSentEventHandler
 from factories.gamefactory import GameFactory
 from models.enums import Event
 from models.validator import Validator
@@ -104,7 +104,7 @@ class EventHandlerFactory:
             return QuitButtonClickedEventHandler(self.__root)
 
         if event == Event.STATUS_LABEL_TEXT_SENT:
-            return StatusLabelEventHandler(self.__main_view)
+            return StatusLabelTextSentEventHandler(self.__main_view)
 
         if event == Event.AI_NEXT_MOVE_REQUESTED:
-            return AINextMoveRequested(self.__game_store, self.__main_view)
+            return AINextMoveRequestedEventHandler(self.__game_store, self.__main_view)

@@ -1,7 +1,6 @@
 from random import shuffle, choice
 
 from factories.singleandmultiplayerfactory import SingleAndMultiplayerFactory
-from models.debug import Debug
 from models.enums import *
 from models.images import Images
 from models.position import Position
@@ -213,4 +212,3 @@ class Game:
         self.__event_aggregator.publish(
             Event.RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED, True
         )
-
