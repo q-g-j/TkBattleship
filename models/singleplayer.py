@@ -1,10 +1,12 @@
 import random
 
 from models.enums import Event, Side, Orientation
+from models.images import Images
 from models.position import Position
 from models.validator import Validator
 from events.eventaggregator import EventAggregator
 from services.injector import inject
+from utils.sleep import threaded_sleep
 
 
 @inject(EventAggregator, Validator)
@@ -37,15 +39,18 @@ class SinglePlayer:
                 if adj_free_pos in self.__ai_all_positions_to_try:
                     self.__ai_all_positions_to_try.remove(adj_free_pos)
 
-    def __ai_try_random_position(self):
+    def __ai_try_random_position(self) -> tuple[bool, Position | None]:
         random_pos = random.choice(self.__ai_all_positions_to_try)
 
         self.__ai_all_positions_to_try.remove(random_pos)
 
         if not self.__validator.is_cell_empty(Side.LEFT, random_pos):
             self.__ai_place_mark(random_pos)
+            return True, random_pos
 
-    def __ai_try_adjacent_position(self):
+        return False, random_pos
+
+    def __ai_try_adjacent_position(self) -> tuple[bool, Position | None]:
         num_last_hit_positions = len(self.__ai_last_hit_positions)
 
         # try an adjacent position:
@@ -62,8 +67,9 @@ class SinglePlayer:
 
             if not self.__validator.is_cell_empty(Side.LEFT, adj_pos):
                 self.__ai_place_mark(adj_pos)
+                return True, adj_pos
 
-            return
+            return False, adj_pos
 
         if num_last_hit_positions == 2:
             self.__ai_last_hit_possible_new_positions.clear()
@@ -138,8 +144,9 @@ class SinglePlayer:
 
         if not self.__validator.is_cell_empty(Side.LEFT, adj_pos):
             self.__ai_place_mark(adj_pos)
+            return True, adj_pos
 
-        return
+        return False, adj_pos
 
     def __reset_for_destroyed_ship(self):
         self.__ai_last_hit_positions.clear()
@@ -152,12 +159,20 @@ class SinglePlayer:
         # if nothing was hit at the last move:
         if num_last_hit_positions == 0:
             # try a random position:
-            self.__ai_try_random_position()
+            has_hit, pos = self.__ai_try_random_position()
 
         # if there are tracked hit positions:
         else:
             # try an adjacent position next:
-            self.__ai_try_adjacent_position()
+            has_hit, pos = self.__ai_try_adjacent_position()
+
+        if not has_hit:
+            self.__event_aggregator.publish(Event.CELL_IMAGE_SET, Side.LEFT, pos, Images.SPLASH)
+
+            def clear_image():
+                self.__event_aggregator.publish(Event.CELL_IMAGE_SET, Side.LEFT, pos, Images.EMPTY)
+
+            threaded_sleep(clear_image, 0.5)
 
     def ai_reset_for_new_game(self):
         self.__ai_all_positions_to_try.clear()

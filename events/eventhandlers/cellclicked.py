@@ -1,6 +1,7 @@
 from events.eventaggregator import EventAggregator
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from models.enums import Side, GameState, Event, Texts
+from models.images import Images
 from models.position import Position
 from models.validator import Validator
 from store.gamestore import GameStore
@@ -76,6 +77,14 @@ class CellClickedEventHandler(EventHandlerBase):
         # if cell is filled, mark it as hit and check if ship is destroyed:
         if not self.__validator.is_cell_empty(side, pos):
             self.__event_aggregator.publish(Event.SHIP_HIT, side, pos)
+
+        else:
+            self.__event_aggregator.publish(Event.CELL_IMAGE_SET, side, pos, Images.SPLASH)
+
+            def clear_image():
+                self.__event_aggregator.publish(Event.CELL_IMAGE_SET, side, pos, Images.EMPTY)
+
+            threaded_sleep(clear_image, 0.5)
 
         # singleplayer mode: let the AI make it's move:
         if (

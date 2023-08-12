@@ -11,6 +11,7 @@ class ImageFiles:
     UNDAMAGED_GREEN = Files.fixed_path("assets/images/undamaged_green.png")
     HIT = Files.fixed_path("assets/images/hit.png")
     DESTROYED = Files.fixed_path("assets/images/destroyed.png")
+    SPLASH = Files.fixed_path("assets/images/splash.png")
 
 
 class Images(object):
@@ -21,6 +22,7 @@ class Images(object):
     UNDAMAGED_GREEN: ImageTk.PhotoImage = None
     HIT: ImageTk.PhotoImage = None
     DESTROYED: ImageTk.PhotoImage = None
+    SPLASH: ImageTk.PhotoImage = None
 
     @staticmethod
     def init() -> None:
@@ -37,6 +39,8 @@ class Images(object):
         image_hit_pil.thumbnail((25, 25))
         image_destroyed_pil = Image.open(ImageFiles.DESTROYED)
         image_destroyed_pil.thumbnail((25, 25))
+        image_splash_pil = Image.open(ImageFiles.SPLASH)
+        image_splash_pil.thumbnail((25, 25))
 
         Images.EMPTY = ImageTk.PhotoImage(image_empty_pil)
         Images.UNDAMAGED = ImageTk.PhotoImage(image_undamaged_pil)
@@ -45,3 +49,4 @@ class Images(object):
         Images.UNDAMAGED_GREEN = ImageTk.PhotoImage(image_undamaged_green_pil)
         Images.HIT = ImageTk.PhotoImage(image_hit_pil)
         Images.DESTROYED = ImageTk.PhotoImage(image_destroyed_pil)
+        Images.SPLASH = ImageTk.PhotoImage(image_splash_pil)
