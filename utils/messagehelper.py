@@ -9,7 +9,7 @@ class MessageHelper:
     def __init__(self, event_aggregator: EventAggregator):
         self.__event_aggregator = event_aggregator
 
-    def show(self, side: Side, messages: list, ai_next=False, delay: float = 0) -> None:
+    def show(self, side: Side, messages: list, delay: float = 0, ai_next=False) -> None:
         from models.enums import Event
         if delay > 0:
             threaded_sleep(lambda: self.__event_aggregator.publish(Event.MESSAGEBOX_TEXT_SENT, side, messages, ai_next),

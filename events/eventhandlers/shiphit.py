@@ -41,7 +41,7 @@ class ShipHitEventHandler(EventHandlerBase):
                 self.__main_view.set_status_label_text("")
                 self.__game_store.game.game_state = GameState.GAME_OVER
 
-            self.__message_helper.show(side, messages, ai_next, 0.1)
+            self.__message_helper.show(side, messages, 0.1, ai_next)
         else:
             self.__main_view.set_cell_image(side, pos, Images.HIT)
             if side == Side.RIGHT:
