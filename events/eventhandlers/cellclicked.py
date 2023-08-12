@@ -22,6 +22,9 @@ class CellClickedEventHandler(EventHandlerBase):
         self.__event_aggregator = event_aggregator
 
     def execute(self, side: Side, pos: Position):
+        if self.__game_store.game is None:
+            return
+
         # close the menu if open and RETURN:
         if self.__main_view.is_menu_open:
             if self.__game_store.game.game_state != GameState.FIRST_RUN:
