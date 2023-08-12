@@ -40,8 +40,8 @@ class GameController:
         Images.init()
 
     def __register_services(self):
-        game_factory = GameFactory(self.__injector)
-        single_and_multiplayer_factory = SingleAndMultiplayerFactory(self.__injector)
+        game_factory = GameFactory(lambda: self.__injector.resolve(Game))
+        single_and_multiplayer_factory = SingleAndMultiplayerFactory(lambda: self.__injector.resolve(SinglePlayer))
         self.__injector.register_instance(game_factory)
         self.__injector.register_instance(single_and_multiplayer_factory)
         self.__injector.register_instance(self.__root)

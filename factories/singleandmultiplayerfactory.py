@@ -1,10 +1,10 @@
 from models.singleplayer import SinglePlayer
-from services.injector import DependencyInjector
+from typing import Callable
 
 
 class SingleAndMultiplayerFactory:
-    def __init__(self, injector: DependencyInjector):
-        self.__injector = injector
+    def __init__(self, singleplayer_resolver: Callable):
+        self.__singleplayer_resolver = singleplayer_resolver
 
     def get_singleplayer(self) -> SinglePlayer:
-        return self.__injector.resolve(SinglePlayer)
+        return self.__singleplayer_resolver()
