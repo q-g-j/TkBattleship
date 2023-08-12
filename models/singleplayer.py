@@ -23,6 +23,12 @@ class SinglePlayer:
         self.__ai_last_hit_possible_new_positions: list[Position] = []
         self.__ai_last_hit_ship_orientation: Orientation = Orientation.NONE
 
+        for row in range(10):
+            for col in range(10):
+                pos = Position(row, col)
+                if pos not in self.__ai_all_positions_to_try:
+                    self.__ai_all_positions_to_try.append(Position(row, col))
+
     def __ai_place_mark(self, pos: Position):
         self.__ai_last_hit_positions.append(pos)
 
@@ -173,12 +179,3 @@ class SinglePlayer:
                 self.__event_aggregator.publish(Event.CELL_IMAGE_SET, Side.LEFT, pos, Images.EMPTY)
 
             threaded_sleep(clear_image, 0.5)
-
-    def ai_reset_for_new_game(self):
-        self.__ai_all_positions_to_try.clear()
-        for row in range(10):
-            for col in range(10):
-                pos = Position(row, col)
-                if pos not in self.__ai_all_positions_to_try:
-                    self.__ai_all_positions_to_try.append(Position(row, col))
-        self.__reset_for_destroyed_ship()

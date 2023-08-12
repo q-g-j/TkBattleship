@@ -26,11 +26,14 @@ class Game:
 
         self.__singleplayer: SinglePlayer | None = None
 
-        self.game_state = GameState.FIRST_RUN
-        self.whose_turn = Side.LEFT
-
         self.__fits_in_direction = Orientation.NONE
         self.num_placed_player_ships = 0
+
+        self.create_ships(Side.BOTH)
+        self.create_playing_field(Side.BOTH)
+
+        self.game_state = GameState.FIRST_RUN
+        self.whose_turn = Side.LEFT
 
     def create_ships(self, side: Side) -> None:
         for ship_type in ShipTypes:
@@ -196,21 +199,13 @@ class Game:
     def start_singleplayer(self, validator):
         self.__singleplayer = self.__single_and_multiplayerfactory.get_singleplayer()
 
-        self.__singleplayer.ai_reset_for_new_game()
-
-        if self.game_state == GameState.FIRST_RUN:
-            self.create_ships(Side.BOTH)
-            self.create_playing_field(Side.BOTH)
-        else:
-            self.reset_playing_field(Side.BOTH)
-            self.reset_ships(Side.BOTH)
         self.game_state = GameState.PLAYER_PLACING_SHIPS
         self.whose_turn = Side.LEFT
-
-        self.__event_aggregator.publish(
-            Event.RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED, True
-        )
 
         self.place_random_ships(validator, Side.RIGHT)
 
         self.__event_aggregator.publish(Event.STATUS_LABEL_TEXT_SENT, Texts.STATUS_LABEL_SINGLEPLAYER_STARTED)
+
+        self.__event_aggregator.publish(
+            Event.RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED, True
+        )
