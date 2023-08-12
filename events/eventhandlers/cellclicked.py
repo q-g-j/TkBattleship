@@ -50,7 +50,7 @@ class CellClickedEventHandler(EventHandlerBase):
         # when game has started don't allow to click on the left side:
         if (
                 self.__game_store.game.game_state in (GameState.SINGLEPLAYER, GameState.MULTIPLAYER)
-                and side == Side.LEFT
+                and (side == Side.LEFT)
         ):
             return
 
@@ -76,6 +76,9 @@ class CellClickedEventHandler(EventHandlerBase):
         # finally:
         # if cell is filled, mark it as hit and check if ship is destroyed:
         if self.__game_store.game.whose_turn == Side.LEFT:
+            if self.__validator.is_position_hit(Side.RIGHT, pos):
+                return
+
             self.__game_store.game.whose_turn = Side.RIGHT
 
             if not self.__validator.is_cell_empty(side, pos):

@@ -19,6 +19,14 @@ class ShipHitEventHandler(EventHandlerBase):
         self.__event_aggregator = event_aggregator
 
     def execute(self, side: Side, pos: Position):
+        hit_positions: list[Position] | None = None
+        if side == Side.LEFT:
+            hit_positions = self.__game_store.game.hit_positions_player
+        elif side == Side.RIGHT:
+            hit_positions = self.__game_store.game.hit_positions_opponent
+
+        hit_positions.append(pos)
+
         hit_ship = self.__validator.get_ship_from_pos(side, pos)
         if pos in hit_ship.hit_positions:
             return

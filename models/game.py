@@ -25,6 +25,9 @@ class Game:
         self.playing_field_player: list[list[str]] = []
         self.playing_field_opponent: list[list[str]] = []
 
+        self.hit_positions_player: list[Position] = []
+        self.hit_positions_opponent: list[Position] = []
+
         self.__singleplayer: SinglePlayer | None = None
 
         self.__fits_in_direction = Orientation.NONE

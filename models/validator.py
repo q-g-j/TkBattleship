@@ -354,3 +354,15 @@ class Validator:
             return self.get_adjacent_cells_free_ns(
                 Side.LEFT, current_ship, current_ship.positions
             )
+
+    def is_position_hit(self, side, pos) -> bool:
+        hit_positions: list[Position] | None = None
+        if side == Side.LEFT:
+            hit_positions = self.__game_store.game.hit_positions_player
+        elif side == Side.RIGHT:
+            hit_positions = self.__game_store.game.hit_positions_opponent
+
+        if pos in hit_positions:
+            return True
+
+        return False
