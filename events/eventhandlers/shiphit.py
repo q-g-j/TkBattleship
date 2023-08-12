@@ -35,7 +35,6 @@ class ShipHitEventHandler(EventHandlerBase):
             messages = ["{0} sunk!".format(hit_ship.name)]
             self.__main_view.mark_ship_destroyed(side, hit_ship)
             hit_ship.is_destroyed = True
-            ai_next = side == Side.RIGHT
 
             if self.__validator.are_all_ships_destroyed(side):
                 messages.append("")
@@ -49,6 +48,7 @@ class ShipHitEventHandler(EventHandlerBase):
                 self.__main_view.set_status_label_text("")
                 self.__game_store.game.game_state = GameState.GAME_OVER
 
+            ai_next = side == Side.RIGHT and self.__game_store.game.game_state != GameState.GAME_OVER
             self.__message_helper.show(side, messages, 0.1, ai_next)
         else:
             self.__main_view.set_cell_image(side, pos, Images.HIT)
