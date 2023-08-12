@@ -72,7 +72,7 @@ class CellClickedEventHandler(EventHandlerBase):
         # finally:
         # if cell is filled, mark it as hit and check if ship is destroyed:
         if not self.__validator.is_cell_empty(side, pos):
-            self.__event_aggregator.publish(Event.SHIP_HIT, side, pos, self.__game_store.game.game_state)
+            self.__event_aggregator.publish(Event.SHIP_HIT, side, pos)
 
         # singleplayer mode: let the AI make it's move:
         if (

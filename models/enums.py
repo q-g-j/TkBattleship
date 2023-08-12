@@ -76,10 +76,10 @@ NotationColumns = {
 
 ShipTypes = [
     # ("name", length, number_to_place)
-    ("Destroyer", 2, 2),
+    ("Destroyer", 2, 4),
     ("Submarine", 3, 2),
     ("Cruiser", 3, 1),
-    ("Battleship", 4, 1),
+    ("Battleship", 4, 2),
     ("Carrier", 5, 1),
 ]
 
