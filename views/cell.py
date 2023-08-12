@@ -14,7 +14,7 @@ class Cell(ViewBase):
         self.grid_propagate(False)
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
-        self.button = ttk.Button(self)
+        self.button = ttk.Button(self, takefocus=False)
         self.button.grid(sticky="wens")
         self.button.config(
             command=lambda cmd=Command.CELL_CLICKED, s=side, p=pos: self._handle_command(
