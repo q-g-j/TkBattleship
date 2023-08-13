@@ -36,11 +36,6 @@ Python 3 (tested with 3.10)
 Fonts:
 - [Microsoft Sewalik](https://github.com/microsoft/Selawik) (License: OFL-1.1)
 
-
-Theme:
-
-- [tkBreeze normal](https://github.com/thindil/tkBreeze) (License: LGPL 2.1)
-
 ### Technical details
 
 This is a practice project to implement the MVC pattern in a TKinter application while following some OOP related principles. It uses the event aggregator pattern for state change notifications between the models, the views and the controller.
