@@ -15,7 +15,7 @@ from utils.messagehelper import MessageHelper
 from models.images import Images
 from views.mainview import MainView
 from models.enums import Event
-from models.styles import StyleDefinition
+from models.styles import StyleDefinitions
 
 
 class GameController:
@@ -36,7 +36,7 @@ class GameController:
         self.__root.title("Battleship")
         self.__root.resizable(False, False)
 
-        StyleDefinition.init(self.__root)
+        StyleDefinitions.init(self.__root)
         Images.init()
 
     def __register_services(self):

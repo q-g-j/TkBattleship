@@ -2,15 +2,19 @@ import tkinter
 from tkinter import Tk, ttk
 
 
-class StyleDefinition:
+class StyleDefinitions:
+    MAIN_VIEW_FRAME = "MainViewFrame.TFrame"
+    
     MENU_BUTTON = "MenuButton.TButton"
     RANDOM_SHIPS_BUTTON = "RandomShipsButton.TButton"
 
     STATUS_LABEL = "StatusLabel.TLabel"
 
+    MENU_FRAME = "MenuFrame.TFrame"
     MENU_ITEM_HEADER_LABEL = "MenuItemHeader.TLabel"
     MENU_ITEM_BUTTON = "MenuItemButton.TButton"
 
+    MESSAGEBOX_FRAME = "MessageBoxFrame.TFrame"
     MESSAGEBOX_LABEL = "Message.TLabel"
     MESSAGEBOX_BUTTON = "Message.TButton"
 
@@ -21,52 +25,57 @@ class StyleDefinition:
         style: ttk.Style = ttk.Style(root)
 
         style.configure(
-            StyleDefinition.MENU_BUTTON,
+            StyleDefinitions.MAIN_VIEW_FRAME,
+            background="black"
+        )
+        style.configure(
+            StyleDefinitions.MENU_BUTTON,
             foreground="black",
-            background="darkgray",
             font=("Helvetica", 12),
             padding=(15, 0, 15, 0),
         )
         style.configure(
-            StyleDefinition.RANDOM_SHIPS_BUTTON,
+            StyleDefinitions.RANDOM_SHIPS_BUTTON,
             foreground="black",
-            background="darkgray",
             font=("Helvetica", 12),
             padding=(15, 0, 15, 0),
         )
         style.configure(
-            StyleDefinition.STATUS_LABEL,
+            StyleDefinitions.STATUS_LABEL,
             foreground="blue",
             font=("Helvetica", 12),
             padding=(15, 0, 15, 0),
         )
         style.configure(
-            StyleDefinition.MENU_ITEM_HEADER_LABEL,
+            StyleDefinitions.MENU_FRAME,
+            relief="solid"
+        )
+        style.configure(
+            StyleDefinitions.MENU_ITEM_HEADER_LABEL,
             foreground="red",
-            background="darkgray",
             font=("Helvetica", 16),
         )
         style.configure(
-            StyleDefinition.MENU_ITEM_BUTTON,
+            StyleDefinitions.MENU_ITEM_BUTTON,
             foreground="blue",
-            background="darkgray",
             font=("Helvetica", 12),
             padding=(15, 0, 15, 0),
         )
-
         style.configure(
-            StyleDefinition.MESSAGEBOX_LABEL,
+            StyleDefinitions.MESSAGEBOX_FRAME,
+            relief="solid"
+        )
+        style.configure(
+            StyleDefinitions.MESSAGEBOX_LABEL,
             foreground="red",
-            background="darkgray",
             font=("Helvetica", 16),
         )
         style.configure(
-            StyleDefinition.MESSAGEBOX_BUTTON,
+            StyleDefinitions.MESSAGEBOX_BUTTON,
             foreground="black",
-            background="darkgray",
             font=("Helvetica", 12),
         )
         style.configure(
-            StyleDefinition.CELL_BUTTON,
+            StyleDefinitions.CELL_BUTTON,
             relief=tkinter.FLAT
         )

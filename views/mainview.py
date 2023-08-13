@@ -12,8 +12,8 @@ from models.settings import Settings
 from services.injector import inject
 from views.cell import Cell
 from views.menu import Menu
-from views.messagebox import Messagebox
-from models.styles import StyleDefinition
+from views.messagebox import MessageBox
+from models.styles import StyleDefinitions
 from views.viewbase import ViewBase
 from utils.sleep import threaded_sleep
 
@@ -21,12 +21,12 @@ from utils.sleep import threaded_sleep
 @inject(Tk, EventAggregator, CommandFactory)
 class MainView(ViewBase):
     def __init__(
-        self,
-        root: Tk,
-        event_aggregator: EventAggregator,
-        command_factory: CommandFactory,
+            self,
+            root: Tk,
+            event_aggregator: EventAggregator,
+            command_factory: CommandFactory,
     ) -> None:
-        super().__init__(root, command_factory)
+        super().__init__(root, command_factory, style=StyleDefinitions.MAIN_VIEW_FRAME, padding=20)
         self.__event_aggregator = event_aggregator
         self.__command_factory = command_factory
         self.__settings = Settings()
@@ -36,7 +36,7 @@ class MainView(ViewBase):
             self.__toolbar_frame,
             text="Menu",
             command=lambda cmd=Command.MENU_BUTTON_CLICKED: self._handle_command(cmd),
-            style=StyleDefinition.MENU_BUTTON,
+            style=StyleDefinitions.MENU_BUTTON,
         )
         self.__random_ships_button = ttk.Button(
             self.__toolbar_frame,
@@ -44,18 +44,18 @@ class MainView(ViewBase):
             command=lambda cmd=Command.RANDOM_SHIPS_BUTTON_CLICKED: self._handle_command(
                 cmd
             ),
-            style=StyleDefinition.RANDOM_SHIPS_BUTTON,
+            style=StyleDefinitions.RANDOM_SHIPS_BUTTON,
         )
         self.__status_label = ttk.Label(
             self.__toolbar_frame,
-            style=StyleDefinition.STATUS_LABEL
+            style=StyleDefinitions.STATUS_LABEL
         )
         self.__menu_button.grid(row=0, column=0)
         self.__status_label.grid(row=0, column=2)
         self.__toolbar_frame.pack(anchor=tk.W)
         self.__game_frame.pack(pady=(10, 0))
         self.__menu: Menu | None = None
-        self.__messagebox: Messagebox | None = None
+        self.__messagebox: MessageBox | None = None
         self.__field_frame_left: ttk.Frame | None = None
         self.__field_frame_right: ttk.Frame | None = None
         self.__cells_opponent: list[list[Cell]] = []
@@ -63,7 +63,7 @@ class MainView(ViewBase):
         self.__create_playing_fields()
         self.__create_notation()
         self.__create_cells()
-        self.pack(padx=20, pady=20)
+        self.pack()
 
         self.is_menu_open = False
         self.is_messagebox_open = False
@@ -157,7 +157,7 @@ class MainView(ViewBase):
                     self.__cells_opponent[row][column].button.config(image=Images.EMPTY)
 
     def set_cell_image(
-        self, side: Side, pos: Position, image: ImageTk.PhotoImage
+            self, side: Side, pos: Position, image: ImageTk.PhotoImage
     ) -> None:
         if side == Side.LEFT:
             cells = self.__cells_player
@@ -197,7 +197,7 @@ class MainView(ViewBase):
 
         if self.__messagebox is not None:
             self.close_messagebox()
-        self.__messagebox = Messagebox(
+        self.__messagebox = MessageBox(
             frame, self.__event_aggregator, self.__command_factory
         )
         self.__messagebox.show(messages)

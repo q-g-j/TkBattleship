@@ -1,10 +1,10 @@
-from tkinter import Frame
+from tkinter import ttk
 
 from factories.commandfactory import CommandFactory
 from models.enums import Command
 
 
-class ViewBase(Frame):
+class ViewBase(ttk.Frame):
     def __init__(self, parent, command_factory: CommandFactory, **kwargs):
         super().__init__(parent, **kwargs)
         self.__command_factory = command_factory

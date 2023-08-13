@@ -4,7 +4,7 @@ from tkinter import ttk
 from events.eventaggregator import EventAggregator
 from factories.commandfactory import CommandFactory
 from models.enums import Event, Command
-from models.styles import StyleDefinition
+from models.styles import StyleDefinitions
 from views.viewbase import ViewBase
 
 
@@ -12,16 +12,16 @@ class Menu(ViewBase):
     def __init__(self, field_frame: ttk.Frame, event_aggregator: EventAggregator,
                  command_factory: CommandFactory) -> None:
         self.__event_aggregator = event_aggregator
-        super().__init__(field_frame, command_factory, bg="darkgray", padx=15, pady=15)
+        super().__init__(field_frame, command_factory, style=StyleDefinitions.MENU_FRAME, padding=20)
 
     def show(self) -> None:
-        label = ttk.Label(self, text="Battle Ship", style=StyleDefinition.MENU_ITEM_HEADER_LABEL)
+        label = ttk.Label(self, text="Battle Ship", style=StyleDefinitions.MENU_ITEM_HEADER_LABEL)
         label.pack()
 
         button_singleplayer = ttk.Button(
             self,
             text="Singleplayer",
-            style=StyleDefinition.MENU_ITEM_BUTTON,
+            style=StyleDefinitions.MENU_ITEM_BUTTON,
             command=lambda cmd=Command.START_SINGLEPLAYER: self._handle_command(cmd)
         )
 
@@ -35,7 +35,7 @@ class Menu(ViewBase):
         button_quit = ttk.Button(
             self,
             text="Quit",
-            style=StyleDefinition.MENU_ITEM_BUTTON,
+            style=StyleDefinitions.MENU_ITEM_BUTTON,
             command=lambda cmd=Command.QUIT_GAME: self._handle_command(cmd),
         )
         button_singleplayer.pack(pady=(15, 0))
