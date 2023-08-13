@@ -18,9 +18,10 @@ from store.gamestore import GameStore
 from utils.files import Files
 from utils.messagehelper import MessageHelper
 from models.images import Images
+from utils.oshelper import OsHelper
 from views.fonts import Fonts
 from views.mainview import MainView
-from models.enums import Event
+from models.enums import OS, Event
 from views.styles import StyleDefinitions
 
 
@@ -36,7 +37,10 @@ class GameController:
     def start(self):
         if not Files.does_settings_file_exist():
             settings_writer = self.__injector.resolve(SettingsWriter)
-            settings_writer.write(Settings(40, "scidgreen"))
+            if OsHelper.get_os() == OS.WINDOWS:
+                settings_writer.write(Settings(40, "vista"))
+            else:
+                settings_writer.write(Settings(40, "scidgreen"))
         
         settings_reader = self.__injector.resolve(SettingsReader)
         settings = settings_reader.read()

@@ -1,6 +1,12 @@
 from enum import Enum, IntFlag
 
 
+class OS:
+    WINDOWS = "Windows"
+    LINUX = "Linux"
+    MACOS = "Darwin"
+
+
 class Paths:
     SETTINGS_FOLDER = "TkBattleship"
     SETTINGS_FILE = "settings.json"
