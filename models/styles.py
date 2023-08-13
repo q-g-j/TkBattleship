@@ -26,7 +26,6 @@ class StyleDefinitions:
 
         style.configure(
             StyleDefinitions.MAIN_VIEW_FRAME,
-            background="black"
         )
         style.configure(
             StyleDefinitions.MENU_BUTTON,
