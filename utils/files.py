@@ -36,7 +36,7 @@ class Files:
         settings_file = Files.get_settings_file_full_path()
 
         if not os.path.exists(settings_file):
-            settings_dict = Settings(40, "default").to_dict()
+            settings_dict = Settings(40, "scidgreen").to_dict()
             settings_json = json.dumps(settings_dict, indent=4)
 
             try:

@@ -38,7 +38,7 @@ class StyleDefinitions:
             StyleDefinitions.MENU_BUTTON,
             foreground="black",
             font=(Fonts.SELAWIK, 13, "bold"),
-            padding=(15, 0, 15, 0)
+            padding=(15, 0, 15, 0),
         )
         style.configure(
             StyleDefinitions.RANDOM_SHIPS_BUTTON,
@@ -47,7 +47,7 @@ class StyleDefinitions:
             padding=(15, 0, 15, 0)
         )
         style.configure(StyleDefinitions.STATUS_LABEL, padding=(15, 0, 15, 0))
-        style.configure(StyleDefinitions.MENU_FRAME, relief="solid")
+        style.configure(StyleDefinitions.MENU_FRAME, width=100, relief="solid")
         style.configure(StyleDefinitions.MENU_ITEM_HEADER_LABEL, foreground="red")
         style.configure(
             StyleDefinitions.MENU_ITEM_BUTTON,

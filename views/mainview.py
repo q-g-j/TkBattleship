@@ -28,9 +28,11 @@ class MainView(ViewBase):
         root: ThemedTk,
         event_aggregator: EventAggregator,
         command_factory: CommandFactory,
-        settings_reader: SettingsReader
+        settings_reader: SettingsReader,
     ) -> None:
-        super().__init__(root, command_factory, style=StyleDefinitions.MAIN_VIEW_FRAME, padding=20)
+        super().__init__(
+            root, command_factory, style=StyleDefinitions.MAIN_VIEW_FRAME, padding=20
+        )
         self.__root = root
         self.__event_aggregator = event_aggregator
         self.__command_factory = command_factory
@@ -42,17 +44,24 @@ class MainView(ViewBase):
         self.__menu_button = ttk.Button(
             self.__toolbar_frame,
             text="Menu",
+            takefocus=False,
             command=lambda cmd=Command.MENU_BUTTON_CLICKED: self._handle_command(cmd),
             style=StyleDefinitions.MENU_BUTTON,
         )
         self.__random_ships_button = ttk.Button(
             self.__toolbar_frame,
             text="Random ships",
-            command=lambda cmd=Command.RANDOM_SHIPS_BUTTON_CLICKED: self._handle_command(cmd),
+            takefocus=False,
+            command=lambda cmd=Command.RANDOM_SHIPS_BUTTON_CLICKED: self._handle_command(
+                cmd
+            ),
             style=StyleDefinitions.RANDOM_SHIPS_BUTTON,
         )
         self.__status_label = ttk.Label(
-            self.__toolbar_frame, style=StyleDefinitions.STATUS_LABEL, font=(Fonts.SELAWIK, 13), foreground="blue"
+            self.__toolbar_frame,
+            style=StyleDefinitions.STATUS_LABEL,
+            font=(Fonts.SELAWIK, 13),
+            foreground="blue",
         )
 
         self.__menu_button.grid(row=0, column=0, padx=(40, 0))
@@ -143,7 +152,13 @@ class MainView(ViewBase):
 
     def show_menu(self, delay: float = 0) -> None:
         self.__settings = self.__settings_reader.read()
-        self.__menu = Menu(self.__root, self.__game_frame, self.__event_aggregator, self.__command_factory, self.__settings.theme)
+        self.__menu = Menu(
+            self.__root,
+            self.__game_frame,
+            self.__event_aggregator,
+            self.__command_factory,
+            self.__settings.theme,
+        )
         if delay > 0:
             threaded_sleep(lambda: self.__menu.show(), delay)
         else:
@@ -161,13 +176,17 @@ class MainView(ViewBase):
                 if side & Side.RIGHT == Side.RIGHT:
                     self.__cells_opponent[row][column].button.config(image=Images.EMPTY)
 
-    def set_cell_image(self, side: Side, pos: Position, image: ImageTk.PhotoImage) -> None:
+    def set_cell_image(
+        self, side: Side, pos: Position, image: ImageTk.PhotoImage
+    ) -> None:
         if side == Side.LEFT:
             cells = self.__cells_player
         elif side == Side.RIGHT:
             cells = self.__cells_opponent
         else:
-            raise Exception('Invalid value for param "side". Must be Side.LEFT or Side.RIGHT.')
+            raise Exception(
+                'Invalid value for param "side". Must be Side.LEFT or Side.RIGHT.'
+            )
         cells[pos.row][pos.col].button.config(image=image)
 
     def mark_ship_destroyed(self, side: Side, ship: Ship) -> None:
@@ -176,7 +195,9 @@ class MainView(ViewBase):
         elif side == Side.RIGHT:
             cells = self.__cells_opponent
         else:
-            raise Exception('Invalid value for param "side". Must be Side.LEFT or Side.RIGHT.')
+            raise Exception(
+                'Invalid value for param "side". Must be Side.LEFT or Side.RIGHT.'
+            )
         for hit_pos in ship.hit_positions:
             cells[hit_pos.row][hit_pos.col].button.config(image=Images.DESTROYED)
 
@@ -196,7 +217,9 @@ class MainView(ViewBase):
 
         if self.__messagebox is not None:
             self.close_messagebox()
-        self.__messagebox = MessageBox(frame, self.__event_aggregator, self.__command_factory)
+        self.__messagebox = MessageBox(
+            frame, self.__event_aggregator, self.__command_factory
+        )
         self.__messagebox.show(messages)
 
     def close_messagebox(self) -> None:
