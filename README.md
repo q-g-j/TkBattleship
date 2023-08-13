@@ -30,6 +30,7 @@ Python 3 (tested with 3.10)
 - Pillow >= 10.0.0
 - appdirs >= 1.4.4
 - pyglet == 1.5.27
+- ttkthemes >= 3.2.2
 
 #### External resources:
 Fonts:
