@@ -34,7 +34,7 @@ Python 3 (tested with 3.10)
 
 #### External resources:
 Fonts:
-- [Microsoft Sewalik](https://github.com/microsoft/Selawik) (License: OFL-1.1)
+- [Microsoft Selawik](https://github.com/microsoft/Selawik) (License: OFL-1.1)
 
 ### Technical details
 
