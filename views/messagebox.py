@@ -4,7 +4,8 @@ from tkinter import ttk
 from factories.commandfactory import CommandFactory
 from models.enums import Event
 from events.eventaggregator import EventAggregator
-from models.styles import StyleDefinitions
+from views.fonts import Fonts
+from views.styles import StyleDefinitions
 from views.viewbase import ViewBase
 
 
@@ -15,7 +16,8 @@ class MessageBox(ViewBase):
 
     def show(self, messages: list) -> None:
         for message in messages:
-            label = ttk.Label(self, text=message, style=StyleDefinitions.MESSAGEBOX_LABEL)
+            label = ttk.Label(self, text=message, style=StyleDefinitions.MESSAGEBOX_LABEL, font=(Fonts.SELAWIK, 13),
+                              foreground="black", )
             label.pack(expand=True, anchor=tk.CENTER)
         close = ttk.Button(
             self, text="Close", command=self.close, style=StyleDefinitions.MESSAGEBOX_BUTTON

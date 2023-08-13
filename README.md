@@ -26,9 +26,19 @@ The computer opponent has been improved and should be stronger now.
 ### Requirements
 Python 3 (tested with 3.10)
 
-#### Libraries (install via pip):
+#### External modules (install via pip):
 - Pillow >= 10.0.0
 - appdirs >= 1.4.4
+- pyglet == 1.5.27
+
+#### External resources:
+Fonts:
+- [Microsoft Sewalik](https://github.com/microsoft/Selawik) (License: OFL-1.1)
+
+
+Theme:
+
+- [tkBreeze normal](https://github.com/thindil/tkBreeze) (License: LGPL 2.1)
 
 ### Technical details
 

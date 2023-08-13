@@ -1,10 +1,10 @@
-from tkinter import Tk
+from ttkthemes import ThemedTk
 
 from controllers.gamecontroller import GameController
 
 
 def main() -> None:
-    root = Tk()
+    root = ThemedTk()
 
     controller = GameController(root)
     controller.start()

@@ -1,6 +1,7 @@
 import tkinter as tk
-from tkinter import Tk, ttk
+from tkinter import ttk
 from PIL import ImageTk
+from ttkthemes import ThemedTk
 
 from factories.commandfactory import CommandFactory
 from models.images import Images
@@ -10,27 +11,33 @@ from models.position import Position
 from models.ship import Ship
 from models.settings import Settings
 from services.injector import inject
+from settings.settingsreader import SettingsReader
 from views.cell import Cell
+from views.fonts import Fonts
 from views.menu import Menu
 from views.messagebox import MessageBox
-from models.styles import StyleDefinitions
+from views.styles import StyleDefinitions
 from views.viewbase import ViewBase
 from utils.sleep import threaded_sleep
 
 
-@inject(Tk, EventAggregator, CommandFactory)
+@inject(ThemedTk, EventAggregator, CommandFactory, SettingsReader)
 class MainView(ViewBase):
     def __init__(
-            self,
-            root: Tk,
-            event_aggregator: EventAggregator,
-            command_factory: CommandFactory,
+        self,
+        root: ThemedTk,
+        event_aggregator: EventAggregator,
+        command_factory: CommandFactory,
+        settings_reader: SettingsReader
     ) -> None:
         super().__init__(root, command_factory, style=StyleDefinitions.MAIN_VIEW_FRAME, padding=20)
+        self.__root = root
         self.__event_aggregator = event_aggregator
         self.__command_factory = command_factory
-        self.__settings = Settings()
+        self.__settings_reader = settings_reader
+        self.__settings = settings_reader.read()
         self.__game_frame = ttk.Frame(self)
+        self.columnconfigure(0, weight=1)
         self.__toolbar_frame = ttk.Frame(self)
         self.__menu_button = ttk.Button(
             self.__toolbar_frame,
@@ -41,18 +48,17 @@ class MainView(ViewBase):
         self.__random_ships_button = ttk.Button(
             self.__toolbar_frame,
             text="Random ships",
-            command=lambda cmd=Command.RANDOM_SHIPS_BUTTON_CLICKED: self._handle_command(
-                cmd
-            ),
+            command=lambda cmd=Command.RANDOM_SHIPS_BUTTON_CLICKED: self._handle_command(cmd),
             style=StyleDefinitions.RANDOM_SHIPS_BUTTON,
         )
         self.__status_label = ttk.Label(
-            self.__toolbar_frame,
-            style=StyleDefinitions.STATUS_LABEL
+            self.__toolbar_frame, style=StyleDefinitions.STATUS_LABEL, font=(Fonts.SELAWIK, 13), foreground="blue"
         )
-        self.__menu_button.grid(row=0, column=0)
+
+        self.__menu_button.grid(row=0, column=0, padx=(40, 0))
         self.__status_label.grid(row=0, column=2)
-        self.__toolbar_frame.pack(anchor=tk.W)
+
+        self.__toolbar_frame.pack(anchor=tk.W, fill=tk.X)
         self.__game_frame.pack(pady=(10, 0))
         self.__menu: Menu | None = None
         self.__messagebox: MessageBox | None = None
@@ -136,9 +142,8 @@ class MainView(ViewBase):
             self.__random_ships_button.grid_forget()
 
     def show_menu(self, delay: float = 0) -> None:
-        self.__menu = Menu(
-            self.__game_frame, self.__event_aggregator, self.__command_factory
-        )
+        self.__settings = self.__settings_reader.read()
+        self.__menu = Menu(self.__root, self.__game_frame, self.__event_aggregator, self.__command_factory, self.__settings.theme)
         if delay > 0:
             threaded_sleep(lambda: self.__menu.show(), delay)
         else:
@@ -156,17 +161,13 @@ class MainView(ViewBase):
                 if side & Side.RIGHT == Side.RIGHT:
                     self.__cells_opponent[row][column].button.config(image=Images.EMPTY)
 
-    def set_cell_image(
-            self, side: Side, pos: Position, image: ImageTk.PhotoImage
-    ) -> None:
+    def set_cell_image(self, side: Side, pos: Position, image: ImageTk.PhotoImage) -> None:
         if side == Side.LEFT:
             cells = self.__cells_player
         elif side == Side.RIGHT:
             cells = self.__cells_opponent
         else:
-            raise Exception(
-                'Invalid value for param "side". Must be Side.LEFT or Side.RIGHT.'
-            )
+            raise Exception('Invalid value for param "side". Must be Side.LEFT or Side.RIGHT.')
         cells[pos.row][pos.col].button.config(image=image)
 
     def mark_ship_destroyed(self, side: Side, ship: Ship) -> None:
@@ -175,14 +176,12 @@ class MainView(ViewBase):
         elif side == Side.RIGHT:
             cells = self.__cells_opponent
         else:
-            raise Exception(
-                'Invalid value for param "side". Must be Side.LEFT or Side.RIGHT.'
-            )
+            raise Exception('Invalid value for param "side". Must be Side.LEFT or Side.RIGHT.')
         for hit_pos in ship.hit_positions:
             cells[hit_pos.row][hit_pos.col].button.config(image=Images.DESTROYED)
 
     def set_status_label_text(self, text: str):
-        self.__status_label.config(text=text)
+        self.__status_label.configure(text=text)
 
     def show_messagebox(self, side: Side, messages: list, ai_next=False) -> None:
         self.__is_ai_next = ai_next
@@ -197,9 +196,7 @@ class MainView(ViewBase):
 
         if self.__messagebox is not None:
             self.close_messagebox()
-        self.__messagebox = MessageBox(
-            frame, self.__event_aggregator, self.__command_factory
-        )
+        self.__messagebox = MessageBox(frame, self.__event_aggregator, self.__command_factory)
         self.__messagebox.show(messages)
 
     def close_messagebox(self) -> None:

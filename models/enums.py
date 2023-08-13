@@ -1,6 +1,11 @@
 from enum import Enum, IntFlag
 
 
+class Paths:
+    SETTINGS_FOLDER = "TkBattleship"
+    SETTINGS_FILE = "settings.json"
+
+
 class Command(Enum):
     # MainView:
     MENU_BUTTON_CLICKED = 1
@@ -28,6 +33,7 @@ class Event(Enum):
     RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED = 12
     STATUS_LABEL_TEXT_SENT = 13
     AI_NEXT_MOVE_REQUESTED = 14
+    THEME_CHANGE_REQUESTED = 15
 
 
 class CellContent:
