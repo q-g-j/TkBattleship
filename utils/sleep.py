@@ -8,5 +8,5 @@ def threaded_sleep(function_object, seconds: float) -> None:
         sleep(sec)
         _function_object()
 
-    thread = Thread(target=lambda f=function_object, s=seconds: run(f, s))
+    thread = Thread(target=lambda f=function_object, s=seconds: run(f, s), daemon=True)
     thread.start()

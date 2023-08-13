@@ -1,5 +1,5 @@
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
-from models.enums import Side, Texts
+from models.enums import Texts
 from store.gamestore import GameStore
 from utils.sleep import threaded_sleep
 from views.mainview import MainView
