@@ -7,10 +7,11 @@ from utils.files import Files
 
 class SettingsWriter:
     def __init__(self):
-        self.__settings_folder = Files.get_user_config_folder() + "/" + Paths.SETTINGS_FOLDER
-        self.__settings_file = self.__settings_folder + "/" + Paths.SETTINGS_FILE
+        self.__settings_file = Files.get_settings_file_full_path()
 
     def write(self, settings: Settings) -> None:
+        Files.create_settings_folder()
+        
         settings_dict = settings.to_dict()
         settings_json = json.dumps(settings_dict, indent=4)
 

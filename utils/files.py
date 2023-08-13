@@ -22,25 +22,19 @@ class Files:
 
     @staticmethod
     def get_settings_file_full_path():
-        return "{0}/{1}/{2}".format(Files.get_user_config_folder(), Paths.SETTINGS_FOLDER, Paths.SETTINGS_FILE)
+        return "{0}/{1}/{2}".format(
+            Files.get_user_config_folder(), Paths.SETTINGS_FOLDER, Paths.SETTINGS_FILE
+        )
 
     @staticmethod
-    def create_settings_file():
+    def does_settings_file_exist() -> bool:
+        return os.path.exists(Files.get_settings_file_full_path())
+
+    @staticmethod
+    def create_settings_folder():
         settings_folder = Files.get_user_config_folder() + "/" + Paths.SETTINGS_FOLDER
         try:
             if not os.path.exists(settings_folder):
                 os.makedirs(settings_folder)
         except Exception as e:
             raise Exception(f"Error creating settings folder in {settings_folder}", e)
-
-        settings_file = Files.get_settings_file_full_path()
-
-        if not os.path.exists(settings_file):
-            settings_dict = Settings(40, "scidgreen").to_dict()
-            settings_json = json.dumps(settings_dict, indent=4)
-
-            try:
-                with open(settings_file, "w") as file:
-                    file.write(settings_json)
-            except Exception as e:
-                raise Exception(f"Error writing settings file to {settings_file}", e)

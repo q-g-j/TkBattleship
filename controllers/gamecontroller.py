@@ -1,9 +1,11 @@
+import json
 from ttkthemes import ThemedTk
 
 from factories.commandfactory import CommandFactory
 from factories.eventhandlerfactory import EventHandlerFactory
 from factories.gamefactory import GameFactory
 from factories.singleandmultiplayerfactory import SingleAndMultiplayerFactory
+from models.settings import Settings
 from models.singleplayer import SinglePlayer
 from models.validator import Validator
 from events.eventaggregator import EventAggregator
@@ -32,7 +34,10 @@ class GameController:
         self.__subscribe_events()
 
     def start(self):
-        Files.create_settings_file()
+        if not Files.does_settings_file_exist():
+            settings_writer = self.__injector.resolve(SettingsWriter)
+            settings_writer.write(Settings(40, "scidgreen"))
+        
         settings_reader = self.__injector.resolve(SettingsReader)
         settings = settings_reader.read()
 
