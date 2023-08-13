@@ -26,7 +26,7 @@ class Menu(ViewBase):
         self.__root = root
         self.__event_aggregator = event_aggregator
         self.__theme_var = tk.StringVar()
-        self.__theme_var.set(theme)
+        self.__theme_var.set("Theme: " + theme)
 
     def show(self) -> None:
         label = ttk.Label(
@@ -68,7 +68,7 @@ class Menu(ViewBase):
         ]
         available_themes = sorted(self.__root.get_themes())
 
-        themes = ["Theme: " + theme for theme in available_themes if theme in possible_themes]
+        themes = ["Theme: " + theme for theme in available_themes if theme in possible_themes or theme == "default"]
 
         self.__theme_menu = ttk.OptionMenu(
             self,
