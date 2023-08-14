@@ -53,22 +53,23 @@ I have added a dependency injection service which allows for registering class i
 
 #### Dependency Injection usage example:
 ***Controller:***
-```py
-def __init__(self, root: ThemedTk) -> None:
-    self.__root = root
-    self.__injector = DependencyInjector()
-    self.__register_services()
-
-def __register_services(self) -> None:
-    self.__injector.register_instance(self.__root)
-    self.__injector.add_singleton(MainView)
-    self.__injector.add_singleton(EventAggregator)
-    self.__injector.add_transient(CommandFactory)
-    self.__injector.add_transient(SettingsReader)
+```python
+class GameController:
+    def __init__(self, root: ThemedTk) -> None:
+        self.__root = root
+        self.__injector = DependencyInjector()
+        self.__register_services()
+    
+    def __register_services(self) -> None:
+        self.__injector.register_instance(self.__root)
+        self.__injector.add_singleton(MainView)
+        self.__injector.add_singleton(EventAggregator)
+        self.__injector.add_transient(CommandFactory)
+        self.__injector.add_transient(SettingsReader)
 ```
 
 ***Main view:***
-```py
+```python
 @inject(ThemedTk, EventAggregator, CommandFactory, SettingsReader)
 class MainView(ViewBase):
     def __init__(
