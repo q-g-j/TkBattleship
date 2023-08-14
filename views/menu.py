@@ -27,8 +27,6 @@ class Menu(ViewBase):
         self.__theme_var = tk.StringVar()
         available_themes = self.__root.get_themes()
 
-        print(available_themes)
-
         # I picked a few themes from ttkthemes that actually work with this app:
         picked_themes = [
             "adapta",
