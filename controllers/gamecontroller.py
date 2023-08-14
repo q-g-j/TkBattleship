@@ -37,6 +37,8 @@ class GameController:
         Images.init()
         Fonts.init()
 
+        self.__root.withdraw()
+
         self.__root.title("Battleship")
         self.__root.resizable(False, False)
 
@@ -61,6 +63,9 @@ class GameController:
         main_view.show_menu(1)
 
         StyleDefinitions.init(self.__root, settings)
+
+        self.__root.update()
+        self.__root.deiconify()
 
     def __register_services(self):
         game_factory = GameFactory(lambda: self.__injector.resolve(Game))
