@@ -42,10 +42,7 @@ class GameController:
         self.__root.title("Battleship")
         self.__root.resizable(False, False)
 
-        if OsHelper.get_os() == OS.WINDOWS:
-            self.__root.iconbitmap(ImageFiles.ICON_ICO)
-        else:
-            self.__root.iconphoto(True, Images.ICON)
+        self.__root.iconphoto(True, Images.ICON_PNG)
 
         if not Files.does_settings_file_exist():
             settings_writer = self.__injector.resolve(SettingsWriter)

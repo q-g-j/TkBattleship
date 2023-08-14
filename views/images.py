@@ -14,7 +14,7 @@ class ImageFiles:
     DESTROYED = Files.fixed_path("assets/images/destroyed.png")
     SPLASH = Files.fixed_path("assets/images/splash.png")
 
-    ICON = Files.fixed_path("assets/icons/icon.png")
+    ICON_PNG = Files.fixed_path("assets/icons/icon.png")
     ICON_ICO = Files.fixed_path("assets/icons/icon.ico")
 
 
@@ -28,7 +28,7 @@ class Images(object):
     DESTROYED: tk.Image = None
     SPLASH: tk.Image = None
 
-    ICON: tk.Image = None
+    ICON_PNG: tk.Image = None
 
     @staticmethod
     def init() -> None:
@@ -41,7 +41,7 @@ class Images(object):
         image_destroyed: Image.Image = Image.open(ImageFiles.DESTROYED).resize((25, 25))
         image_splash: Image.Image = Image.open(ImageFiles.SPLASH).resize((25, 25))
 
-        image_icon: Image.Image = Image.open(ImageFiles.ICON)
+        image_icon: Image.Image = Image.open(ImageFiles.ICON_PNG).resize((64, 64))
 
         Images.EMPTY = ImageTk.PhotoImage(image_empty)
         Images.SHIP = ImageTk.PhotoImage(image_ship)
