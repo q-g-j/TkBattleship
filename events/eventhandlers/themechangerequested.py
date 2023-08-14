@@ -14,8 +14,7 @@ class ThemeChangeRequestedEventHandler(EventHandlerBase):
         self.__settings_writer = settings_writer
 
     def execute(self, theme: str) -> None:
-        style = ttk.Style(self.__root)
-        style.theme_use(theme)
+        self.__root.config(theme=theme)
 
         settings = self.__settings_reader.read()
 

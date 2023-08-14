@@ -32,7 +32,6 @@ class Menu(ViewBase):
             "adapta",
             "alt",
             "arc",
-            "breeze",
             "clam",
             "default",
             "elegance",

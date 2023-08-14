@@ -53,6 +53,8 @@ class GameController:
         settings_reader = self.__injector.resolve(SettingsReader)
         settings = settings_reader.read()
 
+        self.__root.config(theme=settings.theme)
+
         main_view = self.__injector.resolve(MainView)
 
         main_view.pack()

@@ -30,15 +30,8 @@ class StyleDefinitions:
     def init(root: ThemedTk, settings: Settings) -> None:
         style: ttk.Style = ttk.Style(root)
 
-        style.theme_use(settings.theme)
-
-        style.configure(
-            StyleDefinitions.MAIN_VIEW_FRAME,
-        )
-        style.configure(
-            StyleDefinitions.NOTATION_FRAME,
-            background="transparent"
-        )
+        style.configure(StyleDefinitions.MAIN_VIEW_FRAME)
+        style.configure(StyleDefinitions.NOTATION_FRAME, background="transparent")
         style.configure(
             StyleDefinitions.MENU_BUTTON,
             foreground="black",
