@@ -6,6 +6,9 @@ Copyright 2023 Jann Emken
 ## Description
 The game is a work-in-progress.
 
+### Download
+Go to [Releases](https://github.com/q-g-j/TkBattleship/releases)
+
 ### Gameplay
 After starting a new game (currently only singleplayer) the player has to place his / her ships:
 
