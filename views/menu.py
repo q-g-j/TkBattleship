@@ -25,8 +25,38 @@ class Menu(ViewBase):
         self.__theme = theme
 
         self.__theme_var = tk.StringVar()
+        available_themes = self.__root.get_themes()
 
-    def show(self) -> None:
+        print(available_themes)
+
+        # I picked a few themes from ttkthemes that actually work with this app:
+        picked_themes = [
+            "adapta",
+            "alt",
+            "arc",
+            "breeze",
+            "clam",
+            "default",
+            "elegance",
+            "keramik",
+            "plastik",
+            "scidblue",
+            "scidgreen",
+            "scidgrey",
+            "scidmint",
+            "scidpink",
+            "scidpurple",
+            "scidsand",
+            "vista",
+            "winnative",
+            "winxpblue",
+            "xpnative",
+            "yaru"
+        ]
+        themes = sorted(["Theme: " + theme for theme in picked_themes if theme in available_themes or theme == "default"])
+        self.__theme_var.set("Theme: " + self.__theme)
+
+        # Setup controls:
         label = ttk.Label(
             self,
             text="Battle Ship",
@@ -48,30 +78,6 @@ class Menu(ViewBase):
         #     style=StyleDefinition.MENU_ITEM_BUTTON,
         #     command=lambda cmd=Command.START_MULTIPLAYER: self.handle_command(cmd)
         # )
-
-        # I picked some from ThemedTk that actually work with this app:
-        possible_themes = [
-            "alt",
-            "default",
-            "keramik",
-            "plastik",
-            "scidblue",
-            "scidgreen",
-            "scidgrey",
-            "scidmint",
-            "scidpink",
-            "scidpurple",
-            "scidsand",
-            "vista",
-            "winnative",
-            "winxpblue",
-            "xpnative",
-        ]
-        available_themes = sorted(self.__root.get_themes())
-
-        themes = ["Theme: " + theme for theme in available_themes if theme in possible_themes or theme == "default"]
-
-        self.__theme_var.set("Theme: " + self.__theme)
 
         theme_menu = ttk.OptionMenu(
             self,
@@ -97,9 +103,9 @@ class Menu(ViewBase):
         theme_menu.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
         button_quit.grid(row=3, column=0, padx=5, pady=5, sticky="ew")
 
-        # Configure column to expand
         self.grid_columnconfigure(0, weight=1)
 
+    def show(self) -> None:
         self.place(relx=0.5, rely=0.5, anchor=tk.CENTER, width=250)
 
     def close(self) -> None:

@@ -92,6 +92,7 @@ class MainView(ViewBase):
                 self.__game_frame,
                 width=self.__settings.cell_size,
                 height=self.__settings.cell_size,
+                style=StyleDefinitions.NOTATION_FRAME
             )
             frame.grid(row=row, column=column)
             frame.grid_propagate(False)

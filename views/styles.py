@@ -9,6 +9,8 @@ from views.fonts import Fonts
 class StyleDefinitions:
     MAIN_VIEW_FRAME = "MainViewFrame.TFrame"
 
+    NOTATION_FRAME = "NotationFrame.TFrame"
+
     MENU_BUTTON = "MenuButton.TButton"
     RANDOM_SHIPS_BUTTON = "RandomShipsButton.TButton"
 
@@ -32,6 +34,10 @@ class StyleDefinitions:
 
         style.configure(
             StyleDefinitions.MAIN_VIEW_FRAME,
+        )
+        style.configure(
+            StyleDefinitions.NOTATION_FRAME,
+            background="transparent"
         )
         style.configure(
             StyleDefinitions.MENU_BUTTON,
