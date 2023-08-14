@@ -16,7 +16,7 @@ from settings.settingswriter import SettingsWriter
 from store.gamestore import GameStore
 from utils.files import Files
 from utils.messagehelper import MessageHelper
-from views.images import Images
+from views.images import ImageFiles, Images
 from utils.oshelper import OsHelper
 from views.fonts import Fonts
 from views.mainview import MainView
@@ -39,7 +39,11 @@ class GameController:
 
         self.__root.title("Battleship")
         self.__root.resizable(False, False)
-        self.__root.iconphoto(True, Images.ICON)
+
+        if OsHelper.get_os() == OS.WINDOWS:
+            self.__root.iconbitmap(ImageFiles.ICON_ICO)
+        else:
+            self.__root.iconphoto(True, Images.ICON)
 
         if not Files.does_settings_file_exist():
             settings_writer = self.__injector.resolve(SettingsWriter)

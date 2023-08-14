@@ -15,6 +15,7 @@ class ImageFiles:
     SPLASH = Files.fixed_path("assets/images/splash.png")
 
     ICON = Files.fixed_path("assets/icons/icon.png")
+    ICON_ICO = Files.fixed_path("assets/icons/icon.ico")
 
 
 class Images(object):
@@ -51,4 +52,4 @@ class Images(object):
         Images.DESTROYED = ImageTk.PhotoImage(image_destroyed)
         Images.SPLASH = ImageTk.PhotoImage(image_splash)
 
-        Images.ICON = ImageTk.PhotoImage(image_icon)
+        Images.ICON_PNG = ImageTk.PhotoImage(image_icon)
