@@ -43,35 +43,44 @@ Fonts:
 
 This is a practice project to implement the MVC pattern in a TKinter application while following some OOP related principles. It uses the event aggregator pattern for state change notifications between the models, the views and the controller.
 
-I have added a dependency injection service which allows for registering class instances and resolving them via constructor injection.
-
-#### Dependency Injection usage example:
-**Controller:**
-```py
-def __init__(self, root: Tk) -> None:
-    self.__root = root
-    self.__injector = DependencyInjector()
-
-    self.__injector.register_instance(self.__root)
-    self.__injector.add_singleton(EventAggregator)
-    self.__injector.add_singleton(CommandFactory)
-```
-
-**Main view:**
-```py
-@inject(Tk, EventAggregator, CommandFactory)
-class MainView(ViewBase):
-    def __init__(
-        self,
-        root: Tk,
-        event_aggregator: EventAggregator,
-        command_factory: CommandFactory,
-    ) -> None:
-```
-
-
 The views make use of the command pattern for their button commands similar to the ICommand interface from WPF.
 
 Both the event handlers and the commands have been put in their own modules and are retrieved through factory methods to keep the other components as clean as possible.
 
 A REST API multiplayer mode using Flask is in development. Currently only a simple single player mode is done.
+
+I have added a dependency injection service which allows for registering class instances and resolving them via constructor injection.
+
+#### Dependency Injection usage example:
+***Controller:***
+```py
+def __init__(self, root: ThemedTk) -> None:
+    self.__root = root
+    self.__injector = DependencyInjector()
+    self.__register_services()
+
+def __register_services(self) -> None:
+    self.__injector.register_instance(self.__root)
+    self.__injector.add_singleton(MainView)
+    self.__injector.add_singleton(EventAggregator)
+    self.__injector.add_transient(CommandFactory)
+    self.__injector.add_transient(SettingsReader)
+```
+
+***Main view:***
+```py
+@inject(ThemedTk, EventAggregator, CommandFactory, SettingsReader)
+class MainView(ViewBase):
+    def __init__(
+        self,
+        root: ThemedTk,
+        event_aggregator: EventAggregator,
+        command_factory: CommandFactory,
+        settings_reader: SettingsReader,
+    ) -> None:
+        super().__init__(root, command_factory, style=StyleDefinitions.MAIN_VIEW_FRAME, padding=20)
+        self.__root = root
+        self.__event_aggregator = event_aggregator
+        self.__command_factory = command_factory
+        self.__settings_reader = settings_reader
+```
