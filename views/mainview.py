@@ -4,12 +4,11 @@ from PIL import ImageTk
 from ttkthemes import ThemedTk
 
 from factories.commandfactory import CommandFactory
-from models.images import Images
+from views.images import Images
 from events.eventaggregator import EventAggregator
 from models.enums import Command, Orientation, NotationColumns, Side, Event
 from models.position import Position
 from models.ship import Ship
-from models.settings import Settings
 from services.injector import inject
 from settings.settingsreader import SettingsReader
 from views.cell import Cell

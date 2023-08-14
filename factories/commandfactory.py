@@ -2,6 +2,7 @@ from commands.commandbase import CommandBase
 from commands.mainview.cellclicked import CellClickedCommand
 from commands.mainview.menubuttonclicked import MenuButtonClickedCommand
 from commands.mainview.randomshipsbuttonclicked import RandomShipsButtonClickedCommand
+from commands.menuview.changetheme import ChangeThemeCommand
 from commands.menuview.quitgame import QuitGameCommand
 from commands.menuview.startmultiplayer import StartMultiplayerCommand
 from commands.menuview.startsingleplayer import StartSingleplayerCommand
@@ -31,3 +32,5 @@ class CommandFactory:
                 return StartSingleplayerCommand(self.__event_aggregator)
             if command == Command.START_SINGLEPLAYER:
                 return StartMultiplayerCommand(self.__event_aggregator)
+            if command == Command.CHANGE_THEME:
+                return ChangeThemeCommand(self.__event_aggregator)

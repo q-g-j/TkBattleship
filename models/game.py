@@ -2,7 +2,7 @@ from random import shuffle, choice
 
 from factories.singleandmultiplayerfactory import SingleAndMultiplayerFactory
 from models.enums import *
-from models.images import Images
+from views.images import Images
 from models.position import Position
 from models.ship import Ship
 from events.eventaggregator import EventAggregator

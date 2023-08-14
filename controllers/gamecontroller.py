@@ -1,4 +1,3 @@
-import json
 from ttkthemes import ThemedTk
 
 from factories.commandfactory import CommandFactory
@@ -17,7 +16,7 @@ from settings.settingswriter import SettingsWriter
 from store.gamestore import GameStore
 from utils.files import Files
 from utils.messagehelper import MessageHelper
-from models.images import Images
+from views.images import Images
 from utils.oshelper import OsHelper
 from views.fonts import Fonts
 from views.mainview import MainView

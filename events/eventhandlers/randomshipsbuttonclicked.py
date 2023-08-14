@@ -1,6 +1,6 @@
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from models.enums import GameState, Side, Texts
-from models.images import Images
+from views.images import Images
 from models.validator import Validator
 from store.gamestore import GameStore
 from views.mainview import MainView

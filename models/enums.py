@@ -21,7 +21,8 @@ class Command(Enum):
     # Menu:
     START_SINGLEPLAYER = 4
     START_MULTIPLAYER = 5
-    QUIT_GAME = 6
+    CHANGE_THEME = 6
+    QUIT_GAME = 7
 
 
 class Event(Enum):

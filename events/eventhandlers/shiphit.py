@@ -1,7 +1,7 @@
 from events.eventaggregator import EventAggregator
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from models.enums import Side, GameState, Texts, Event
-from models.images import Images
+from views.images import Images
 from models.position import Position
 from models.validator import Validator
 from store.gamestore import GameStore

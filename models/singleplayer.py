@@ -1,7 +1,7 @@
 import random
 
 from models.enums import Event, Side, Orientation
-from models.images import Images
+from views.images import Images
 from models.position import Position
 from models.validator import Validator
 from events.eventaggregator import EventAggregator
