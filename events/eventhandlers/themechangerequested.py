@@ -1,10 +1,10 @@
 from tkinter import ttk
 from ttkthemes import ThemedTk
+
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
-from models.settings import Settings
 from settings.settingsreader import SettingsReader
 from settings.settingswriter import SettingsWriter
-import views.styles
+from views.styles import StyleDefinitions
 
 
 class ThemeChangeRequestedEventHandler(EventHandlerBase):
@@ -23,4 +23,4 @@ class ThemeChangeRequestedEventHandler(EventHandlerBase):
             settings.theme = theme
             self.__settings_writer.write(settings)
 
-        views.styles.StyleDefinitions.init(self.__root, settings)
+        StyleDefinitions.init(self.__root, settings)

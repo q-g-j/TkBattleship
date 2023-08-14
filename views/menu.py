@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-
 from ttkthemes import ThemedTk
 
 from events.eventaggregator import EventAggregator
@@ -13,16 +12,14 @@ from views.viewbase import ViewBase
 
 class Menu(ViewBase):
     def __init__(
-            self,
-            root: ThemedTk,
-            field_frame: ttk.Frame,
-            event_aggregator: EventAggregator,
-            command_factory: CommandFactory,
-            theme: str,
+        self,
+        root: ThemedTk,
+        field_frame: ttk.Frame,
+        event_aggregator: EventAggregator,
+        command_factory: CommandFactory,
+        theme: str,
     ) -> None:
-        super().__init__(
-            field_frame, command_factory, style=StyleDefinitions.MENU_FRAME, padding=20
-        )
+        super().__init__(field_frame, command_factory, style=StyleDefinitions.MENU_FRAME, padding=20)
         self.__root = root
         self.__event_aggregator = event_aggregator
         self.__theme = theme
@@ -72,11 +69,7 @@ class Menu(ViewBase):
         ]
         available_themes = sorted(self.__root.get_themes())
 
-        themes = [
-            "Theme: " + theme
-            for theme in available_themes
-            if theme in possible_themes or theme == "default"
-        ]
+        themes = ["Theme: " + theme for theme in available_themes if theme in possible_themes or theme == "default"]
 
         self.__theme_var.set("Theme: " + self.__theme)
 
@@ -87,8 +80,7 @@ class Menu(ViewBase):
             *themes,
             direction="right",
             style=StyleDefinitions.MENU_ITEM_BUTTON,
-            command=lambda event:
-            self._handle_command(Command.CHANGE_THEME, self.__get_theme_from_var())
+            command=lambda event: self._handle_command(Command.CHANGE_THEME, self.__get_theme_from_var())
         )
 
         button_quit = ttk.Button(

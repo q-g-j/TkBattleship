@@ -3,7 +3,7 @@ from typing import Callable
 
 
 class SingleAndMultiplayerFactory:
-    def __init__(self, singleplayer_resolver: Callable):
+    def __init__(self, singleplayer_resolver: Callable) -> None:
         self.__singleplayer_resolver = singleplayer_resolver
 
     def get_singleplayer(self) -> SinglePlayer:

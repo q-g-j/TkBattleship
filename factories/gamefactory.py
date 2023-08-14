@@ -3,7 +3,7 @@ from typing import Callable
 
 
 class GameFactory:
-    def __init__(self, game_resolver: Callable):
+    def __init__(self, game_resolver: Callable) -> None:
         self.__game_resolver = game_resolver
 
     def get_game(self) -> Game:

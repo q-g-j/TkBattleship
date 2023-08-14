@@ -8,16 +8,6 @@ from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from events.eventhandlers.quitbuttonclicked import QuitButtonClickedEventHandler
 from events.eventhandlers.statuslabeltextsent import StatusLabelTextSentEventHandler
 from events.eventhandlers.themechangerequested import ThemeChangeRequestedEventHandler
-from factories.gamefactory import GameFactory
-from models.enums import Event
-from models.validator import Validator
-from services.injector import inject
-from store.gamestore import GameStore
-from utils.messagehelper import MessageHelper
-from views.mainview import MainView
-from settings.settingsreader import SettingsReader
-from settings.settingswriter import SettingsWriter
-
 from events.eventhandlers.menubuttonclicked import MenuButtonClickedEventHandler
 from events.eventhandlers.randomshipsbuttonvisibilitychanged import (
     RandomShipsButtonVisiblityChangedEventHandler,
@@ -37,6 +27,15 @@ from events.eventhandlers.randomshipsbuttonclicked import (
 from events.eventhandlers.multiplayerbuttonclicked import (
     MultiplayerButtonClickedEventHandler,
 )
+from factories.gamefactory import GameFactory
+from models.enums import Event
+from models.validator import Validator
+from services.injector import inject
+from store.gamestore import GameStore
+from utils.messagehelper import MessageHelper
+from views.mainview import MainView
+from settings.settingsreader import SettingsReader
+from settings.settingswriter import SettingsWriter
 
 
 @inject(
@@ -95,7 +94,7 @@ class EventHandlerFactory:
             return MessageBoxTextSentEventHandler(self.__main_view)
 
         if event == Event.MESSAGEBOX_CLOSE_REQUESTED:
-            return MessageBoxCloseRequestedEventHandler(self.__main_view, self.__event_aggregator)
+            return MessageBoxCloseRequestedEventHandler(self.__main_view)
 
         if event == Event.CELL_IMAGE_SET:
             return CellImageSetEventHandler(self.__main_view)

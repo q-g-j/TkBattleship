@@ -1,9 +1,8 @@
 import tkinter
 from tkinter import ttk
-
 from ttkthemes import ThemedTk
-from models.settings import Settings
 
+from models.settings import Settings
 from views.fonts import Fonts
 
 
@@ -41,10 +40,7 @@ class StyleDefinitions:
             padding=(15, 0, 15, 0),
         )
         style.configure(
-            StyleDefinitions.RANDOM_SHIPS_BUTTON,
-            foreground="black",
-            font=(Fonts.SELAWIK, 13),
-            padding=(15, 0, 15, 0)
+            StyleDefinitions.RANDOM_SHIPS_BUTTON, foreground="black", font=(Fonts.SELAWIK, 13), padding=(15, 0, 15, 0)
         )
         style.configure(StyleDefinitions.STATUS_LABEL, padding=(15, 0, 15, 0))
         style.configure(StyleDefinitions.MENU_FRAME, width=100, relief="solid")

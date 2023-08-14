@@ -1,11 +1,11 @@
 from random import shuffle, choice
 
+from events.eventaggregator import EventAggregator
 from factories.singleandmultiplayerfactory import SingleAndMultiplayerFactory
-from models.enums import *
 from views.images import Images
+from models.enums import *
 from models.position import Position
 from models.ship import Ship
-from events.eventaggregator import EventAggregator
 from models.singleplayer import SinglePlayer
 from services.injector import inject
 from utils.messagehelper import MessageHelper
@@ -13,8 +13,12 @@ from utils.messagehelper import MessageHelper
 
 @inject(EventAggregator, SingleAndMultiplayerFactory, MessageHelper)
 class Game:
-    def __init__(self, event_aggregator: EventAggregator, single_and_multiplayerfactory: SingleAndMultiplayerFactory,
-                 message_helper: MessageHelper) -> None:
+    def __init__(
+        self,
+        event_aggregator: EventAggregator,
+        single_and_multiplayerfactory: SingleAndMultiplayerFactory,
+        message_helper: MessageHelper,
+    ) -> None:
         self.__event_aggregator = event_aggregator
         self.__single_and_multiplayerfactory = single_and_multiplayerfactory
         self.__message_helper = message_helper
@@ -88,8 +92,7 @@ class Game:
         if len(current_ship.positions) == 0:
             if validator.has_adjacent_cells_occupied(Side.LEFT, pos):
                 return
-            fits_in_direction = validator.does_ship_fit_at_position(Side.LEFT, pos,
-                                                                    current_ship.length)
+            fits_in_direction = validator.does_ship_fit_at_position(Side.LEFT, pos, current_ship.length)
             if fits_in_direction == Orientation.NONE:
                 self.__fits_in_direction = Orientation.NONE
                 return
@@ -116,14 +119,11 @@ class Game:
 
             if self.num_placed_player_ships == len(ships):
                 self.__event_aggregator.publish(Event.RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED, False)
-                self.__event_aggregator.publish(Event.STATUS_LABEL_TEXT_SENT,
-                                                Texts.STATUS_LABEL_PLAYER_TURN)
+                self.__event_aggregator.publish(Event.STATUS_LABEL_TEXT_SENT, Texts.STATUS_LABEL_PLAYER_TURN)
                 self.__message_helper.show(Side.LEFT, [Texts.GAME_STARTED], 0.1)
                 self.game_state = GameState.SINGLEPLAYER
             else:
-                self.show_message_place_ship(
-                    ships[self.num_placed_player_ships], 0.1
-                )
+                self.show_message_place_ship(ships[self.num_placed_player_ships], 0.1)
 
     def place_random_ships(self, validator, side: Side) -> None:
         ships = []
@@ -152,13 +152,9 @@ class Game:
             for ship in ships:
                 is_ship_placed = False
                 ship.orientation = choice([Orientation.HORIZONTAL, Orientation.VERTICAL])
-                possible_rows = list(
-                    range(10 if ship.orientation == Orientation.HORIZONTAL else 10 - ship.length)
-                )
+                possible_rows = list(range(10 if ship.orientation == Orientation.HORIZONTAL else 10 - ship.length))
                 shuffle(possible_rows)
-                possible_columns = list(
-                    range(10 if ship.orientation == Orientation.VERTICAL else 10 - ship.length)
-                )
+                possible_columns = list(range(10 if ship.orientation == Orientation.VERTICAL else 10 - ship.length))
                 shuffle(possible_columns)
                 for row in possible_rows:
                     if is_ship_placed:
@@ -174,8 +170,9 @@ class Game:
                             else:
                                 positions.append(Position(row + i, column))
                         for pos in positions:
-                            if playing_field[pos.row][pos.col] != CellContent.EMPTY \
-                                    or validator.has_adjacent_cells_occupied(side, pos):
+                            if playing_field[pos.row][
+                                pos.col
+                            ] != CellContent.EMPTY or validator.has_adjacent_cells_occupied(side, pos):
                                 do_place = False
                                 break
                         if do_place:
@@ -192,14 +189,14 @@ class Game:
         message = "Place a {0} (length: {1})".format(ship.name, ship.length)
         self.__message_helper.show(Side.LEFT, [message], delay)
 
-    def singleplayer_make_ai_move(self):
+    def singleplayer_make_ai_move(self) -> None:
         self.__singleplayer.ai_make_move()
         self.whose_turn = Side.LEFT
 
         if not self.game_state == GameState.GAME_OVER:
             self.__event_aggregator.publish(Event.STATUS_LABEL_TEXT_SENT, Texts.STATUS_LABEL_PLAYER_TURN)
 
-    def start_singleplayer(self, validator):
+    def start_singleplayer(self, validator) -> None:
         self.__singleplayer = self.__single_and_multiplayerfactory.get_singleplayer()
 
         self.game_state = GameState.PLAYER_PLACING_SHIPS
@@ -209,6 +206,4 @@ class Game:
 
         self.__event_aggregator.publish(Event.STATUS_LABEL_TEXT_SENT, Texts.STATUS_LABEL_SINGLEPLAYER_STARTED)
 
-        self.__event_aggregator.publish(
-            Event.RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED, True
-        )
+        self.__event_aggregator.publish(Event.RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED, True)

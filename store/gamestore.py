@@ -5,5 +5,5 @@ if TYPE_CHECKING:
 
 
 class GameStore:
-    def __init__(self):
+    def __init__(self) -> None:
         self.game: Game | None = None

@@ -1,4 +1,3 @@
-from PIL import Image, ImageTk
 from ttkthemes import ThemedTk
 
 from controllers.gamecontroller import GameController

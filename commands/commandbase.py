@@ -1,3 +1,3 @@
 class CommandBase:
-    def execute(self, *args):
+    def execute(self, *args) -> None:
         pass

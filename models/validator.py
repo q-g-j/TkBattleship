@@ -8,14 +8,14 @@ from store.gamestore import GameStore
 
 @inject(GameStore)
 class Validator:
-    def __init__(self, game_store: GameStore):
+    def __init__(self, game_store: GameStore) -> None:
         self.__game_store = game_store
 
     def has_adjacent_cells_occupied(
-            self,
-            side: Side,
-            pos: Position,
-            except_positions: list = None,
+        self,
+        side: Side,
+        pos: Position,
+        except_positions: list = None,
     ) -> bool:
         if not except_positions:
             except_positions: list[Position] = []
@@ -34,9 +34,7 @@ class Validator:
                             return True
         return False
 
-    def get_adjacent_cells_free_ns(
-            self, side: Side, ship: Ship, except_positions: list = None
-    ) -> list:
+    def get_adjacent_cells_free_ns(self, side: Side, ship: Ship, except_positions: list = None) -> list:
         adjacent_positions = []
 
         if side == Side.LEFT:
@@ -59,16 +57,12 @@ class Validator:
         ]:
             if 0 <= pos.row <= 9:
                 if playing_field[pos.row][pos.col] == CellContent.EMPTY:
-                    if not self.has_adjacent_cells_occupied(
-                            side, pos, except_positions
-                    ):
+                    if not self.has_adjacent_cells_occupied(side, pos, except_positions):
                         adjacent_positions.append(pos)
 
         return adjacent_positions
 
-    def get_adjacent_cells_free_we(
-            self, side: Side, ship: Ship, except_positions: list = None
-    ) -> list:
+    def get_adjacent_cells_free_we(self, side: Side, ship: Ship, except_positions: list = None) -> list:
         adjacent_positions = []
 
         if side == Side.LEFT:
@@ -91,16 +85,12 @@ class Validator:
         ]:
             if 0 <= pos.col <= 9:
                 if playing_field[pos.row][pos.col] == CellContent.EMPTY:
-                    if not self.has_adjacent_cells_occupied(
-                            side, pos, except_positions
-                    ):
+                    if not self.has_adjacent_cells_occupied(side, pos, except_positions):
                         adjacent_positions.append(pos)
 
         return adjacent_positions
 
-    def get_adjacent_cells_free_nwse(
-            self, side: Side, pos: Position, except_positions: list = None
-    ) -> list:
+    def get_adjacent_cells_free_nwse(self, side: Side, pos: Position, except_positions: list = None) -> list:
         adjacent_positions = []
 
         if side == Side.LEFT:
@@ -116,9 +106,7 @@ class Validator:
         ]:
             if 0 <= pos.row <= 9 and 0 <= pos.col <= 9:
                 if playing_field[pos.row][pos.col] == CellContent.EMPTY:
-                    if not self.has_adjacent_cells_occupied(
-                            side, pos, except_positions
-                    ):
+                    if not self.has_adjacent_cells_occupied(side, pos, except_positions):
                         adjacent_positions.append(pos)
 
         return adjacent_positions
@@ -146,16 +134,13 @@ class Validator:
             Position(pos.row, pos.col + 1),
             Position(pos.row + 1, pos.col),
             Position(pos.row, pos.col - 1),
-
         ]:
             if 0 <= adj_pos.row < 10 and 0 <= adj_pos.col < 10:
                 if from_positions is None or adj_pos in from_positions:
                     adjacent_positions.append(adj_pos)
         return adjacent_positions
 
-    def does_ship_fit_at_position(
-            self, side: Side, pos: Position, length: int
-    ) -> Orientation:
+    def does_ship_fit_at_position(self, side: Side, pos: Position, length: int) -> Orientation:
         if side == Side.LEFT:
             playing_field = self.__game_store.game.playing_field_player
         else:
@@ -202,9 +187,7 @@ class Validator:
                         break
                     remaining: list[Position] = []
                     for c2 in range(pos.col - i, pos.col + length - i):
-                        if not self.has_adjacent_cells_occupied(
-                                side, Position(pos.row, c2)
-                        ):
+                        if not self.has_adjacent_cells_occupied(side, Position(pos.row, c2)):
                             remaining.append(Position(pos.row, c2))
                     if len(remaining) == length:
                         return True
@@ -221,9 +204,7 @@ class Validator:
                         break
                     remaining: list[Position] = []
                     for c2 in range(pos.col - length + 1 + i, pos.col + i + 1):
-                        if not self.has_adjacent_cells_occupied(
-                                side, Position(pos.row, c2)
-                        ):
+                        if not self.has_adjacent_cells_occupied(side, Position(pos.row, c2)):
                             remaining.append(Position(pos.row, c2))
                     if len(remaining) == length:
                         return True
@@ -245,9 +226,7 @@ class Validator:
                         break
                     remaining: list[Position] = []
                     for r2 in range(pos.row - i, pos.row + length - i):
-                        if not self.has_adjacent_cells_occupied(
-                                side, Position(r2, pos.col)
-                        ):
+                        if not self.has_adjacent_cells_occupied(side, Position(r2, pos.col)):
                             remaining.append(Position(r2, pos.col))
                     if len(remaining) == length:
                         return True
@@ -264,9 +243,7 @@ class Validator:
                         break
                     remaining: list[Position] = []
                     for r2 in range(pos.row - length + 1 + i, pos.row + i + 1):
-                        if not self.has_adjacent_cells_occupied(
-                                side, Position(r2, pos.col)
-                        ):
+                        if not self.has_adjacent_cells_occupied(side, Position(r2, pos.col)):
                             remaining.append(Position(r2, pos.col))
                     if len(remaining) == length:
                         return True
@@ -363,13 +340,9 @@ class Validator:
             current_ship.orientation = self.get_ship_orientation_from_positions(positions[0], positions[1])
 
         if current_ship.orientation == Orientation.HORIZONTAL:
-            return self.get_adjacent_cells_free_we(
-                Side.LEFT, current_ship, current_ship.positions
-            )
+            return self.get_adjacent_cells_free_we(Side.LEFT, current_ship, current_ship.positions)
         if current_ship.orientation == Orientation.VERTICAL:
-            return self.get_adjacent_cells_free_ns(
-                Side.LEFT, current_ship, current_ship.positions
-            )
+            return self.get_adjacent_cells_free_ns(Side.LEFT, current_ship, current_ship.positions)
 
     def is_position_hit(self, side, pos) -> bool:
         hit_positions: list[Position] | None = None

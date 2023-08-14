@@ -5,5 +5,5 @@ class MultiplayerButtonClickedEventHandler(EventHandlerBase):
     def __init__(self) -> None:
         pass
 
-    def execute(self):
+    def execute(self) -> None:
         pass

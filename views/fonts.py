@@ -6,5 +6,5 @@ class Fonts:
     SELAWIK = "Selawk"
 
     @staticmethod
-    def init():
+    def init() -> None:
         pyglet.font.add_file(Files.fixed_path("assets/fonts/Selawik/selawk.ttf"))

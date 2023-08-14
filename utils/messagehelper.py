@@ -6,7 +6,7 @@ from services.injector import inject
 
 @inject(EventAggregator)
 class MessageHelper:
-    def __init__(self, event_aggregator: EventAggregator):
+    def __init__(self, event_aggregator: EventAggregator) -> None:
         self.__event_aggregator = event_aggregator
 
     def show(self, side: Side, messages: list, delay: float = 0, ai_next=False) -> None:

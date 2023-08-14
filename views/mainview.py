@@ -3,21 +3,21 @@ from tkinter import ttk
 from PIL import ImageTk
 from ttkthemes import ThemedTk
 
-from factories.commandfactory import CommandFactory
-from views.images import Images
 from events.eventaggregator import EventAggregator
+from factories.commandfactory import CommandFactory
 from models.enums import Command, Orientation, NotationColumns, Side, Event
 from models.position import Position
 from models.ship import Ship
 from services.injector import inject
 from settings.settingsreader import SettingsReader
+from utils.sleep import threaded_sleep
 from views.cell import Cell
 from views.fonts import Fonts
+from views.images import Images
 from views.menu import Menu
 from views.messagebox import MessageBox
 from views.styles import StyleDefinitions
 from views.viewbase import ViewBase
-from utils.sleep import threaded_sleep
 
 
 @inject(ThemedTk, EventAggregator, CommandFactory, SettingsReader)
@@ -29,9 +29,7 @@ class MainView(ViewBase):
         command_factory: CommandFactory,
         settings_reader: SettingsReader,
     ) -> None:
-        super().__init__(
-            root, command_factory, style=StyleDefinitions.MAIN_VIEW_FRAME, padding=20
-        )
+        super().__init__(root, command_factory, style=StyleDefinitions.MAIN_VIEW_FRAME, padding=20)
         self.__root = root
         self.__event_aggregator = event_aggregator
         self.__command_factory = command_factory
@@ -51,9 +49,7 @@ class MainView(ViewBase):
             self.__toolbar_frame,
             text="Random ships",
             takefocus=False,
-            command=lambda cmd=Command.RANDOM_SHIPS_BUTTON_CLICKED: self._handle_command(
-                cmd
-            ),
+            command=lambda cmd=Command.RANDOM_SHIPS_BUTTON_CLICKED: self._handle_command(cmd),
             style=StyleDefinitions.RANDOM_SHIPS_BUTTON,
         )
         self.__status_label = ttk.Label(
@@ -143,7 +139,7 @@ class MainView(ViewBase):
                     inner_list.append(cell)
                 cells.append(inner_list)
 
-    def change_random_ships_button_visibility(self, toggle: bool):
+    def change_random_ships_button_visibility(self, toggle: bool) -> None:
         if toggle:
             self.__random_ships_button.grid(row=0, column=1, padx=(10, 0))
         else:
@@ -175,17 +171,13 @@ class MainView(ViewBase):
                 if side & Side.RIGHT == Side.RIGHT:
                     self.__cells_opponent[row][column].button.config(image=Images.EMPTY)
 
-    def set_cell_image(
-        self, side: Side, pos: Position, image: ImageTk.PhotoImage
-    ) -> None:
+    def set_cell_image(self, side: Side, pos: Position, image: ImageTk.PhotoImage) -> None:
         if side == Side.LEFT:
             cells = self.__cells_player
         elif side == Side.RIGHT:
             cells = self.__cells_opponent
         else:
-            raise Exception(
-                'Invalid value for param "side". Must be Side.LEFT or Side.RIGHT.'
-            )
+            raise Exception('Invalid value for param "side". Must be Side.LEFT or Side.RIGHT.')
         cells[pos.row][pos.col].button.config(image=image)
 
     def mark_ship_destroyed(self, side: Side, ship: Ship) -> None:
@@ -194,13 +186,11 @@ class MainView(ViewBase):
         elif side == Side.RIGHT:
             cells = self.__cells_opponent
         else:
-            raise Exception(
-                'Invalid value for param "side". Must be Side.LEFT or Side.RIGHT.'
-            )
+            raise Exception('Invalid value for param "side". Must be Side.LEFT or Side.RIGHT.')
         for hit_pos in ship.hit_positions:
             cells[hit_pos.row][hit_pos.col].button.config(image=Images.DESTROYED)
 
-    def set_status_label_text(self, text: str):
+    def set_status_label_text(self, text: str) -> None:
         self.__status_label.configure(text=text)
 
     def show_messagebox(self, side: Side, messages: list, ai_next=False) -> None:
@@ -216,9 +206,7 @@ class MainView(ViewBase):
 
         if self.__messagebox is not None:
             self.close_messagebox()
-        self.__messagebox = MessageBox(
-            frame, self.__event_aggregator, self.__command_factory
-        )
+        self.__messagebox = MessageBox(frame, self.__event_aggregator, self.__command_factory)
         self.__messagebox.show(messages)
 
     def close_messagebox(self) -> None:

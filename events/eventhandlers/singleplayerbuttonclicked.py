@@ -14,7 +14,7 @@ class SinglePlayerButtonClickedEventHandler(EventHandlerBase):
         self.__game_store = game_store
         self.__validator = validator
 
-    def execute(self):
+    def execute(self) -> None:
         self.__main_view.close_menu()
         self.__main_view.clear_cells(Side.BOTH)
         self.__game_store.game = self.__game_factory.get_game()

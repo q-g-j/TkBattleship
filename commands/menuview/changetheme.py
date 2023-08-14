@@ -7,7 +7,7 @@ class ChangeThemeCommand(CommandBase):
     def __init__(self, event_aggregator: EventAggregator) -> None:
         self.__event_aggregator = event_aggregator
 
-    def execute(self, theme: str):
+    def execute(self, theme: str) -> None:
         self.__event_aggregator.publish(
             Event.THEME_CHANGE_REQUESTED, theme
         )

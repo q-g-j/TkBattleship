@@ -3,5 +3,5 @@ class Settings:
         self.cell_size = cell_size
         self.theme = theme
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {"cell_size": self.cell_size, "theme": self.theme}

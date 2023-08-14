@@ -1,24 +1,30 @@
 from events.eventaggregator import EventAggregator
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from models.enums import Side, GameState, Texts, Event
-from views.images import Images
 from models.position import Position
 from models.validator import Validator
 from store.gamestore import GameStore
 from utils.messagehelper import MessageHelper
+from views.images import Images
 from views.mainview import MainView
 
 
 class ShipHitEventHandler(EventHandlerBase):
-    def __init__(self, main_view: MainView, game_store: GameStore, validator: Validator,
-                 message_helper: MessageHelper, event_aggregator: EventAggregator) -> None:
+    def __init__(
+        self,
+        main_view: MainView,
+        game_store: GameStore,
+        validator: Validator,
+        message_helper: MessageHelper,
+        event_aggregator: EventAggregator,
+    ) -> None:
         self.__main_view = main_view
         self.__game_store = game_store
         self.__validator = validator
         self.__message_helper = message_helper
         self.__event_aggregator = event_aggregator
 
-    def execute(self, side: Side, pos: Position):
+    def execute(self, side: Side, pos: Position) -> None:
         hit_positions: list[Position] | None = None
         if side == Side.LEFT:
             hit_positions = self.__game_store.game.hit_positions_player

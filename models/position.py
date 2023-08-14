@@ -7,13 +7,13 @@ class Position:
         self.row = row
         self.col = column
 
-    def __eq__(self, other: Position):
+    def __eq__(self, other: Position) -> bool:
         return True if self.row == other.row and self.col == other.col else False
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"({NotationColumns[self.col + 1]}, {self.row + 1})"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"({NotationColumns[self.col + 1]}, {self.row + 1})"
 
     def is_left_of(self, other: Position) -> bool:

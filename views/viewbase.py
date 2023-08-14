@@ -5,7 +5,7 @@ from models.enums import Command
 
 
 class ViewBase(ttk.Frame):
-    def __init__(self, parent, command_factory: CommandFactory, **kwargs):
+    def __init__(self, parent, command_factory: CommandFactory, **kwargs) -> None:
         super().__init__(parent, **kwargs)
         self.__command_factory = command_factory
 

@@ -1,28 +1,28 @@
+from models.enums import Side, GameState, Event
 from events.eventaggregator import EventAggregator
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
-from models.enums import Side, GameState, Event
-from views.images import Images
 from models.position import Position
 from models.validator import Validator
 from store.gamestore import GameStore
 from utils.sleep import threaded_sleep
+from views.images import Images
 from views.mainview import MainView
 
 
 class CellClickedEventHandler(EventHandlerBase):
     def __init__(
-            self,
-            main_view: MainView,
-            game_store: GameStore,
-            validator: Validator,
-            event_aggregator: EventAggregator,
+        self,
+        main_view: MainView,
+        game_store: GameStore,
+        validator: Validator,
+        event_aggregator: EventAggregator,
     ) -> None:
         self.__main_view = main_view
         self.__game_store = game_store
         self.__validator = validator
         self.__event_aggregator = event_aggregator
 
-    def execute(self, side: Side, pos: Position):
+    def execute(self, side: Side, pos: Position) -> None:
         if self.__game_store.game is None:
             return
 
@@ -33,32 +33,26 @@ class CellClickedEventHandler(EventHandlerBase):
                 return
 
         # close the messagebox if open and RETURN:
-        if (
-                self.__main_view.is_messagebox_open
-                and not self.__game_store.game.game_state == GameState.GAME_OVER
-        ):
+        if self.__main_view.is_messagebox_open and not self.__game_store.game.game_state == GameState.GAME_OVER:
             self.__main_view.close_messagebox()
             return
 
         # don't allow cell clicks on first run and game over:
         if self.__game_store.game.game_state in (
-                GameState.FIRST_RUN,
-                GameState.GAME_OVER,
+            GameState.FIRST_RUN,
+            GameState.GAME_OVER,
         ):
             return
 
         # when game has started don't allow to click on the left side:
-        if (
-                self.__game_store.game.game_state in (GameState.SINGLEPLAYER, GameState.MULTIPLAYER)
-                and (side == Side.LEFT)
-        ):
+        if self.__game_store.game.game_state in (GameState.SINGLEPLAYER, GameState.MULTIPLAYER) and (side == Side.LEFT):
             return
 
         # don't allow clicks on the right side, when it's the right player's turn:
         if (
-                self.__game_store.game.game_state in (GameState.SINGLEPLAYER, GameState.MULTIPLAYER)
-                and side == Side.RIGHT
-                and self.__game_store.game.whose_turn == Side.RIGHT
+            self.__game_store.game.game_state in (GameState.SINGLEPLAYER, GameState.MULTIPLAYER)
+            and side == Side.RIGHT
+            and self.__game_store.game.whose_turn == Side.RIGHT
         ):
             return
 
@@ -93,7 +87,7 @@ class CellClickedEventHandler(EventHandlerBase):
 
                 # singleplayer mode: let the AI make it's move:
                 if (
-                        self.__game_store.game.game_state == GameState.SINGLEPLAYER
-                        and not self.__main_view.is_messagebox_open
+                    self.__game_store.game.game_state == GameState.SINGLEPLAYER
+                    and not self.__main_view.is_messagebox_open
                 ):
                     threaded_sleep(clear_image_and_make_ai_move, 0.5)

@@ -1,19 +1,17 @@
 import random
 
+from events.eventaggregator import EventAggregator
 from models.enums import Event, Side, Orientation
-from views.images import Images
 from models.position import Position
 from models.validator import Validator
-from events.eventaggregator import EventAggregator
 from services.injector import inject
 from utils.sleep import threaded_sleep
+from views.images import Images
 
 
 @inject(EventAggregator, Validator)
 class SinglePlayer:
-    def __init__(
-            self, event_aggregator: EventAggregator, validator: Validator
-    ) -> None:
+    def __init__(self, event_aggregator: EventAggregator, validator: Validator) -> None:
         self.__event_aggregator = event_aggregator
         self.__validator = validator
 
@@ -29,7 +27,7 @@ class SinglePlayer:
                 if pos not in self.__ai_all_positions_to_try:
                     self.__ai_all_positions_to_try.append(Position(row, col))
 
-    def __ai_place_mark(self, pos: Position):
+    def __ai_place_mark(self, pos: Position) -> None:
         self.__ai_last_hit_positions.append(pos)
 
         self.__event_aggregator.publish(Event.SHIP_HIT, Side.LEFT, pos)
@@ -38,7 +36,7 @@ class SinglePlayer:
             self.__ai_exclude_from_list_if_ship_destroyed()
             self.__reset_for_destroyed_ship()
 
-    def __ai_exclude_from_list_if_ship_destroyed(self):
+    def __ai_exclude_from_list_if_ship_destroyed(self) -> None:
         for pos in self.__ai_last_hit_positions:
             adjacent_free_positions = self.__validator.get_adjacent_positions(pos)
             for adj_free_pos in adjacent_free_positions:
@@ -63,7 +61,8 @@ class SinglePlayer:
         if num_last_hit_positions == 1:
             if len(self.__ai_last_hit_possible_new_positions) == 0:
                 self.__ai_last_hit_possible_new_positions = self.__validator.get_adjacent_positions_nwse(
-                    self.__ai_last_hit_positions[0], self.__ai_all_positions_to_try)
+                    self.__ai_last_hit_positions[0], self.__ai_all_positions_to_try
+                )
 
             adj_pos = random.choice(self.__ai_last_hit_possible_new_positions)
 
@@ -80,12 +79,14 @@ class SinglePlayer:
         if num_last_hit_positions == 2:
             self.__ai_last_hit_possible_new_positions.clear()
             self.__ai_last_hit_ship_orientation = self.__validator.get_ship_orientation_from_positions(
-                self.__ai_last_hit_positions[0], self.__ai_last_hit_positions[1])
+                self.__ai_last_hit_positions[0], self.__ai_last_hit_positions[1]
+            )
 
         if len(self.__ai_last_hit_possible_new_positions) == 0:
             if self.__ai_last_hit_ship_orientation == Orientation.HORIZONTAL:
-                left_pos, right_pos = Position.get_left_and_right(self.__ai_last_hit_positions[0],
-                                                                  self.__ai_last_hit_positions[1])
+                left_pos, right_pos = Position.get_left_and_right(
+                    self.__ai_last_hit_positions[0], self.__ai_last_hit_positions[1]
+                )
 
                 # look for possible positions to the right:
                 for col in range(right_pos.col + 1, 10):
@@ -108,8 +109,9 @@ class SinglePlayer:
                         break
 
             elif self.__ai_last_hit_ship_orientation == Orientation.VERTICAL:
-                top_pos, bottom_pos = Position.get_top_and_bottom(self.__ai_last_hit_positions[0],
-                                                                  self.__ai_last_hit_positions[1])
+                top_pos, bottom_pos = Position.get_top_and_bottom(
+                    self.__ai_last_hit_positions[0], self.__ai_last_hit_positions[1]
+                )
 
                 # look for possible positions below:
                 for row in range(bottom_pos.row + 1, 10):
@@ -137,10 +139,12 @@ class SinglePlayer:
             if not do_try:
                 break
             for hit_pos in self.__ai_last_hit_positions:
-                if pos.row == hit_pos.row + 1 or \
-                        pos.row == hit_pos.row - 1 or \
-                        pos.col == hit_pos.col + 1 or \
-                        pos.col == hit_pos.col - 1:
+                if (
+                    pos.row == hit_pos.row + 1
+                    or pos.row == hit_pos.row - 1
+                    or pos.col == hit_pos.col + 1
+                    or pos.col == hit_pos.col - 1
+                ):
                     adj_pos = pos
                     do_try = False
                     break
@@ -154,7 +158,7 @@ class SinglePlayer:
 
         return False, adj_pos
 
-    def __reset_for_destroyed_ship(self):
+    def __reset_for_destroyed_ship(self) -> None:
         self.__ai_last_hit_positions.clear()
         self.__ai_last_hit_possible_new_positions.clear()
         self.__ai_last_hit_ship_orientation = Orientation.NONE

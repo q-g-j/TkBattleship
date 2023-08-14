@@ -1,5 +1,5 @@
-from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from models.enums import GameState
+from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from store.gamestore import GameStore
 from views.mainview import MainView
 
@@ -9,7 +9,7 @@ class MenuButtonClickedEventHandler(EventHandlerBase):
         self.__main_view = main_view
         self.__game_store = game_store
 
-    def execute(self):
+    def execute(self) -> None:
         if self.__main_view.is_messagebox_open:
             self.__main_view.close_messagebox()
         if not self.__main_view.is_menu_open:

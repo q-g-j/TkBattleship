@@ -1,5 +1,5 @@
-from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from models.enums import Side
+from events.eventhandlers.eventhandlerbase import EventHandlerBase
 from views.mainview import MainView
 
 

@@ -1,9 +1,6 @@
-import json
 import os, sys
 from appdirs import user_config_dir
 from models.enums import Paths
-
-from models.settings import Settings
 
 
 class Files:
@@ -17,21 +14,19 @@ class Files:
             return path
 
     @staticmethod
-    def get_user_config_folder():
+    def get_user_config_folder() -> str:
         return user_config_dir()
 
     @staticmethod
-    def get_settings_file_full_path():
-        return "{0}/{1}/{2}".format(
-            Files.get_user_config_folder(), Paths.SETTINGS_FOLDER, Paths.SETTINGS_FILE
-        )
+    def get_settings_file_full_path() -> str:
+        return "{0}/{1}/{2}".format(Files.get_user_config_folder(), Paths.SETTINGS_FOLDER, Paths.SETTINGS_FILE)
 
     @staticmethod
     def does_settings_file_exist() -> bool:
         return os.path.exists(Files.get_settings_file_full_path())
 
     @staticmethod
-    def create_settings_folder():
+    def create_settings_folder() -> None:
         settings_folder = Files.get_user_config_folder() + "/" + Paths.SETTINGS_FOLDER
         try:
             if not os.path.exists(settings_folder):

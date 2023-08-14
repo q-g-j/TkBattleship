@@ -7,5 +7,5 @@ class MenuButtonClickedCommand(CommandBase):
     def __init__(self, event_aggregator: EventAggregator) -> None:
         self.__event_aggregator = event_aggregator
 
-    def execute(self):
+    def execute(self) -> None:
         self.__event_aggregator.publish(Event.MENU_BUTTON_CLICKED)
