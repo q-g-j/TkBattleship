@@ -34,13 +34,20 @@ class GameController:
         self.__subscribe_events()
 
     def start(self):
+        Images.init()
+        Fonts.init()
+
+        self.__root.title("Battleship")
+        self.__root.resizable(False, False)
+        self.__root.iconphoto(True, Images.ICON)
+
         if not Files.does_settings_file_exist():
             settings_writer = self.__injector.resolve(SettingsWriter)
             if OsHelper.get_os() == OS.WINDOWS:
                 settings_writer.write(Settings(40, "vista"))
             else:
                 settings_writer.write(Settings(40, "scidgreen"))
-        
+
         settings_reader = self.__injector.resolve(SettingsReader)
         settings = settings_reader.read()
 
@@ -49,12 +56,7 @@ class GameController:
         main_view.pack()
         main_view.show_menu(1)
 
-        self.__root.title("Battleship")
-        self.__root.resizable(False, False)
-
         StyleDefinitions.init(self.__root, settings)
-        Images.init()
-        Fonts.init()
 
     def __register_services(self):
         game_factory = GameFactory(lambda: self.__injector.resolve(Game))

@@ -106,12 +106,12 @@ class Game:
                 return
 
         playing_field[pos.row][pos.col] = CellContent.FILLED
-        self.__event_aggregator.publish(Event.CELL_IMAGE_SET, Side.LEFT, pos, Images.UNDAMAGED_GREEN)
+        self.__event_aggregator.publish(Event.CELL_IMAGE_SET, Side.LEFT, pos, Images.SHIP_GREEN)
 
         positions.append(pos)
         if len(positions) == current_ship.length:
             for pos in positions:
-                self.__event_aggregator.publish(Event.CELL_IMAGE_SET, Side.LEFT, pos, Images.UNDAMAGED)
+                self.__event_aggregator.publish(Event.CELL_IMAGE_SET, Side.LEFT, pos, Images.SHIP)
             self.num_placed_player_ships += 1
 
             if self.num_placed_player_ships == len(ships):

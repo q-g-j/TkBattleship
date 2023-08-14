@@ -9,11 +9,11 @@ from models.settings import Settings
 class Files:
     # needed for pyinstaller to find the assets:
     @staticmethod
-    def fixed_path(filename: str) -> str:
+    def fixed_path(file_or_path: str) -> str:
         if hasattr(sys, "_MEIPASS"):
-            return getattr(sys, "_MEIPASS") + "/" + filename
+            return getattr(sys, "_MEIPASS") + "/" + file_or_path
         else:
-            path = os.path.abspath(".") + "/" + filename
+            path = os.path.abspath(".") + "/" + file_or_path
             return path
 
     @staticmethod

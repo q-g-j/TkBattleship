@@ -1,55 +1,54 @@
 from PIL import Image, ImageTk
+import tkinter as tk
 
 from utils.files import Files
 
 
 class ImageFiles:
     EMPTY = Files.fixed_path("assets/images/empty.png")
-    UNDAMAGED = Files.fixed_path("assets/images/undamaged.png")
-    UNDAMAGED_BLUE = Files.fixed_path("assets/images/undamaged_blue.png")
-    UNDAMAGED_RED = Files.fixed_path("assets/images/undamaged_red.png")
-    UNDAMAGED_GREEN = Files.fixed_path("assets/images/undamaged_green.png")
+    SHIP = Files.fixed_path("assets/images/ship.png")
+    SHIP_BLUE = Files.fixed_path("assets/images/ship_blue.png")
+    SHIP_RED = Files.fixed_path("assets/images/ship_red.png")
+    SHIP_GREEN = Files.fixed_path("assets/images/ship_green.png")
     HIT = Files.fixed_path("assets/images/hit.png")
     DESTROYED = Files.fixed_path("assets/images/destroyed.png")
     SPLASH = Files.fixed_path("assets/images/splash.png")
 
+    ICON = Files.fixed_path("assets/icons/icon.png")
+
 
 class Images(object):
-    EMPTY: ImageTk.PhotoImage = None
-    UNDAMAGED: ImageTk.PhotoImage = None
-    UNDAMAGED_BLUE: ImageTk.PhotoImage = None
-    UNDAMAGED_RED: ImageTk.PhotoImage = None
-    UNDAMAGED_GREEN: ImageTk.PhotoImage = None
-    HIT: ImageTk.PhotoImage = None
-    DESTROYED: ImageTk.PhotoImage = None
-    SPLASH: ImageTk.PhotoImage = None
+    EMPTY: tk.Image = None
+    SHIP: tk.Image = None
+    SHIP_BLUE: tk.Image = None
+    SHIP_RED: tk.Image = None
+    SHIP_GREEN: tk.Image = None
+    HIT: tk.Image = None
+    DESTROYED: tk.Image = None
+    SPLASH: tk.Image = None
+
+    ICON: tk.Image = None
 
     @staticmethod
     def init() -> None:
-        image_empty_pil: Image.Image = Image.open(ImageFiles.EMPTY)
-        image_undamaged_pil: Image.Image = Image.open(ImageFiles.UNDAMAGED).resize((32, 32))
-        image_undamaged_blue_pil: Image.Image = Image.open(ImageFiles.UNDAMAGED_BLUE).resize((32, 32))
-        image_undamaged_red_pil: Image.Image = Image.open(ImageFiles.UNDAMAGED_RED).resize((32, 32))
-        image_undamaged_green_pil: Image.Image = Image.open(ImageFiles.UNDAMAGED_GREEN).resize((32, 32))
-        image_hit_pil: Image.Image = Image.open(ImageFiles.HIT).resize((25, 25))
-        image_destroyed_pil: Image.Image = Image.open(ImageFiles.DESTROYED).resize((25, 25))
-        image_splash_pil: Image.Image = Image.open(ImageFiles.SPLASH).resize((25, 25))
+        image_empty: Image.Image = Image.open(ImageFiles.EMPTY)
+        image_ship: Image.Image = Image.open(ImageFiles.SHIP).resize((32, 32))
+        image_ship_blue: Image.Image = Image.open(ImageFiles.SHIP_BLUE).resize((32, 32))
+        image_ship_red: Image.Image = Image.open(ImageFiles.SHIP_RED).resize((32, 32))
+        image_ship_green: Image.Image = Image.open(ImageFiles.SHIP_GREEN).resize((32, 32))
+        image_hit: Image.Image = Image.open(ImageFiles.HIT).resize((25, 25))
+        image_destroyed: Image.Image = Image.open(ImageFiles.DESTROYED).resize((25, 25))
+        image_splash: Image.Image = Image.open(ImageFiles.SPLASH).resize((25, 25))
 
-        Images.EMPTY = ImageTk.PhotoImage(image_empty_pil)
-        Images.UNDAMAGED = ImageTk.PhotoImage(image_undamaged_pil)
-        Images.UNDAMAGED_BLUE = ImageTk.PhotoImage(image_undamaged_blue_pil)
-        Images.UNDAMAGED_RED = ImageTk.PhotoImage(image_undamaged_red_pil)
-        Images.UNDAMAGED_GREEN = ImageTk.PhotoImage(image_undamaged_green_pil)
-        Images.HIT = ImageTk.PhotoImage(image_hit_pil)
-        Images.DESTROYED = ImageTk.PhotoImage(image_destroyed_pil)
-        Images.SPLASH = ImageTk.PhotoImage(image_splash_pil)
+        image_icon: Image.Image = Image.open(ImageFiles.ICON)
 
-    @staticmethod
-    def resize_image(image, maxsize):
-        r1 = image.size[0] / maxsize[0]  # width ratio
-        r2 = image.size[1] / maxsize[1]  # height ratio
-        ratio = max(r1, r2)
-        newsize = (int(image.size[0] / ratio), int(image.size[1] / ratio))
-        print(newsize)
-        image = image.resize(newsize)
-        return image
+        Images.EMPTY = ImageTk.PhotoImage(image_empty)
+        Images.SHIP = ImageTk.PhotoImage(image_ship)
+        Images.SHIP_BLUE = ImageTk.PhotoImage(image_ship_blue)
+        Images.SHIP_RED = ImageTk.PhotoImage(image_ship_red)
+        Images.SHIP_GREEN = ImageTk.PhotoImage(image_ship_green)
+        Images.HIT = ImageTk.PhotoImage(image_hit)
+        Images.DESTROYED = ImageTk.PhotoImage(image_destroyed)
+        Images.SPLASH = ImageTk.PhotoImage(image_splash)
+
+        Images.ICON = ImageTk.PhotoImage(image_icon)
