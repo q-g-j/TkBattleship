@@ -42,3 +42,14 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
 )
+
+app = BUNDLE(exe,
+         name='TkBattleship.app',
+         icon='assets/icons/icon.png',
+         bundle_identifier='TkBattleship',
+         version='0.1.0',
+         info_plist={
+            'NSPrincipalClass': 'NSApplication',
+            'NSAppleScriptEnabled': False,
+         }
+    )
