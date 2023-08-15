@@ -53,7 +53,7 @@ The views make use of the command pattern for their button commands similar to t
 Both the event handlers and the commands have been put in their own modules and are retrieved through factory methods to keep the other components as clean as possible.</br>
 
 I have added an own dependency injection service which allows for registering classes and resolving them via constructor injection.</br>
-Types may be registered as singletons or transients objects while it is also possible to register existing instances. When a type is resolved, the service goes through all its dependencies recursively and determines for each wether it is registered as a singleton or as a transient object.
+Types may be registered as singletons or transient objects while it is also possible to register existing instances. When a type is resolved, the service goes through all its dependencies recursively and determines for each wether it is registered as a singleton or as a transient object.
 
 #### Dependency Injection usage example:
 ***Controller:***
