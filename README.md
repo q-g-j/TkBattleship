@@ -54,7 +54,7 @@ The views make use of the command pattern for their button commands similar to t
 A REST API multiplayer mode using Flask is in development. Currently only a the single player mode is done.
 
 I have added an own dependency injection service which allows for registering classes and resolving them via constructor injection.</br>
-Types may be registered as singletons or transients objects while it is also possible to register existing instances. When a type is resolved, the service goes through all its dependencies recursively and determines if those are registered as a singleton or as a transient object.
+Types may be registered as singletons or transients objects while it is also possible to register existing instances. When a type is resolved, the service goes through all its dependencies recursively and determines for each wether it is registered as a singleton or as a transient object.
 
 #### Dependency Injection usage example:
 ***Controller:***
