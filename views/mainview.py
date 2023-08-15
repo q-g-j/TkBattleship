@@ -196,7 +196,6 @@ class MainView(ViewBase):
 
     def show_messagebox(self, side: Side, messages: list, ai_next=False) -> None:
         self.__is_ai_next = ai_next
-        self.is_messagebox_open = True
         frame: ttk.Frame | None = None
         if side == Side.LEFT:
             frame = self.__field_frame_left
@@ -205,8 +204,8 @@ class MainView(ViewBase):
         elif side == Side.BOTH:
             frame = self.__game_frame
 
-        if self.__messagebox is not None:
-            self.close_messagebox()
+        self.close_messagebox()
+        self.is_messagebox_open = True
         self.__messagebox = MessageBox(frame, self.__event_aggregator, self.__command_factory)
         self.__messagebox.show(messages)
 
