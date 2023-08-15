@@ -9,11 +9,11 @@ from events.eventhandlers.quitbuttonclicked import QuitButtonClickedEventHandler
 from events.eventhandlers.statuslabeltextsent import StatusLabelTextSentEventHandler
 from events.eventhandlers.themechangerequested import ThemeChangeRequestedEventHandler
 from events.eventhandlers.menubuttonclicked import MenuButtonClickedEventHandler
-from events.eventhandlers.randomshipsbuttonvisibilitychanged import (
-    RandomShipsButtonVisiblityChangedEventHandler,
+from events.eventhandlers.randomshipsbuttonvisibility import (
+    RandomShipsButtonVisiblityEventHandler,
 )
-from events.eventhandlers.singleplayerbuttonclicked import (
-    SinglePlayerButtonClickedEventHandler,
+from events.eventhandlers.singleplayerrequested import (
+    SinglePlayerRequestedEventHandler,
 )
 from events.eventhandlers.cellclicked import CellClickedEventHandler
 from events.eventhandlers.messageboxtextsent import MessageBoxTextSentEventHandler
@@ -21,11 +21,11 @@ from events.eventhandlers.messageboxclosed import MessageBoxCloseRequestedEventH
 from events.eventhandlers.menuclosed import MenuClosedEventHandler
 from events.eventhandlers.cellimageset import CellImageSetEventHandler
 from events.eventhandlers.shiphit import ShipHitEventHandler
-from events.eventhandlers.randomshipsbuttonclicked import (
-    RandomShipsButtonClickedEventHandler,
+from events.eventhandlers.randomshipsrequested import (
+    RandomShipsRequestedEventHandler,
 )
-from events.eventhandlers.multiplayerbuttonclicked import (
-    MultiplayerButtonClickedEventHandler,
+from events.eventhandlers.multiplayerrequested import (
+    MultiplayerRequestedEventHandler,
 )
 from factories.gamefactory import GameFactory
 from models.enums import Event
@@ -80,7 +80,7 @@ class EventHandlerFactory:
             return MenuClosedEventHandler(self.__main_view)
 
         if event == Event.RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED:
-            return RandomShipsButtonVisiblityChangedEventHandler(self.__main_view)
+            return RandomShipsButtonVisiblityEventHandler(self.__main_view)
 
         if event == Event.CELL_CLICKED:
             return CellClickedEventHandler(
@@ -105,15 +105,15 @@ class EventHandlerFactory:
             )
 
         if event == Event.RANDOM_SHIPS_BUTTON_CLICKED:
-            return RandomShipsButtonClickedEventHandler(self.__main_view, self.__game_store, self.__validator)
+            return RandomShipsRequestedEventHandler(self.__main_view, self.__game_store, self.__validator)
 
         if event == Event.SINGLEPLAYER_CLICKED:
-            return SinglePlayerButtonClickedEventHandler(
+            return SinglePlayerRequestedEventHandler(
                 self.__main_view, self.__game_factory, self.__game_store, self.__validator
             )
 
         if event == Event.MULTIPLAYER_CLICKED:
-            return MultiplayerButtonClickedEventHandler()
+            return MultiplayerRequestedEventHandler(self.__main_view)
 
         if event == Event.QUIT_BUTTON_CLICKED:
             return QuitButtonClickedEventHandler(self.__root)

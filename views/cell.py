@@ -19,5 +19,5 @@ class Cell(ViewBase):
         self.button = ttk.Button(self, takefocus=False, style=StyleDefinitions.CELL_BUTTON)
         self.button.grid(sticky="wens")
         self.button.config(
-            command=lambda cmd=Command.CELL_CLICKED, s=side, p=pos: self._handle_command(cmd, s, p),
+            command=lambda cmd=Command.CELL_CLICK, s=side, p=pos: self._handle_command(cmd, s, p),
         )

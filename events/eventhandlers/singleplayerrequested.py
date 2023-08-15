@@ -7,7 +7,7 @@ from store.gamestore import GameStore
 from views.mainview import MainView
 
 
-class SinglePlayerButtonClickedEventHandler(EventHandlerBase):
+class SinglePlayerRequestedEventHandler(EventHandlerBase):
     def __init__(self, main_view: MainView, game_factory: GameFactory, game_store: GameStore, validator: Validator):
         self.__main_view = main_view
         self.__game_factory = game_factory

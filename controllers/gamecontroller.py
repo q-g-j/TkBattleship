@@ -61,7 +61,7 @@ class GameController:
         main_view.pack()
         main_view.show_menu(1)
 
-        StyleDefinitions.init(self.__root, settings)
+        StyleDefinitions.init(self.__root)
 
         self.__root.update()
         self.__root.deiconify()

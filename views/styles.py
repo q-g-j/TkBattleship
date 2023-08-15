@@ -2,7 +2,6 @@ import tkinter
 from tkinter import ttk
 from ttkthemes import ThemedTk
 
-from models.settings import Settings
 from views.fonts import Fonts
 
 
@@ -19,6 +18,8 @@ class StyleDefinitions:
     MENU_FRAME = "MenuFrame.TFrame"
     MENU_ITEM_HEADER_LABEL = "MenuItemHeader.TLabel"
     MENU_ITEM_BUTTON = "MenuItemButton.TButton"
+    MENU_ITEM_THEME_BUTTON = "MenuItemThemeButton.TButton"
+    MENU_ITEM_QUIT_BUTTON = "MenuItemQuitButton.TButton"
 
     MESSAGEBOX_FRAME = "MessageBoxFrame.TFrame"
     MESSAGEBOX_LABEL = "Message.TLabel"
@@ -27,7 +28,7 @@ class StyleDefinitions:
     CELL_BUTTON = "CellButton.TButton"
 
     @staticmethod
-    def init(root: ThemedTk, settings: Settings) -> None:
+    def init(root: ThemedTk) -> None:
         style: ttk.Style = ttk.Style(root)
 
         style.configure(StyleDefinitions.MAIN_VIEW_FRAME)
@@ -46,6 +47,18 @@ class StyleDefinitions:
         style.configure(StyleDefinitions.MENU_ITEM_HEADER_LABEL, foreground="red")
         style.configure(
             StyleDefinitions.MENU_ITEM_BUTTON,
+            foreground="black",
+            font=(Fonts.SELAWIK, 12, "bold"),
+            padding=(15, 0, 15, 0),
+        )
+        style.configure(
+            StyleDefinitions.MENU_ITEM_THEME_BUTTON,
+            foreground="black",
+            font=(Fonts.SELAWIK, 12),
+            padding=(15, 0, 15, 0),
+        )
+        style.configure(
+            StyleDefinitions.MENU_ITEM_QUIT_BUTTON,
             foreground="black",
             font=(Fonts.SELAWIK, 12),
             padding=(15, 0, 15, 0),

@@ -37,15 +37,16 @@ class Menu(ViewBase):
             text="Singleplayer",
             style=StyleDefinitions.MENU_ITEM_BUTTON,
             takefocus=False,
-            command=lambda cmd=Command.START_SINGLEPLAYER: self._handle_command(cmd),
+            command=lambda cmd=Command.START_SINGLE_PLAYER: self._handle_command(cmd),
         )
 
-        # button_multiplayer = ttk.Button(
-        #     self,
-        #     text="Multiplayer",
-        #     style=StyleDefinition.MENU_ITEM_BUTTON,
-        #     command=lambda cmd=Command.START_MULTIPLAYER: self.handle_command(cmd)
-        # )
+        button_multiplayer = ttk.Button(
+            self,
+            text="Multiplayer",
+            style=StyleDefinitions.MENU_ITEM_BUTTON,
+            takefocus=False,
+            command=lambda cmd=Command.START_MULTIPLAYER: self._handle_command(cmd)
+        )
 
         theme_menu = ttk.OptionMenu(
             self,
@@ -53,7 +54,7 @@ class Menu(ViewBase):
             None,
             *Themes.ALL_THEMES,
             direction="right",
-            style=StyleDefinitions.MENU_ITEM_BUTTON,
+            style=StyleDefinitions.MENU_ITEM_THEME_BUTTON,
             command=self.__set_theme
         )
 
@@ -61,15 +62,15 @@ class Menu(ViewBase):
             self,
             text="Quit",
             takefocus=False,
-            style=StyleDefinitions.MENU_ITEM_BUTTON,
+            style=StyleDefinitions.MENU_ITEM_QUIT_BUTTON,
             command=lambda cmd=Command.QUIT_GAME: self._handle_command(cmd),
         )
 
         label.grid(row=0, column=0, padx=5, pady=5)
         button_singleplayer.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
-        # button_multiplayer.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
-        theme_menu.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
-        button_quit.grid(row=3, column=0, padx=5, pady=5, sticky="ew")
+        button_multiplayer.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
+        theme_menu.grid(row=3, column=0, padx=5, pady=(20, 5), sticky="ew")
+        button_quit.grid(row=4, column=0, padx=5, pady=5, sticky="ew")
 
         self.grid_columnconfigure(0, weight=1)
 

@@ -14,12 +14,12 @@ class Paths:
 
 class Command(Enum):
     # MainView:
-    MENU_BUTTON_CLICKED = 1
-    CELL_CLICKED = 2
-    RANDOM_SHIPS_BUTTON_CLICKED = 3
+    OPEN_MENU = 1
+    CELL_CLICK = 2
+    PLACE_RANDOM_SHIPS = 3
 
     # Menu:
-    START_SINGLEPLAYER = 4
+    START_SINGLE_PLAYER = 4
     START_MULTIPLAYER = 5
     CHANGE_THEME = 6
     QUIT_GAME = 7

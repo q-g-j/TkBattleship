@@ -41,14 +41,14 @@ class MainView(ViewBase):
             self.__toolbar_frame,
             text="Menu",
             takefocus=False,
-            command=lambda cmd=Command.MENU_BUTTON_CLICKED: self._handle_command(cmd),
+            command=lambda cmd=Command.OPEN_MENU: self._handle_command(cmd),
             style=StyleDefinitions.MENU_BUTTON,
         )
         self.__random_ships_button = ttk.Button(
             self.__toolbar_frame,
             text="Random ships",
             takefocus=False,
-            command=lambda cmd=Command.RANDOM_SHIPS_BUTTON_CLICKED: self._handle_command(cmd),
+            command=lambda cmd=Command.PLACE_RANDOM_SHIPS: self._handle_command(cmd),
             style=StyleDefinitions.RANDOM_SHIPS_BUTTON,
         )
         self.__status_label = ttk.Label(

@@ -6,7 +6,7 @@ from views.images import Images
 from views.mainview import MainView
 
 
-class RandomShipsButtonClickedEventHandler(EventHandlerBase):
+class RandomShipsRequestedEventHandler(EventHandlerBase):
     def __init__(self, main_view: MainView, game_store: GameStore, validator: Validator) -> None:
         self.__main_view = main_view
         self.__game_store = game_store
