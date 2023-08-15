@@ -35,39 +35,30 @@ class StyleDefinitions:
         style.configure(StyleDefinitions.NOTATION_FRAME, background="transparent")
         style.configure(
             StyleDefinitions.MENU_BUTTON,
-            foreground="black",
-            font=(Fonts.SELAWIK, 13, "bold"),
-            padding=(15, 0, 15, 0),
+            font=(Fonts.MENU, 12, "bold")
         )
         style.configure(
-            StyleDefinitions.RANDOM_SHIPS_BUTTON, foreground="black", font=(Fonts.SELAWIK, 13), padding=(15, 0, 15, 0)
+            StyleDefinitions.RANDOM_SHIPS_BUTTON, font=(Fonts.NORMAL_TEXT, 12)
         )
-        style.configure(StyleDefinitions.STATUS_LABEL, padding=(15, 0, 15, 0))
+        style.configure(StyleDefinitions.STATUS_LABEL)
         style.configure(StyleDefinitions.MENU_FRAME, width=100, relief="solid")
         style.configure(StyleDefinitions.MENU_ITEM_HEADER_LABEL, foreground="red")
         style.configure(
             StyleDefinitions.MENU_ITEM_BUTTON,
-            foreground="black",
-            font=(Fonts.SELAWIK, 12, "bold"),
-            padding=(15, 0, 15, 0),
+            font=(Fonts.NORMAL_TEXT, 12, "bold")
         )
         style.configure(
             StyleDefinitions.MENU_ITEM_THEME_BUTTON,
-            foreground="black",
-            font=(Fonts.SELAWIK, 12),
-            padding=(15, 0, 15, 0),
+            font=(Fonts.NORMAL_TEXT, 12)
         )
         style.configure(
             StyleDefinitions.MENU_ITEM_QUIT_BUTTON,
-            foreground="black",
-            font=(Fonts.SELAWIK, 12),
-            padding=(15, 0, 15, 0),
+            font=(Fonts.NORMAL_TEXT, 12)
         )
         style.configure(StyleDefinitions.MESSAGEBOX_FRAME, relief="solid")
         style.configure(StyleDefinitions.MESSAGEBOX_LABEL)
         style.configure(
             StyleDefinitions.MESSAGEBOX_BUTTON,
-            foreground="black",
-            font=(Fonts.SELAWIK, 11),
+            font=(Fonts.NORMAL_TEXT, 12)
         )
         style.configure(StyleDefinitions.CELL_BUTTON, relief=tkinter.FLAT, padding=(0, 0, 0, 0))

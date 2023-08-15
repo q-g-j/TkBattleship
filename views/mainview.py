@@ -35,11 +35,10 @@ class MainView(ViewBase):
         self.__settings_reader = settings_reader
         self.__settings = settings_reader.read()
         self.__game_frame = ttk.Frame(self)
-        self.columnconfigure(0, weight=1)
         self.__toolbar_frame = ttk.Frame(self)
         self.__menu_button = ttk.Button(
             self.__toolbar_frame,
-            text="Menu",
+            text="MENU",
             takefocus=False,
             command=lambda cmd=Command.OPEN_MENU: self._handle_command(cmd),
             style=StyleDefinitions.MENU_BUTTON,
@@ -54,14 +53,15 @@ class MainView(ViewBase):
         self.__status_label = ttk.Label(
             self.__toolbar_frame,
             style=StyleDefinitions.STATUS_LABEL,
-            font=(Fonts.SELAWIK, 13),
+            font=(Fonts.NORMAL_TEXT, 12),
             foreground="blue",
         )
 
-        self.__menu_button.grid(row=0, column=0, padx=(40, 0))
-        self.__status_label.grid(row=0, column=2)
+        self.__toolbar_frame.pack(anchor=tk.W, padx=(40, 0), ipadx=10)
 
-        self.__toolbar_frame.pack(anchor=tk.W, fill=tk.X)
+        self.__menu_button.grid(row=0, column=0)
+        self.__status_label.grid(row=0, column=2, padx=(15, 0))
+
         self.__game_frame.pack(pady=(10, 0))
         self.__menu: Menu | None = None
         self.__messagebox: MessageBox | None = None
@@ -102,7 +102,7 @@ class MainView(ViewBase):
                 if direction == Orientation.VERTICAL
                 else NotationColumns[column if column < 11 else column - 11]
             )
-            label = ttk.Label(frame, text=text, anchor=tk.CENTER)
+            label = ttk.Label(frame, text=text, anchor=tk.CENTER, font=(Fonts.NORMAL_TEXT, 10))
             label.grid(sticky="wens")
 
         for i in range(1, 11):
@@ -141,7 +141,7 @@ class MainView(ViewBase):
 
     def change_random_ships_button_visibility(self, toggle: bool) -> None:
         if toggle:
-            self.__random_ships_button.grid(row=0, column=1, padx=(10, 0))
+            self.__random_ships_button.grid(row=0, column=1, padx=(10, 0), ipadx=10)
         else:
             self.__random_ships_button.grid_forget()
 

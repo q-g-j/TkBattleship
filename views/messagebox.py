@@ -20,7 +20,7 @@ class MessageBox(ViewBase):
                 self,
                 text=message,
                 style=StyleDefinitions.MESSAGEBOX_LABEL,
-                font=(Fonts.SELAWIK, 13),
+                font=(Fonts.NORMAL_TEXT, 13),
                 foreground="black",
             )
             label.pack(expand=True, anchor=tk.CENTER)

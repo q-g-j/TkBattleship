@@ -29,7 +29,7 @@ class Menu(ViewBase):
             self,
             text="Battle Ship",
             style=StyleDefinitions.MENU_ITEM_HEADER_LABEL,
-            font=(Fonts.SELAWIK, 18, "bold"),
+            font=(Fonts.TITLE, 20, "bold"),
         )
 
         button_singleplayer = ttk.Button(
@@ -40,13 +40,13 @@ class Menu(ViewBase):
             command=lambda cmd=Command.START_SINGLE_PLAYER: self._handle_command(cmd),
         )
 
-        button_multiplayer = ttk.Button(
-            self,
-            text="Multiplayer",
-            style=StyleDefinitions.MENU_ITEM_BUTTON,
-            takefocus=False,
-            command=lambda cmd=Command.START_MULTIPLAYER: self._handle_command(cmd)
-        )
+        # button_multiplayer = ttk.Button(
+        #     self,
+        #     text="Multiplayer",
+        #     style=StyleDefinitions.MENU_ITEM_BUTTON,
+        #     takefocus=False,
+        #     command=lambda cmd=Command.START_MULTIPLAYER: self._handle_command(cmd)
+        # )
 
         theme_menu = ttk.OptionMenu(
             self,
@@ -65,6 +65,8 @@ class Menu(ViewBase):
             style=StyleDefinitions.MENU_ITEM_QUIT_BUTTON,
             command=lambda cmd=Command.QUIT_GAME: self._handle_command(cmd),
         )
+
+        theme_menu["menu"].configure(font=(Fonts.NORMAL_TEXT, 11))
 
         label.grid(row=0, column=0, padx=5, pady=5)
         button_singleplayer.grid(row=1, column=0, padx=5, pady=5, sticky="ew")

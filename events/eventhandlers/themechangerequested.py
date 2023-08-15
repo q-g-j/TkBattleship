@@ -1,4 +1,3 @@
-from tkinter import ttk
 from ttkthemes import ThemedTk
 
 from events.eventhandlers.eventhandlerbase import EventHandlerBase
