@@ -23,14 +23,13 @@ from views.viewbase import ViewBase
 @inject(ThemedTk, EventAggregator, CommandFactory, SettingsReader)
 class MainView(ViewBase):
     def __init__(
-        self,
-        root: ThemedTk,
-        event_aggregator: EventAggregator,
-        command_factory: CommandFactory,
-        settings_reader: SettingsReader,
+            self,
+            root: ThemedTk,
+            event_aggregator: EventAggregator,
+            command_factory: CommandFactory,
+            settings_reader: SettingsReader,
     ) -> None:
         super().__init__(root, command_factory, style=StyleDefinitions.MAIN_VIEW_FRAME, padding=20)
-        self.__root = root
         self.__event_aggregator = event_aggregator
         self.__command_factory = command_factory
         self.__settings_reader = settings_reader
@@ -149,7 +148,6 @@ class MainView(ViewBase):
     def show_menu(self, delay: float = 0) -> None:
         self.__settings = self.__settings_reader.read()
         self.__menu = Menu(
-            self.__root,
             self.__game_frame,
             self.__event_aggregator,
             self.__command_factory,

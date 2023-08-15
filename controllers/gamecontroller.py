@@ -21,6 +21,7 @@ from views.fonts import Fonts
 from views.images import Images
 from views.mainview import MainView
 from views.styles import StyleDefinitions
+from views.themes import Themes
 
 
 class GameController:
@@ -32,6 +33,7 @@ class GameController:
         self.__register_services()
         self.__subscribe_events()
 
+        Themes.init(self.__root)
         Images.init()
         Fonts.init()
 
