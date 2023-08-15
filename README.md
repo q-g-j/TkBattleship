@@ -39,11 +39,7 @@ Python 3 (tested with 3.10)
 - Pillow >= 10.0.0
 - appdirs >= 1.4.4
 - pyglet == 1.5.27
-- ttkthemes >= 3.2.2
-
-#### External resources:
-Fonts:
-- [Microsoft Selawik](https://github.com/microsoft/Selawik) (License: OFL-1.1)
+- ttkthemes >= 3.2
 
 ### Technical details
 This is a practice project to implement the MVC pattern in a TKinter application while following some OOP related principles to get a better understanding of these.
