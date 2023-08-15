@@ -12,12 +12,12 @@ from views.viewbase import ViewBase
 
 class Menu(ViewBase):
     def __init__(
-        self,
-        root: ThemedTk,
-        field_frame: ttk.Frame,
-        event_aggregator: EventAggregator,
-        command_factory: CommandFactory,
-        theme: str,
+            self,
+            root: ThemedTk,
+            field_frame: ttk.Frame,
+            event_aggregator: EventAggregator,
+            command_factory: CommandFactory,
+            theme: str,
     ) -> None:
         super().__init__(field_frame, command_factory, style=StyleDefinitions.MENU_FRAME, padding=20)
         self.__root = root
@@ -25,6 +25,7 @@ class Menu(ViewBase):
         self.__theme = theme
 
         self.__theme_var = tk.StringVar()
+
         available_themes = self.__root.get_themes()
 
         # I picked a few themes from ttkthemes that actually work with this app:
@@ -32,6 +33,7 @@ class Menu(ViewBase):
             "adapta",
             "alt",
             "arc",
+            "breeze-new"
             "clam",
             "default",
             "elegance",
@@ -50,7 +52,8 @@ class Menu(ViewBase):
             "xpnative",
             "yaru"
         ]
-        themes = sorted(["Theme: " + theme for theme in picked_themes if theme in available_themes or theme == "default"])
+        themes = sorted(
+            [theme for theme in picked_themes if theme in available_themes or theme == "default"])
         self.__theme_var.set("Theme: " + self.__theme)
 
         # Setup controls:
@@ -83,7 +86,7 @@ class Menu(ViewBase):
             *themes,
             direction="right",
             style=StyleDefinitions.MENU_ITEM_BUTTON,
-            command=lambda event: self._handle_command(Command.CHANGE_THEME, self.__get_theme_from_var())
+            command=self.__set_theme
         )
 
         button_quit = ttk.Button(
@@ -108,6 +111,11 @@ class Menu(ViewBase):
     def close(self) -> None:
         self.__event_aggregator.publish(Event.MENU_CLOSED)
         self.destroy()
+
+    def __set_theme(self, _) -> None:
+        theme: str = self.__theme_var.get()
+        self.__theme_var.set("Theme: {0}".format(theme))
+        self._handle_command(Command.CHANGE_THEME, theme)
 
     def __get_theme_from_var(self) -> str:
         t = self.__theme_var.get().replace("Theme: ", "")

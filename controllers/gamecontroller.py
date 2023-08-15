@@ -26,13 +26,12 @@ from views.styles import StyleDefinitions
 class GameController:
     def __init__(self, root: ThemedTk) -> None:
         self.__injector = DependencyInjector()
-
         self.__root = root
 
+    def start(self) -> None:
         self.__register_services()
         self.__subscribe_events()
 
-    def start(self) -> None:
         Images.init()
         Fonts.init()
 
