@@ -10,9 +10,10 @@ The game is a work-in-progress.
 Go to [Releases](https://github.com/q-g-j/TkBattleship/releases)
 
 ### Features
-- Singleplayer against the computer
-- Support for tkinter.ttk themes - with instant switching in the game menu
-  (in Windows use one of the "native" themes like "vista" or "winnative" if the UI gets very slow. The other themes should work well in Linux and macOS)
+- Singleplayer against the computer<br/>
+  *a REST API multiplayer mode using Flask is in development. Currently only the singleplayer mode is done*
+- Support for tkinter.ttk themes - with instant switching in the game menu</br>
+  *in Windows use one of the "native" themes like "vista" or "winnative" if the UI gets very slow. The other themes should work well in Linux and macOS*
 
 ### Gameplay
 After starting a new game (currently only singleplayer) the player has to place his / her ships:
@@ -50,8 +51,6 @@ This is a practice project to implement the MVC pattern in a TKinter application
 It uses the event aggregator pattern for state change notifications between the models, the views and the controller.</br>
 Both the event handlers and the commands have been put in their own modules and are retrieved through factory methods to keep the other components as clean as possible.</br>
 The views make use of the command pattern for their button commands similar to the ICommand interface from WPF.
-
-A REST API multiplayer mode using Flask is in development. Currently only a the single player mode is done.
 
 I have added an own dependency injection service which allows for registering classes and resolving them via constructor injection.</br>
 Types may be registered as singletons or transients objects while it is also possible to register existing instances. When a type is resolved, the service goes through all its dependencies recursively and determines for each wether it is registered as a singleton or as a transient object.
