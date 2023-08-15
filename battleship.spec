@@ -46,7 +46,7 @@ exe = EXE(
 
 app = BUNDLE(exe,
          name='TkBattleship.app',
-         icon='assets/icons/icon.png',
+         icon='assets/icons/battleship.png',
          bundle_identifier='TkBattleship',
          version='0.1.0',
          info_plist={
