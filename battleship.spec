@@ -41,7 +41,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='assets/icons/icon.ico'
+    icon='assets/icons/battleship.png'
 )
 
 app = BUNDLE(exe,

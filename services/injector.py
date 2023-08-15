@@ -1,9 +1,14 @@
+from typing import Type, TypeVar
+
+T = TypeVar('T')
+
+
 class DependencyInjector:
     def __init__(self) -> None:
         self.__singletons = {}
         self.__transients = []
 
-    def resolve(self, cls) -> object:
+    def resolve(self, cls: Type[T]) -> T:
         is_singleton = cls in self.__singletons
 
         if not is_singleton and cls not in self.__transients:

@@ -41,7 +41,7 @@ class GameController:
         self.__root.title("Battleship")
         self.__root.resizable(False, False)
 
-        self.__root.iconphoto(True, Images.ICON_PNG)
+        self.__root.wm_iconphoto(True, Images.ICON)
 
         if not Files.does_settings_file_exist():
             settings_writer = self.__injector.resolve(SettingsWriter)

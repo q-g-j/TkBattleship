@@ -4,20 +4,6 @@ import tkinter as tk
 from utils.files import Files
 
 
-class ImageFiles:
-    EMPTY = Files.fixed_path("assets/images/empty.png")
-    SHIP = Files.fixed_path("assets/images/ship.png")
-    SHIP_BLUE = Files.fixed_path("assets/images/ship_blue.png")
-    SHIP_RED = Files.fixed_path("assets/images/ship_red.png")
-    SHIP_GREEN = Files.fixed_path("assets/images/ship_green.png")
-    HIT = Files.fixed_path("assets/images/hit.png")
-    DESTROYED = Files.fixed_path("assets/images/destroyed.png")
-    SPLASH = Files.fixed_path("assets/images/splash.png")
-
-    ICON_PNG = Files.fixed_path("assets/icons/icon.png")
-    ICON_ICO = Files.fixed_path("assets/icons/icon.ico")
-
-
 class Images(object):
     EMPTY: tk.Image = None
     SHIP: tk.Image = None
@@ -28,20 +14,31 @@ class Images(object):
     DESTROYED: tk.Image = None
     SPLASH: tk.Image = None
 
-    ICON_PNG: tk.Image = None
+    ICON: tk.Image = None
 
     @staticmethod
     def init() -> None:
-        image_empty: Image.Image = Image.open(ImageFiles.EMPTY)
-        image_ship: Image.Image = Image.open(ImageFiles.SHIP).resize((32, 32))
-        image_ship_blue: Image.Image = Image.open(ImageFiles.SHIP_BLUE).resize((32, 32))
-        image_ship_red: Image.Image = Image.open(ImageFiles.SHIP_RED).resize((32, 32))
-        image_ship_green: Image.Image = Image.open(ImageFiles.SHIP_GREEN).resize((32, 32))
-        image_hit: Image.Image = Image.open(ImageFiles.HIT).resize((25, 25))
-        image_destroyed: Image.Image = Image.open(ImageFiles.DESTROYED).resize((25, 25))
-        image_splash: Image.Image = Image.open(ImageFiles.SPLASH).resize((25, 25))
+        empty = Files.fixed_path("assets/images/empty.png")
+        ship_black = Files.fixed_path("assets/images/ship.png")
+        ship_blue = Files.fixed_path("assets/images/ship_blue.png")
+        ship_red = Files.fixed_path("assets/images/ship_red.png")
+        ship_green = Files.fixed_path("assets/images/ship_green.png")
+        hit = Files.fixed_path("assets/images/hit.png")
+        destroyed = Files.fixed_path("assets/images/destroyed.png")
+        splash = Files.fixed_path("assets/images/splash.png")
 
-        image_icon: Image.Image = Image.open(ImageFiles.ICON_PNG).resize((64, 64))
+        icon = Files.fixed_path("assets/icons/battleship.png")
+
+        image_empty: Image.Image = Image.open(empty)
+        image_ship: Image.Image = Image.open(ship_black).resize((32, 32))
+        image_ship_blue: Image.Image = Image.open(ship_blue).resize((32, 32))
+        image_ship_red: Image.Image = Image.open(ship_red).resize((32, 32))
+        image_ship_green: Image.Image = Image.open(ship_green).resize((32, 32))
+        image_hit: Image.Image = Image.open(hit).resize((25, 25))
+        image_destroyed: Image.Image = Image.open(destroyed).resize((25, 25))
+        image_splash: Image.Image = Image.open(splash).resize((25, 25))
+
+        image_icon: Image.Image = Image.open(icon).resize((64, 64))
 
         Images.EMPTY = ImageTk.PhotoImage(image_empty)
         Images.SHIP = ImageTk.PhotoImage(image_ship)
@@ -52,4 +49,4 @@ class Images(object):
         Images.DESTROYED = ImageTk.PhotoImage(image_destroyed)
         Images.SPLASH = ImageTk.PhotoImage(image_splash)
 
-        Images.ICON_PNG = ImageTk.PhotoImage(image_icon)
+        Images.ICON = ImageTk.PhotoImage(image_icon)
