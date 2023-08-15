@@ -68,7 +68,7 @@ class Menu(ViewBase):
 
         label.grid(row=0, column=0, padx=5, pady=5)
         button_singleplayer.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
-        button_multiplayer.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
+        # button_multiplayer.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
         theme_menu.grid(row=3, column=0, padx=5, pady=(20, 5), sticky="ew")
         button_quit.grid(row=4, column=0, padx=5, pady=5, sticky="ew")
 

@@ -22,4 +22,4 @@ class ThemeChangeRequestedEventHandler(EventHandlerBase):
             settings.theme = theme
             self.__settings_writer.write(settings)
 
-        StyleDefinitions.init(self.__root, settings)
+        StyleDefinitions.init(self.__root)
