@@ -3,9 +3,9 @@ from utils.files import Files
 
 
 class Fonts:
-    NORMAL_TEXT = "TitilliumWeb"
-    TITLE = "Alphakind"
-    MENU = "TitilliumWeb"
+    NORMAL_TEXT = "Titillium Web"
+    MENU_BUTTON = "Titillium Web"
+    MENU_TITLE = "Alphakind"
 
     @staticmethod
     def init() -> None:

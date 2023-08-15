@@ -35,7 +35,7 @@ class StyleDefinitions:
         style.configure(StyleDefinitions.NOTATION_FRAME, background="transparent")
         style.configure(
             StyleDefinitions.MENU_BUTTON,
-            font=(Fonts.MENU, 12, "bold")
+            font=(Fonts.MENU_BUTTON, 12, "bold")
         )
         style.configure(
             StyleDefinitions.RANDOM_SHIPS_BUTTON, font=(Fonts.NORMAL_TEXT, 12)

@@ -29,7 +29,7 @@ class Menu(ViewBase):
             self,
             text="Battle Ship",
             style=StyleDefinitions.MENU_ITEM_HEADER_LABEL,
-            font=(Fonts.TITLE, 20, "bold"),
+            font=(Fonts.MENU_TITLE, 20, "bold"),
         )
 
         button_singleplayer = ttk.Button(
