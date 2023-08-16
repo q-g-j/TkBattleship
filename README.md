@@ -36,15 +36,15 @@ The computer opponent has been improved and should be stronger now.
 Python 3 (tested with 3.10)
 
 #### External modules (install via pip):
-- Pillow >= 10.0.0
-- appdirs >= 1.4.4
-- pyglet == 1.5.27
-- ttkthemes >= 3.2
+- Pillow~=10.0.0
+- appdirs~=1.4.4
+- pyglet~=2.0.9
+- ttkthemes~=3.2.2
 
 ### Technical details
-This is a practice project to implement the MVC pattern in a TKinter application while following some OOP related principles to get a better understanding of these.
+This is a practice project to implement the MVC pattern in a TKinter application while following some OOP related principles.
 
-It uses the event aggregator pattern for state change notifications between the models, the views and the controller.</br>
+It utilizes the event aggregator pattern for state change notifications between the models, the views and the controller.</br>
 The views make use of the command pattern for their button commands similar to the ICommand interface from WPF.</br>
 Both the event handlers and the commands have been put in their own modules and are retrieved through factory methods to keep the other components as clean as possible.</br>
 
