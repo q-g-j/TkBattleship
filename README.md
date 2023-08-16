@@ -11,7 +11,7 @@ Go to [Releases](https://github.com/q-g-j/TkBattleship/releases)
 
 ### Features
 - Singleplayer against the computer<br/>
-  *a REST API multiplayer mode using Flask is in development. Currently only the singleplayer mode is done*
+  *a REST API multiplayer mode using Flask is in development*
 - Support for tkinter.ttk themes - with instant switching in the game menu</br>
   *in Windows use one of the "native" themes like "vista" or "winnative" if the UI gets very slow. The other themes should work well in Linux and macOS*
 
