@@ -20,7 +20,7 @@ After starting a new game (currently only singleplayer) the player has to place 
 
 | Ship       | Length  | Number |
 |------------|---------|--------|
-| Destroyer  | 2 cells | 2      |
+| Destroyer  | 2 cells | 3      |
 | Submarine  | 3 cells | 2      |
 | Cruiser    | 3 cells | 1      |
 | Battleship | 4 cells | 1      |
