@@ -94,6 +94,7 @@ class Game:
                 return
             fits_in_direction = validator.does_ship_fit_at_position(Side.LEFT, pos, current_ship.length)
             if fits_in_direction == Orientation.NONE:
+                print(pos, current_ship.length)
                 self.__fits_in_direction = Orientation.NONE
                 return
             else:
@@ -207,3 +208,4 @@ class Game:
         self.__event_aggregator.publish(Event.STATUS_LABEL_TEXT_SENT, Texts.STATUS_LABEL_SINGLEPLAYER_STARTED)
 
         self.__event_aggregator.publish(Event.RANDOM_SHIPS_BUTTON_VISIBILITY_CHANGED, True)
+

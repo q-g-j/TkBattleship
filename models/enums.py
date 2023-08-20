@@ -97,6 +97,11 @@ ShipTypes = [
     ("Carrier", 5, 1),
 ]
 
+# ShipTypes = [
+#     # ("name", length, number_to_place)
+#     ("Carrier", 5, 5),
+# ]
+
 
 class Side(IntFlag):
     CENTER = 0
